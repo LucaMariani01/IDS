@@ -23,15 +23,13 @@ public class ProgrammaLivelli extends Campagna{
     {
         return this.listaLivelli;
     }
+
     public Boolean addLivello(Livello l){
-        // TODO: 10/01/2023
-        return true;
+        return this.listaLivelli.add(l);
     }
 
-    public Boolean removeLivello(Livello l)
-    {
-        // TODO: 10/01/2023
-        return true;
+    public Boolean removeLivello(Livello l){
+        return this.listaLivelli.remove(l);
     }
 
 }
