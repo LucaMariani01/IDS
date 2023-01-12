@@ -20,9 +20,11 @@ public class Azienda extends myCliente{
         return listaAdmin;
     }
     
-    public boolean addAdmin(Admin a)
+    public boolean addAdmin(Admin newAdmin)
     {
-        // TODO: 10/01/2023  
+        // TODO: 10/01/2023
+        if(this.listaAdmin.stream().noneMatch(x -> x.getId() == newAdmin.getId()))
+            this.listaAdmin.add(newAdmin);
         return true;
     }
 }
