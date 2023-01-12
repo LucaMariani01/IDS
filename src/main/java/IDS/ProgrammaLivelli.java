@@ -8,8 +8,7 @@ public class ProgrammaLivelli extends Campagna{
     private int numeroLivelli;
     private ArrayList<Livello> listaLivelli;
 
-    public ProgrammaLivelli(int id, Date dataFine,int numeroLivelli,ArrayList<Livello> listaLivelli) {
-        // TODO: 10/01/2023 controlli
+    public ProgrammaLivelli(int id, Date dataFine,int numeroLivelli, ArrayList<Livello> listaLivelli) {
         super(id, dataFine);
         this.listaLivelli=listaLivelli;
         this.numeroLivelli=numeroLivelli;
@@ -26,10 +25,12 @@ public class ProgrammaLivelli extends Campagna{
 
     public Boolean addLivello(Livello l){
         if(l == null) new IllegalArgumentException();
+        if(this.listaLivelli.contains(l))new IllegalArgumentException();
         return this.listaLivelli.add(l);
     }
 
     public Boolean removeLivello(Livello l){
+        if(l == null)new IllegalArgumentException();
         return this.listaLivelli.remove(l);
     }
 
