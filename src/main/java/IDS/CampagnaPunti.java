@@ -18,7 +18,7 @@ public class CampagnaPunti extends Campagna{
 
     public Boolean aggiungiPremi(Map<Premio,Integer> premi)
     {
-        // TODO: 10/01/2023 tutti i controlli che il premio sia gia presente
+        premi.putAll(Objects.requireNonNull(premi));
         return true;
     }
 
