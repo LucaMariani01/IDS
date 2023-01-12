@@ -24,7 +24,10 @@ public class ProgrammaLivelli extends Campagna{
         return this.listaLivelli;
     }
 
-    public Boolean addLivello(Livello l){return this.listaLivelli.add(l);}
+    public Boolean addLivello(Livello l){
+        if(l == null) new IllegalArgumentException();
+        return this.listaLivelli.add(l);
+    }
 
     public Boolean removeLivello(Livello l){
         return this.listaLivelli.remove(l);
