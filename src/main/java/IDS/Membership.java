@@ -9,8 +9,10 @@ public class Membership extends Campagna{
     private final String nome;
 
     public Membership(int id, Date dataFine, double costo, String nome) {
-        // TODO: 10/01/2023 controlli
         super(id, dataFine);
+
+        if ( nome == null) throw new NullPointerException();
+        if (costo <= 0   ) throw new IllegalArgumentException();
         this.costo = costo;
         this.nome = nome;
     }
@@ -29,12 +31,16 @@ public class Membership extends Campagna{
 
     public boolean addPremio(Premio p)
     {
-        // TODO: 10/01/2023 aggiungi un premio alla lista
-        return true;
+        if (p == null) throw new NullPointerException();
+        if (this.catalogoPremi.contains(p))return false;
+        else{
+            this.catalogoPremi.add(p);
+            return true;
+        }
     }
     public boolean removePremio(Premio p)
     {
-        // TODO: 10/01/2023 RIMUOVI PREMIO DALLA LISTA
-        return true;
+        if (p == null) throw new NullPointerException();
+        return this.catalogoPremi.remove(p);
     }
 }
