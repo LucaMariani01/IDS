@@ -14,7 +14,7 @@ public interface CampagnaSconti {
     public Date getDataInizio();
 
     /**
-     * @return data fine campagna sconti
+     * @return data fine della campagna sconti
      */
     public Date getDataFine();
 }
