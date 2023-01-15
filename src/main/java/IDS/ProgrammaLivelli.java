@@ -24,13 +24,13 @@ public class ProgrammaLivelli extends Campagna{
     }
 
     public Boolean addLivello(Livello l){
-        if(l == null) new IllegalArgumentException();
+        if(l == null) new NullPointerException();
         if(this.listaLivelli.contains(l))new IllegalArgumentException();
         return this.listaLivelli.add(l);
     }
 
     public Boolean removeLivello(Livello l){
-        if(l == null)new IllegalArgumentException();
+        if(l == null)new NullPointerException();
         return this.listaLivelli.remove(l);
     }
 
