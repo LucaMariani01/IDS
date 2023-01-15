@@ -8,7 +8,7 @@ public class CashBack extends Campagna{
     private  double  sogliaMinimaCashBack;
     private  double  sogliaMaxCashBack;
 
-    private ArrayList<Categoria> categorieProdotti;
+    private final ArrayList<Categoria> categorieProdotti;
 
     public CashBack(int id, Date dataFine, Date dataInizio, double sogliaMinimaCashBack, double sogliaMaxCashBack) {
         super(id, dataFine, dataInizio);
