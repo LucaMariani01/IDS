@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Azienda extends myCliente{
     private final int partitaIva;
-    private ArrayList<Admin> listaAdmin;
+    private final ArrayList<Admin> listaAdmin;
 
     public Azienda(int id, String nome, int partitaIva, ArrayList<Admin> listaAdmin) {
         super(id, nome);
