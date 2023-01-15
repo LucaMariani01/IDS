@@ -6,9 +6,9 @@ public class myLivello implements Livello{
     private final int numero;
     private final String nome;
     private final ArrayList<Premio> catalogoPremi;
-    private final ArrayList<Premio> requisitoEntrata;
+    private final double requisitoEntrata;
 
-    public myLivello(int numero, String nome, ArrayList<Premio> catalogoPremi, ArrayList<Premio> requisitoEntrata) {
+    public myLivello(int numero, String nome, ArrayList<Premio> catalogoPremi, double requisitoEntrata) {
         // TODO: 10/01/2023 CONTROLLI
         this.numero = numero;
         this.nome = nome;
@@ -22,7 +22,7 @@ public class myLivello implements Livello{
     }
 
     @Override
-    public ArrayList<Premio> getRequisitoEntrata() {
+    public double getRequisitoEntrata() {
         return this.requisitoEntrata;
     }
 
