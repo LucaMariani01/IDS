@@ -21,7 +21,12 @@ public abstract class Campagna implements CampagnaSconti {
     }
 
     @Override
-    public Date getDurata() {
-        return this.dataFine;
+    public Date getDataInizio() {
+        return dataInizio;
+    }
+
+    @Override
+    public Date getDataFine() {
+        return dataFine;
     }
 }

@@ -9,8 +9,12 @@ public interface CampagnaSconti {
     public int getId();
 
     /**
-     * @return la data di fine della campagna sconto
+     * @return data inizio campagna sconti
      */
-    public Date getDurata();
+    public Date getDataInizio();
 
+    /**
+     * @return data fine campagna sconti
+     */
+    public Date getDataFine();
 }
