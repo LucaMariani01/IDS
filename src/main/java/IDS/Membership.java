@@ -8,8 +8,8 @@ public class Membership extends Campagna{
     private ArrayList<Premio> catalogoPremi;
     private final String nome;
 
-    public Membership(int id, Date dataFine, double costo, String nome) {
-        super(id, dataFine);
+    public Membership(int id, Date dataFine, double costo, String nome,  Date dataInizio) {
+        super(id, dataFine, dataInizio);
 
         if ( nome == null) throw new NullPointerException();
         if (costo <= 0   ) throw new IllegalArgumentException();
