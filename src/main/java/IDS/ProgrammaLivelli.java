@@ -8,8 +8,8 @@ public class ProgrammaLivelli extends Campagna{
     private int numeroLivelli;
     private ArrayList<Livello> listaLivelli;
 
-    public ProgrammaLivelli(int id, Date dataFine,int numeroLivelli, ArrayList<Livello> listaLivelli) {
-        super(id, dataFine);
+    public ProgrammaLivelli(int id, Date dataFine,int numeroLivelli, ArrayList<Livello> listaLivelli, Date dataInizio) {
+        super(id, dataFine, dataInizio);
         this.listaLivelli=listaLivelli;
         this.numeroLivelli=numeroLivelli;
     }

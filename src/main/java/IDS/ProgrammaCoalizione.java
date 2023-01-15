@@ -8,8 +8,8 @@ public class ProgrammaCoalizione extends Campagna{
     private ArrayList<Premio> catalogoPremi;
     private final CampagnaSconti campagnaScelta;
 
-    public ProgrammaCoalizione(int id, Date dataFine, CampagnaSconti campagnaScelta) {
-        super(id, dataFine);
+    public ProgrammaCoalizione(int id, Date dataFine, CampagnaSconti campagnaScelta,  Date dataInizio) {
+        super(id, dataFine,dataInizio);
         this.campagnaScelta = campagnaScelta;
     }
 
