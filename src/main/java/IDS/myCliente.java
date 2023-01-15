@@ -5,7 +5,7 @@ public abstract class myCliente implements ClientePiattaforma{
     private final String nome;
 
     public myCliente(int id, String nome) {
-        // TODO: 10/01/2023 CONTROLLI
+        if((id < 0) || (nome.compareTo("") == 0)) throw new IllegalArgumentException();
         this.id = id;
         this.nome = nome;
     }

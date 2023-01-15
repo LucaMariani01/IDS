@@ -10,6 +10,7 @@ public class ProgrammaLivelli extends Campagna{
 
     public ProgrammaLivelli(int id, Date dataFine,int numeroLivelli, ArrayList<Livello> listaLivelli, Date dataInizio) {
         super(id, dataFine, dataInizio);
+        if((dataFine.getTime() < dataInizio.getTime()) || (numeroLivelli < 0) || (id < 0)) throw new IllegalArgumentException();
         this.listaLivelli=listaLivelli;
         this.numeroLivelli=numeroLivelli;
     }
