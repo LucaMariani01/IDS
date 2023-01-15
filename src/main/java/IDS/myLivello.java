@@ -9,7 +9,7 @@ public class myLivello implements Livello{
     private final double requisitoEntrata;
 
     public myLivello(int numero, String nome, ArrayList<Premio> catalogoPremi, double requisitoEntrata) {
-        // TODO: 10/01/2023 CONTROLLI
+        if((numero < 0) || (requisitoEntrata < 0)) throw new IllegalArgumentException();
         this.numero = numero;
         this.nome = nome;
         this.catalogoPremi = catalogoPremi;
