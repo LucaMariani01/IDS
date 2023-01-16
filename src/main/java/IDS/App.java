@@ -10,7 +10,8 @@ public class App {
                 // TODO: 16/01/2023 scelta customer
                 break;
             case 2:
-                // TODO: 16/01/ azienda
+                m.menuCampagna();
+
                 break;
         }
 
