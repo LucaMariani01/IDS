@@ -1,31 +1,31 @@
 package IDS;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Customer extends myCliente{
     private final String cognome;
     private final ArrayList<CampagnaSconti> listaCampagneAderite;
     private final String email;
 
-    public Customer(int id, String nome, String cognome, String email) {
-        super(id, nome);
-        if ( email == null ) throw new NullPointerException();
-
+    public Customer(String nome, String cognome, String email) {
+        super(nome);
         this.cognome = cognome;
         this.listaCampagneAderite = new ArrayList<>();
-        this.email = email;
+        this.email = Objects.requireNonNull(email);
+    }
+
+    @Override
+    public String getId() {
+        return email;
     }
 
     public String getCognome() {
         return cognome;
     }
 
-    public ArrayList<CampagnaSconti> getListaCampgneAderite() {
+    public ArrayList<CampagnaSconti> getListaCampagneAderite() {
         return listaCampagneAderite;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public boolean addCampagna(CampagnaSconti c)

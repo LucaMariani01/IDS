@@ -1,16 +1,28 @@
 package IDS;
 
-public class Admin extends myCliente {
-    private final Azienda aziendaPartenenza;
+import java.util.Objects;
 
-    public Admin(int id, String nome, Azienda a) {
-        super(id, nome);
+public class Admin {
+    private final String codiceFiscale;
+    private final String nome;
+    private final Azienda aziendaAppartenenza;
 
-        if (a == null) throw new NullPointerException();
-        this.aziendaPartenenza = a;
+    public Admin(String codiceFiscale, String nome, Azienda aziendaAppartenenza) {
+        if (codiceFiscale.length() != 13) throw new IllegalArgumentException();
+        this.codiceFiscale = Objects.requireNonNull(codiceFiscale);
+        this.nome = nome;
+        this.aziendaAppartenenza  = Objects.requireNonNull(aziendaAppartenenza);
     }
 
-    public Azienda getA() {
-        return this.aziendaPartenenza;
+    public String getCodiceFiscale() {
+        return this.codiceFiscale;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public Azienda getAziendaAppartenenza() {
+        return this.aziendaAppartenenza;
     }
 }

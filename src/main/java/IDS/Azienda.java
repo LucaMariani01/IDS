@@ -3,16 +3,17 @@ package IDS;
 import java.util.ArrayList;
 
 public class Azienda extends myCliente{
-    private final int partitaIva;
+    private final String partitaIva;
     private final ArrayList<Admin> listaAdmin;
 
-    public Azienda(int id, String nome, int partitaIva, ArrayList<Admin> listaAdmin) {
-        super(id, nome);
+    public Azienda(String nome, String partitaIva, ArrayList<Admin> listaAdmin) {
+        super(nome);
         this.partitaIva = partitaIva;
         this.listaAdmin = listaAdmin;
     }
 
-    public int getPartitaIva() {
+    @Override
+    public String getId() {
         return partitaIva;
     }
 
@@ -22,7 +23,9 @@ public class Azienda extends myCliente{
     
     public boolean addAdmin(Admin newAdmin)
     {
-        if(this.listaAdmin.stream().anyMatch(x -> x.getId() == newAdmin.getId())) return false;
+        if(this.listaAdmin.stream()
+                .anyMatch(admin -> admin.getCodiceFiscale().compareTo(newAdmin.getCodiceFiscale()) == 0))
+            return false;
         return this.listaAdmin.add(newAdmin);
     }
 }
