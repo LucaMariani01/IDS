@@ -8,8 +8,8 @@ public class ProgrammaLivelli extends Campagna{
     private int numeroLivelli;
     private ArrayList<Livello> listaLivelli;
 
-    public ProgrammaLivelli(int id, Date dataFine,int numeroLivelli, ArrayList<Livello> listaLivelli, Date dataInizio) {
-        super(id, dataFine, dataInizio);
+    public ProgrammaLivelli(int id,String nome, Date dataFine,int numeroLivelli, ArrayList<Livello> listaLivelli, Date dataInizio) {
+        super(id,nome, dataFine, dataInizio);
         if((dataFine.getTime() < dataInizio.getTime()) || (numeroLivelli < 0) || (id < 0)) throw new IllegalArgumentException();
         this.listaLivelli=listaLivelli;
         this.numeroLivelli=numeroLivelli;

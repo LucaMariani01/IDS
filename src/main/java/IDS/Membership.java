@@ -6,15 +6,11 @@ import java.util.Date;
 public class Membership extends Campagna{
     private final double costo;
     private ArrayList<Premio> catalogoPremi;
-    private final String nome;
 
     public Membership(int id, Date dataFine, double costo, String nome,  Date dataInizio) {
-        super(id, dataFine, dataInizio);
-
-        if ( nome == null) throw new NullPointerException();
+        super(id,nome, dataFine, dataInizio);
         if (costo <= 0   ) throw new IllegalArgumentException();
         this.costo = costo;
-        this.nome = nome;
     }
 
     public double getCosto() {
@@ -23,10 +19,6 @@ public class Membership extends Campagna{
 
     public ArrayList<Premio> getCatalogoPremi() {
         return catalogoPremi;
-    }
-
-    public String getNome() {
-        return nome;
     }
 
     public boolean addPremio(Premio p)

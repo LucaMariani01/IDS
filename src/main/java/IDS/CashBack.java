@@ -7,8 +7,8 @@ public class CashBack extends Campagna{
     private  double  sogliaMinimaCashBack;
     private  double  sogliaMaxCashBack;
     private final ArrayList<Categoria> categorieProdotti;
-    public CashBack(int id, Date dataFine, Date dataInizio, double sogliaMinimaCashBack, double sogliaMaxCashBack) {
-        super(id, dataFine, dataInizio);
+    public CashBack(int id,String nome, Date dataFine, Date dataInizio, double sogliaMinimaCashBack, double sogliaMaxCashBack) {
+        super(id, nome, dataFine, dataInizio);
         if(sogliaMaxCashBack < sogliaMinimaCashBack || sogliaMinimaCashBack < 0 ) throw new IllegalArgumentException();
         this.sogliaMinimaCashBack = sogliaMinimaCashBack;
         this.sogliaMaxCashBack = sogliaMaxCashBack;
