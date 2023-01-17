@@ -18,7 +18,8 @@ public class CampagnaPunti extends Campagna{
 
     public Boolean aggiungiPremi(Map<Premio,Integer> premi)
     {
-        premi.putAll(Objects.requireNonNull(premi));
+        //premi.putAll(Objects.requireNonNull(premi));
+
         return true;
     }
 

@@ -21,15 +21,21 @@ public class DbConnector {
         statement.executeUpdate(query);
     }
 
+    public ResultSet executeQuery(String query) throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery(query);
+        return result;
+    }
+
     public static void removeQuery(String query) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
     }
 
-    public static ResultSet selectAllFromTable(String table) throws SQLException {
+    /*public static ResultSet selectAllFromTable(String table) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + table);
         return statement.executeQuery();
-    }
+    }*/
 
     public static int getNumberRows(String query) {
         try {
