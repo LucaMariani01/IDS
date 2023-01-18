@@ -35,7 +35,7 @@ public class ProgrammaLivelli extends Campagna{
     }
 
     public void removeLivello() throws SQLException {
-        Scanner input = new Scanner(System.in);
+
         int idLivelloDaRimuovere;
         DbConnector dbConnector = new DbConnector();
         DbConnector.init();
@@ -43,6 +43,7 @@ public class ProgrammaLivelli extends Campagna{
         System.out.println("Scegli il livello da eliminare: ");
         int i = 1;
         ResultSet result = dbConnector.executeQuery(selectAllLivelli);
+
         while (result.next()){
             System.out.println(i+")" +
                     " Numero livello: "+result.getInt("numLivello")+";" +
@@ -51,9 +52,11 @@ public class ProgrammaLivelli extends Campagna{
             );
             i ++;
         }
-        idLivelloDaRimuovere = input.nextInt();
+        idLivelloDaRimuovere = DashBoardAzienda.livelloDaEliminare(i);
+
         String removeLivelloQuery = "DELETE FROM `livelli` WHERE `livelli`.`id` = "+idLivelloDaRimuovere+"";
         DbConnector.removeQuery(removeLivelloQuery);
+        DbConnector.closeConnection();
     }
 
 }

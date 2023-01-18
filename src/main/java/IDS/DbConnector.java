@@ -52,4 +52,14 @@ public class DbConnector {
         }
         return 0;
     }
+
+    public static void closeConnection()
+    {
+        try {
+            DbConnector.connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
