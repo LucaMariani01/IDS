@@ -1,5 +1,7 @@
 package IDS;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ public class CashBack extends Campagna{
     private  double  sogliaMinimaCashBack;
     private  double  sogliaMaxCashBack;
     private final ArrayList<Categoria> categorieProdotti;
+
     public CashBack(int id,String nome, Date dataFine, Date dataInizio, double sogliaMinimaCashBack, double sogliaMaxCashBack) {
         super(id, nome, dataFine, dataInizio);
         if(sogliaMaxCashBack < sogliaMinimaCashBack || sogliaMinimaCashBack < 0 ) throw new IllegalArgumentException();
@@ -15,14 +18,24 @@ public class CashBack extends Campagna{
         this.categorieProdotti = new ArrayList<>();
     }
 
-    public boolean aggiungiCategoria(Categoria c)
-    {
-        if(c == null) throw new NullPointerException();
-        if (this.categorieProdotti.contains(c)) return false;
-        return this.categorieProdotti.add(c);
+    public void aggiungiCategoria(Categoria c) throws SQLException {
+        DbConnector.init();
+        String insertLivelloQuery = "INSERT INTO `categorieProdotti` (`nome`, `descrizione`,`programmaCashBack`) VALUES ('"+c.getNome()+"','"+c.getDecsrizione()+"','"+this.getId()+"');";
+        DbConnector.insertQuery(insertLivelloQuery);
+
     }
 
-    public ArrayList<Categoria> getCategorieProdotti() {
+    public ArrayList<Categoria> getCategorieProdotti() throws SQLException {
+        ArrayList<Categoria> categorieProdotti = new ArrayList<>();
+        Categoria categoria;
+        DbConnector dbConnector = new DbConnector();
+        String selectCategorie = "SELECT * FROM `categorieProdotti` WHERE `programmaCashBack` = "+this.getId()+"";
+        DbConnector.init();
+        ResultSet result = dbConnector.executeQuery(selectCategorie);
+        while (result.next()){
+             categoria = new CategoriaProdotto(result.getString("nome"),result.getString("descrizione"));
+             categorieProdotti.add(categoria);
+        }
         return categorieProdotti;
     }
 
