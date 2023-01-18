@@ -52,7 +52,7 @@ public class ProgrammaLivelli extends Campagna{
             i ++;
         }
         idLivelloDaRimuovere =DashBoardAzienda.livelloDaEliminare(i); // PROVA 2
-        //PROVA TRE
+        //PROVA TRE quattro
         String removeLivelloQuery = "DELETE FROM `livelli` WHERE `livelli`.`id` = "+idLivelloDaRimuovere+"";
         DbConnector.removeQuery(removeLivelloQuery);
         DbConnector.closeConnection();
