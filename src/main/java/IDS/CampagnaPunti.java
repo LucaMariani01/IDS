@@ -21,8 +21,8 @@ public class CampagnaPunti extends Campagna{
         //premi.putAll(Objects.requireNonNull(premi));
         DbConnector.init();
         for ( Premio premio : premi.keySet() ){
-            String insertAdminQuery = "INSERT INTO `premi` (`nome`, `campagnaSconto`) VALUES ('"+premio.getNome()+"', '"+this.getId()+"');";
-            DbConnector.insertQuery(insertAdminQuery);
+            String insertPremioQuery = "INSERT INTO `premi` (`nome`, `campagnaSconto`) VALUES ('"+premio.getNome()+"', '"+this.getId()+"');";
+            DbConnector.insertQuery(insertPremioQuery);
         }
         return true;
     }

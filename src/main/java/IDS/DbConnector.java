@@ -32,10 +32,10 @@ public class DbConnector {
         statement.executeUpdate();
     }
 
-    /*public static ResultSet selectAllFromTable(String table) throws SQLException {
+    public static ResultSet selectAllFromTable(String table) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + table);
         return statement.executeQuery();
-    }*/
+    }
 
     public static int getNumberRows(String query) {
         try {
