@@ -6,7 +6,6 @@ public class Menu {
     public int sceltaCampagna()
     {
         Scanner s = new Scanner(System.in);
-        System.out.println("INSERISCI QUALE TIPO DI CAMPAGNA VUOI CREARE : ");
         System.out.println("1)CREA CAMPAGNA A PUNTI ");
         System.out.println("2)CREA PROGRAMMMA A LIVELLI");
         System.out.println("3)CREA CAMPAGNA CASHBACK");
@@ -26,7 +25,6 @@ public class Menu {
     public int sceltaTipoCliente()
     {
         Scanner s = new Scanner(System.in);
-        System.out.println("SCEGLI LA CATEGORIA DI ACCESSO : ");
         System.out.println("1)COSTUMER ");
         System.out.println("2)AZIENDA");
 

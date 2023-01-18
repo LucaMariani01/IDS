@@ -27,10 +27,11 @@ public class ProgrammaLivelli extends Campagna{
         return this.listaLivelli;
     }
 
-    public void addLivello(Livello l) throws SQLException {
+    public Boolean addLivello(Livello l) throws SQLException {
         DbConnector.init();
         String insertLivelloQuery = "INSERT INTO `livelli` (`numLivello`, `campagnaLivello`,`nome`,`requisitoEntrata`) VALUES ('"+l.getNumero()+"','"+this.getId()+"','"+l.getNome()+"','"+l.getRequisitoEntrata()+"');";
         DbConnector.insertQuery(insertLivelloQuery);
+        return true;
     }
 
     public void removeLivello() throws SQLException {
@@ -38,10 +39,10 @@ public class ProgrammaLivelli extends Campagna{
         int idLivelloDaRimuovere;
         DbConnector dbConnector = new DbConnector();
         DbConnector.init();
-        String selectLivelli = "SELECT * FROM `livelli` WHERE `campagnaLivello` = "+this.getId()+"";
+        String selectAllLivelli = "SELECT * FROM `livelli` WHERE `campagnaLivello` = "+this.getId()+"";
         System.out.println("Scegli il livello da eliminare: ");
         int i = 1;
-        ResultSet result = dbConnector.executeQuery(selectLivelli);
+        ResultSet result = dbConnector.executeQuery(selectAllLivelli);
         while (result.next()){
             System.out.println(i+")" +
                     " Numero livello: "+result.getInt("numLivello")+";" +
@@ -53,7 +54,6 @@ public class ProgrammaLivelli extends Campagna{
         idLivelloDaRimuovere = input.nextInt();
         String removeLivelloQuery = "DELETE FROM `livelli` WHERE `livelli`.`id` = "+idLivelloDaRimuovere+"";
         DbConnector.removeQuery(removeLivelloQuery);
-
     }
 
 }

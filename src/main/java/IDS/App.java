@@ -13,7 +13,7 @@ public class App {
                     switch (m.menuCampagna())
                     {
                         case 1:
-                            // TODO: 18/01/2023  
+                            // TODO: 18/01/2023
                         break;
                         default:System.out.println("AL PROSSIMO AGGIORNAMENTO");
                     }
