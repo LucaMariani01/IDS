@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
-
 public class ProgrammaLivelli extends Campagna{
 
     private int numeroLivelli;
@@ -31,6 +29,7 @@ public class ProgrammaLivelli extends Campagna{
         DbConnector.init();
         String insertLivelloQuery = "INSERT INTO `livelli` (`numLivello`, `campagnaLivello`,`nome`,`requisitoEntrata`) VALUES ('"+l.getNumero()+"','"+this.getId()+"','"+l.getNome()+"','"+l.getRequisitoEntrata()+"');";
         DbConnector.insertQuery(insertLivelloQuery);
+        DbConnector.closeConnection();
         return true;
     }
 
