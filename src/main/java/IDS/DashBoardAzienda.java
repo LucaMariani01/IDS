@@ -5,21 +5,18 @@ import java.util.Scanner;
 public class DashBoardAzienda {
 
 
-    public int MenuAzienda()
-    {
+    public int menuAzienda(){
         Scanner s = new Scanner(System.in);
-        System.out.println("1)CREA NUOVA CAMPAGNA ");
-        System.out.println("2)...");
+        int n;
+        do{
+            System.out.println("1)CREA NUOVA CAMPAGNA ");
+            System.out.println("2)...");
 
-        int n = s.nextInt();
-
-        if (n < 1 || n> 2)
-        {
-            System.out.println("SCELTA NON VALIDA RIPROVA:");
-            return this.sceltaTipoCliente();
-        }return n ;
+            n = s.nextInt();
+        }while ((n<1)||(n>2)) ;
+        return n;
     }
-    public int MenuAzienda()
+    public int menuCampagna()
     {
         Scanner s = new Scanner(System.in);
         System.out.println("1)CREA CAMPAGNA A PUNTI ");
