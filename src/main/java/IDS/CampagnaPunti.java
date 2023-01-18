@@ -1,5 +1,6 @@
 package IDS;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class CampagnaPunti extends Campagna{
@@ -16,10 +17,13 @@ public class CampagnaPunti extends Campagna{
         return this.maxPunti;
     }
 
-    public Boolean aggiungiPremi(Map<Premio,Integer> premi)
-    {
+    public Boolean aggiungiPremi(Map<Premio,Integer> premi) throws SQLException {
         //premi.putAll(Objects.requireNonNull(premi));
-
+        DbConnector.init();
+        for ( Premio premio : premi.keySet() ){
+            String insertAdminQuery = "INSERT INTO `premi` (`nome`, `campagnaSconto`) VALUES ('"+premio.getNome()+"', '"+this.getId()+"');";
+            DbConnector.insertQuery(insertAdminQuery);
+        }
         return true;
     }
 
