@@ -7,10 +7,16 @@ public class App {
         switch (m.sceltaTipoCliente())
         {
             case 1:
-                // TODO: 16/01/2023 scelta customer
+                DashBoardCliente.menu();
                 break;
             case 2:
-                m.menuCampagna();
+                    switch (m.menuCampagna())
+                    {
+                        case 1:
+                            // TODO: 18/01/2023  
+                        break;
+                        default:System.out.println("AL PROSSIMO AGGIORNAMENTO");
+                    }
 
                 break;
         }
