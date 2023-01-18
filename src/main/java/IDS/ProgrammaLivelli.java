@@ -1,7 +1,10 @@
 package IDS;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class ProgrammaLivelli extends Campagna{
 
@@ -24,15 +27,33 @@ public class ProgrammaLivelli extends Campagna{
         return this.listaLivelli;
     }
 
-    public Boolean addLivello(Livello l){
-        if(l == null) new NullPointerException();
-        if(this.listaLivelli.contains(l))new IllegalArgumentException();
-        return this.listaLivelli.add(l);
+    public Boolean addLivello(Livello l) throws SQLException {
+        DbConnector.init();
+        String insertLivelloQuery = "INSERT INTO `livelli` (`numLivello`, `campagnaLivello`,`nome`,`requisitoEntrata`) VALUES ('"+l.getNumero()+"','"+this.getId()+"','"+l.getNome()+"','"+l.getRequisitoEntrata()+"');";
+        DbConnector.insertQuery(insertLivelloQuery);
+        return true;
     }
 
-    public Boolean removeLivello(Livello l){
-        if(l == null)new NullPointerException();
-        return this.listaLivelli.remove(l);
+    public void removeLivello() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        int idLivelloDaRimuovere;
+        DbConnector dbConnector = new DbConnector();
+        DbConnector.init();
+        String selectAllLivelli = "SELECT * FROM `livelli` WHERE `campagnaLivello` = "+this.getId()+"";
+        System.out.println("Scegli il livello da eliminare: ");
+        int i = 1;
+        ResultSet result = dbConnector.executeQuery(selectAllLivelli);
+        while (result.next()){
+            System.out.println(i+")" +
+                    " Numero livello: "+result.getInt("numLivello")+";" +
+                    " Nome: "+result.getString("nome")+
+                    " Requisito entrata: "+result.getDouble("requisitoEntrata")
+            );
+            i ++;
+        }
+        idLivelloDaRimuovere = input.nextInt();
+        String removeLivelloQuery = "DELETE FROM `livelli` WHERE `livelli`.`id` = "+idLivelloDaRimuovere+"";
+        DbConnector.removeQuery(removeLivelloQuery);
     }
 
 }
