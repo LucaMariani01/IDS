@@ -1,5 +1,6 @@
 package IDS;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,14 +22,14 @@ public class Membership extends Campagna{
         return catalogoPremi;
     }
 
-    public boolean addPremio(Premio p)
-    {
+    public boolean addPremio(Premio p) throws SQLException {
         if (p == null) throw new NullPointerException();
-        if (this.catalogoPremi.contains(p))return false;
-        else{
-            this.catalogoPremi.add(p);
-            return true;
-        }
+        DbConnector.init();
+        String insertLivelloQuery = "INSERT INTO `premio` (`nome`,`campagnaSconto`) " +
+                "VALUES ('"+p.getNome()+"','"+this.getId()+"');";
+        DbConnector.insertQuery(insertLivelloQuery);
+        DbConnector.closeConnection();
+        return true;
     }
     public boolean removePremio(Premio p)
     {
