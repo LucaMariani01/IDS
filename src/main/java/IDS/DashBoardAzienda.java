@@ -59,4 +59,18 @@ public class DashBoardAzienda {
             case (5)://programma coalizione
         }
     }
+
+    public static int livelloDaEliminare(int i)
+    {
+        int n ;
+        Scanner s = new Scanner(System.in);
+        System.out.println("INSERISCI LIVELLO :");
+        do {
+            n = s.nextInt();
+            if(n < 1 || n >i) System.out.println("VALORE INSERITO NON VALIDO RIPROVA :");
+        }while (n<1 || n>i );
+
+        return n;
+    }
+
 }
