@@ -51,6 +51,23 @@ public class Menu {
         }return n ;
     }
 
+    public int scelteLog()
+    {
+        Scanner s = new Scanner(System.in);
+        System.out.println("1) LOGIN CLIENTE");
+        System.out.println("2) ISCRIZIONE CLIENTE");
+
+        System.out.print("INSERIRE SCELTA : ");
+
+        int n = s.nextInt();
+
+        if (n < 1 || n> 2)
+        {
+            System.out.println("SCELTA NON VALIDA RIPROVA:");
+            return this.scelteLog();
+        }return n ;
+
+    }
 
 
 }
