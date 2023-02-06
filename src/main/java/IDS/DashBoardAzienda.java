@@ -1,5 +1,10 @@
 package IDS;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class DashBoardAzienda {
@@ -71,6 +76,35 @@ public class DashBoardAzienda {
         }while (n<1 || n>i );
 
         return n;
+    }
+
+    public static Optional<Azienda> login() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        DbConnector.init();
+        ResultSet result;
+        Admin admin;
+
+        System.out.println("Partita IVA:"); //input dati login
+        String partitaIva = input.next();
+        System.out.println("Password:");
+        String password = input.next();
+
+        String queryLogin = "SELECT * FROM `aziende` WHERE `partitaIva`="+partitaIva+" and `password`="+password+";";  //verifico che azienda sia registrata
+        result = DbConnector.executeQuery(queryLogin);
+        if(!result.next()) return Optional.empty();  //se azienda non è registrata
+
+        Azienda azienda = new Azienda(result.getString("nome"),result.getString("partitaIva"),new ArrayList<>());
+
+        result = DbConnector.executeQuery("SELECT * FROM `admin` WHERE `Azienda`="+partitaIva+";");
+        while(result.next()){
+            admin = new Admin(result.getString("codiceFiscale"),result.getString("nome"),azienda);
+            azienda.addAdmin(admin);
+        }
+        return Optional.of(azienda);
+    }
+
+    public static void registrazione(){
+
     }
 
 }

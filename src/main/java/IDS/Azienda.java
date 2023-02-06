@@ -2,12 +2,13 @@ package IDS;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Azienda extends myCliente{
     private final String partitaIva;
-    private final ArrayList<Admin> listaAdmin;
+    private final List<Admin> listaAdmin;
 
-    public Azienda(String nome, String partitaIva, ArrayList<Admin> listaAdmin) {
+    public Azienda(String nome, String partitaIva, List<Admin> listaAdmin) {
         super(nome);
         this.partitaIva = partitaIva;
         this.listaAdmin = listaAdmin;
