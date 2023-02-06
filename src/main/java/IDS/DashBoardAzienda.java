@@ -103,8 +103,18 @@ public class DashBoardAzienda {
         return Optional.of(azienda);
     }
 
-    public static void registrazione(){
+    public static void registrazione() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        DbConnector.init();
 
+        System.out.println("Nome:"); //input dati login
+        String nome = input.next();
+        System.out.println("Partita IVA:"); //input dati login
+        String partitaIva = input.next();
+        System.out.println("Password:");
+        String password = input.next();
+
+        DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
     }
 
 }

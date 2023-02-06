@@ -1,7 +1,6 @@
 package IDS;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Azienda extends myCliente{
@@ -19,7 +18,7 @@ public class Azienda extends myCliente{
         return partitaIva;
     }
 
-    public ArrayList<Admin> getListaAdmin() {
+    public List<Admin> getListaAdmin() {
         return listaAdmin;
     }
     
