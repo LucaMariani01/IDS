@@ -21,7 +21,7 @@ public class DbConnector {
         statement.executeUpdate(query);
     }
 
-    public ResultSet executeQuery(String query) throws SQLException {
+    public static ResultSet executeQuery(String query) throws SQLException {
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(query);
         return result;
