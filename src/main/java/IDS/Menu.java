@@ -54,8 +54,8 @@ public class Menu {
     public int scelteLog()
     {
         Scanner s = new Scanner(System.in);
-        System.out.println("1) LOGIN CLIENTE");
-        System.out.println("2) ISCRIZIONE CLIENTE");
+        System.out.println("1) LOGIN ");
+        System.out.println("2) ISCRIZIONE ");
 
         System.out.print("INSERIRE SCELTA : ");
 
