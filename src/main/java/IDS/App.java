@@ -8,14 +8,15 @@ public class App {
         int tipoCliente;
         int azioneCliente;
         ClientePiattaforma c;
-        Optional<Azienda> aziendaLoggata = Optional.empty();
-        Optional<Customer> clienteLoggato = Optional.empty();
+        Optional<Azienda> aziendaLoggata;
+        Optional<Customer> clienteLoggato;
 
         do{
             tipoCliente = Menu.sceltaTipoCliente();
             switch (tipoCliente) {
                 case 1 -> {
-                    if(DashBoardCliente.mainMenu().isPresent()){
+                    clienteLoggato = DashBoardCliente.mainMenu();
+                    if(clienteLoggato.isPresent()){
                         do{
                             azioneCliente = DashBoardCliente.sceltaAzioniUtente();
                             switch (azioneCliente){
@@ -27,8 +28,9 @@ public class App {
                     }else System.out.println("errore");
                 }
                 case 2 -> { //azienda
-                    if(DashBoardAzienda.mainMenu().isPresent()){
-                        if(DashBoardAzienda.menuAdmin().isPresent()){
+                    aziendaLoggata = DashBoardAzienda.mainMenu();
+                    if(aziendaLoggata.isPresent()){
+                        if(DashBoardAzienda.menuAdmin(aziendaLoggata.get()).isPresent()){
                             switch (DashBoardAzienda.menuAzienda()){
                                 case 1 ->  System.out.println("lista campagne da scegliere");
                                 case 2 ->  System.out.println("Work in progress...");
@@ -39,6 +41,5 @@ public class App {
                 }
             }
         }while(tipoCliente!=0);
-
     }
 }

@@ -30,10 +30,10 @@ public class DashBoardAzienda {
         };
     }
 
-    public static Optional<Admin> menuAdmin() {
-        return switch (sceltaMainMenu()) {
-            //case 1 -> DbManager.loginAdmin();
-            //case 2 -> DbManager.registrazioneAdmin();
+    public static Optional<Admin> menuAdmin(Azienda azienda) throws SQLException {
+         return switch (sceltaMainMenu()) {
+            case 1 -> DbManager.loginAdmin(azienda);
+            case 2 -> DbManager.registrazioneAdmin(azienda);
             default -> Optional.empty();
         };
     }

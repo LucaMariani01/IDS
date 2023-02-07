@@ -8,6 +8,49 @@ import java.text.DateFormat;
 
 public class DbManager {
 
+    public static Optional<Admin> loginAdmin(Azienda azienda) throws SQLException{
+        Scanner input = new Scanner(System.in);
+        DbConnector.init();
+        ResultSet result;
+        String codiceFiscale;
+
+        System.out.println("Nome: "); //input dati login
+        String nome = input.next();
+        do{
+            System.out.println("Codice Fiscale: ");
+            codiceFiscale = input.next();
+        }while(codiceFiscale.length() != 16);
+        System.out.println("Password: ");
+        String password = input.next();
+
+        String queryLogin = "SELECT * FROM `admin` WHERE `codiceFiscale`='"+codiceFiscale+"' and `password`='"+password+"';";  //verifico che admin sia registrata
+        result = DbConnector.executeQuery(queryLogin);
+        if(!result.next()) return Optional.empty();  //se admin non è registrato
+
+        return Optional.of(new Admin(codiceFiscale,nome,azienda));
+    }
+
+    public static Optional<Admin> registrazioneAdmin(Azienda azienda) throws SQLException {
+        Scanner input = new Scanner(System.in);
+        ResultSet result;
+        DbConnector.init();
+
+        System.out.println("Nome: ");
+        String nome = input.next();
+        System.out.println("Codice fiscale: ");
+        String codiceFiscale = input.next();
+        System.out.println("Password: ");
+        String password = input.next();
+
+        String queryLogin = "SELECT * FROM `admin` WHERE `codiceFiscale`='"+codiceFiscale+"';";  //verifico se esiste già admin con codice fiscale inserito
+        result = DbConnector.executeQuery(queryLogin);
+        if(result.next()) return Optional.empty();  //se esiste, non effettuo la registrazione
+
+        DbConnector.insertQuery("INSERT INTO `admin` (`nome`, `codiceFiscale`, `password`) VALUES ('"+nome+"', '"+codiceFiscale+"', '"+password+"');");
+        return Optional.of(new Admin(codiceFiscale,nome,azienda));
+    }
+
+
     public static Optional<Customer> loginCliente() throws SQLException {
         System.out.println("EMAIL: ");
         Scanner input = new Scanner(System.in);
