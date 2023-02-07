@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="IDS.AziendaTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-02-07T10:44:48" hostname="LAPTOP-MPGP6R0A" time="0.027">
+  <properties/>
+  <testcase name="addAdmin()" classname="IDS.AziendaTest" time="0.024"/>
+  <testcase name="getListaAdmin()" classname="IDS.AziendaTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
