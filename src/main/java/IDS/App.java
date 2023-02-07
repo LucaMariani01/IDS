@@ -8,11 +8,10 @@ public class App {
         Menu m = new Menu();
         ClientePiattaforma c ;
         Optional<Azienda> aziendaLoggata = Optional.empty();
-        int scelta;
+        int tipoCliente;
         do{
-            scelta=m.sceltaTipoCliente();
-            switch (scelta)
-            {
+            tipoCliente = m.sceltaTipoCliente();
+            switch (tipoCliente) {
                 case 1: //cliente
                     DashBoardCliente.menu();
                     break;
@@ -30,7 +29,6 @@ public class App {
                     }
                     break;
             }
-        }while(scelta!=0);
-
+        }while(tipoCliente != 0);
     }
 }

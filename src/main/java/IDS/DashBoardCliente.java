@@ -34,10 +34,8 @@ public class DashBoardCliente {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return Optional.empty();
     }
-
 
     public static Optional<Customer> registrazione() throws SQLException{
         Scanner input = new Scanner(System.in);
