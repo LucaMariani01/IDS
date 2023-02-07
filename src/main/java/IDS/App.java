@@ -13,6 +13,7 @@ public class App {
             tipoCliente = Menu.sceltaTipoCliente();
             switch (tipoCliente) {
                 case 1 -> {}//cliente
+
                         //DashBoardCliente.menu();
                 case 2 -> { //azienda
                     //switch () {

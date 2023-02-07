@@ -20,6 +20,7 @@ public class Menu {
         return n;
     }
 */
+
     public static int sceltaTipoCliente() {
         Scanner input = new Scanner(System.in);
         int scelta = 0;
