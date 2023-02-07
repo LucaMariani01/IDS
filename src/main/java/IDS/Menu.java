@@ -3,6 +3,7 @@ package IDS;
 import java.util.Scanner;
 
 public class Menu {
+    /*
     public int sceltaCampagna() {
         Scanner s = new Scanner(System.in);
         System.out.println("1)CREA CAMPAGNA A PUNTI ");
@@ -18,20 +19,20 @@ public class Menu {
         }
         return n;
     }
+*/
+    public static int sceltaTipoCliente() {
+        Scanner input = new Scanner(System.in);
+        int scelta = 0;
 
-    public int sceltaTipoCliente() {
-        Scanner s = new Scanner(System.in);
-        System.out.println("1)COSTUMER ");
-        System.out.println("2)AZIENDA");
-        int n = s.nextInt();
-
-        if (n < 1 || n> 2) {
-            System.out.println("SCELTA NON VALIDA RIPROVA:");
-            return this.sceltaTipoCliente();
-        }
-        return n ;
+        do {
+            System.out.println("1)CLIENTE ");
+            System.out.println("2)AZIENDA");
+            System.out.println("0)ESCI");
+            scelta = input.nextInt();
+        }while((scelta < 0) || (scelta > 2));
+        return scelta;
     }
-
+/*
     public int menuCampagna() {
         Scanner s = new Scanner(System.in);
         System.out.println("1)CREA NUOVA CAMPAGNA ");
@@ -57,5 +58,5 @@ public class Menu {
             return this.scelteLog();
         }
         return n ;
-    }
+    }*/
 }

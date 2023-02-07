@@ -1,10 +1,5 @@
 package IDS;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class DashBoardAzienda {
@@ -19,6 +14,7 @@ public class DashBoardAzienda {
             }
         }while(scelta!=0);
     }
+
     private int menuAzienda(){
         Scanner s = new Scanner(System.in);
         int n;
@@ -31,7 +27,6 @@ public class DashBoardAzienda {
         }while ((n<0)||(n>2)) ;
         return n;
     }
-
 
     private void menuCampagna() {
         int scelta;
@@ -65,8 +60,7 @@ public class DashBoardAzienda {
         }
     }
 
-    public static int livelloDaEliminare(int i)
-    {
+    public static int livelloDaEliminare(int i) {
         int n ;
         Scanner s = new Scanner(System.in);
         System.out.println("INSERISCI LIVELLO :");
@@ -77,44 +71,4 @@ public class DashBoardAzienda {
 
         return n;
     }
-
-    public static Optional<Azienda> login() throws SQLException{
-        Scanner input = new Scanner(System.in);
-        DbConnector.init();
-        ResultSet result;
-        Admin admin;
-
-        System.out.println("Partita IVA:"); //input dati login
-        String partitaIva = input.next();
-        System.out.println("Password:");
-        String password = input.next();
-
-        String queryLogin = "SELECT * FROM `aziende` WHERE `partitaIva`='"+partitaIva+"' and `password`='"+password+"';";  //verifico che azienda sia registrata
-        result = DbConnector.executeQuery(queryLogin);
-        if(!result.next()) return Optional.empty();  //se azienda non è registrata
-        System.out.println("ho trovato azienda!!!!!!!!!!");
-        Azienda azienda = new Azienda(result.getString("nome"),result.getString("partitaIva"),new ArrayList<>());
-
-        result = DbConnector.executeQuery("SELECT * FROM `admin` WHERE `Azienda`='"+partitaIva+"';");
-        while(result.next()){
-            admin = new Admin(result.getString("codiceFiscale"),result.getString("nome"),azienda);
-            azienda.addAdmin(admin);
-        }
-        return Optional.of(azienda);
-    }
-
-    public static void registrazione() throws SQLException {
-        Scanner input = new Scanner(System.in);
-        DbConnector.init();
-
-        System.out.println("Nome:"); //input dati login
-        String nome = input.next();
-        System.out.println("Partita IVA:"); //input dati login
-        String partitaIva = input.next();
-        System.out.println("Password:");
-        String password = input.next();
-
-        DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
-    }
-
 }
