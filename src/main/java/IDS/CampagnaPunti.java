@@ -17,7 +17,7 @@ public class CampagnaPunti extends Campagna{
         return this.maxPunti;
     }
 
-    public Boolean aggiungiPremi(Map<Premio,Integer> premi) throws SQLException {
+    public boolean aggiungiPremi(Map<Premio,Integer> premi) throws SQLException {
         //premi.putAll(Objects.requireNonNull(premi));
         DbConnector.init();
         for ( Premio premio : premi.keySet() ){
