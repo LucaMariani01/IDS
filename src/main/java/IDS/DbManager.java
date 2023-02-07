@@ -58,7 +58,6 @@ public class DbManager {
         ResultSet result;
         Admin admin;
 
-
         System.out.println("Partita IVA:"); //input dati login
         String partitaIva = input.next();
         System.out.println("Password:");
@@ -78,8 +77,9 @@ public class DbManager {
         return Optional.of(azienda);
     }
 
-    public static void registrazioneAzienda() throws SQLException {
+    public static Optional<Azienda> registrazioneAzienda() throws SQLException {
         Scanner input = new Scanner(System.in);
+        ResultSet result;
         DbConnector.init();
 
         System.out.println("Nome:"); //input dati login
@@ -89,7 +89,12 @@ public class DbManager {
         System.out.println("Password:");
         String password = input.next();
 
+        String queryLogin = "SELECT * FROM `aziende` WHERE `partitaIva`='"+partitaIva+"';";  //verifico se esiste già azienda con partita iva inserita
+        result = DbConnector.executeQuery(queryLogin);
+        if(result.next()) return Optional.empty();  //se esiste, non effettuo la registrazione
+
         DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
+        return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
 }
