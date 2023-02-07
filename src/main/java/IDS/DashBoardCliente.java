@@ -2,16 +2,31 @@ package IDS;
 
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class DashBoardCliente {
 
-    public static Optional<Customer> menu() throws SQLException {
-        Menu m = new Menu();
-        return switch (m.scelteLog()) {
+    private static int sceltaMainMenu(){
+        int scelta;
+        Scanner scr = new Scanner(System.in);
+        do{
+            System.out.println("1)LOGIN CLIENTE");
+            System.out.println("2)REGISTRAZIONE CLIENTE");
+            System.out.println("0)EXIT");
+            System.out.println("Inserisci la tua scelta");
+            scelta=scr.nextInt();
+        }while(scelta<0 || scelta>2);
+
+        return scelta;
+    }
+    public static Optional<Customer> mainMenu() throws SQLException {
+        return switch (sceltaMainMenu()) {
             case 1 -> DbManager.loginCliente();
             case 2 -> DbManager.registrazioneCliente();
             default -> Optional.empty();
         };
     }
+
+
 
 }
