@@ -89,13 +89,13 @@ public class DashBoardAzienda {
         System.out.println("Password:");
         String password = input.next();
 
-        String queryLogin = "SELECT * FROM `aziende` WHERE `partitaIva`="+partitaIva+" and `password`="+password+";";  //verifico che azienda sia registrata
+        String queryLogin = "SELECT * FROM `aziende` WHERE `partitaIva`='"+partitaIva+"' and `password`='"+password+"';";  //verifico che azienda sia registrata
         result = DbConnector.executeQuery(queryLogin);
         if(!result.next()) return Optional.empty();  //se azienda non è registrata
-
+        System.out.println("ho trovato azienda!!!!!!!!!!");
         Azienda azienda = new Azienda(result.getString("nome"),result.getString("partitaIva"),new ArrayList<>());
 
-        result = DbConnector.executeQuery("SELECT * FROM `admin` WHERE `Azienda`="+partitaIva+";");
+        result = DbConnector.executeQuery("SELECT * FROM `admin` WHERE `Azienda`='"+partitaIva+"';");
         while(result.next()){
             admin = new Admin(result.getString("codiceFiscale"),result.getString("nome"),azienda);
             azienda.addAdmin(admin);

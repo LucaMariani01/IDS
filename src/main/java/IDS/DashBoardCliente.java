@@ -27,9 +27,8 @@ public class DashBoardCliente {
 
         DbConnector.init();
         try {
-             if(DbConnector.executeQuery("SELECT COUNT(*) FROM clienti WHERE email = "+nome+"&& password == "+pass).next())
-             {
-                ResultSet r =  DbConnector.executeQuery("SELECT * FROM clienti WHERE email = "+nome+"&& password == "+pass);
+             if(DbConnector.executeQuery("SELECT * FROM `clienti` WHERE `email` = '"+nome+"' and `password` = '"+pass+"';").next()){
+                ResultSet r =  DbConnector.executeQuery("SELECT * FROM `clienti` WHERE `email` = '"+nome+"' and `password` = "+pass+"';");
                 return Optional.of(new Customer(r.getNString("nome"), r.getNString("cognome"), r.getNString("email")));
              }
         } catch (SQLException e) {
@@ -47,7 +46,7 @@ public class DashBoardCliente {
         System.out.println("NOME: ");
         String nome = input.next();
 
-        System.out.println("PASSWORD: ");
+        System.out.println("COGNOME: ");
         String cognome = input.next();
 
         System.out.println("EMAIL: ");
@@ -57,8 +56,8 @@ public class DashBoardCliente {
         String pass = input.next();
 
         try {
-            DbConnector.insertQuery("INSERT INTO clienti(email,nome,cognome,password) " +
-                    "VALUES ("+email+","+nome+","+cognome+","+pass+")");
+            DbConnector.insertQuery("INSERT INTO clienti(`email`,`nome`,`cognome`,`password`) " +
+                    "VALUES ('"+email+"','"+nome+"','"+cognome+"','"+pass+"');");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
