@@ -6,15 +6,27 @@ import java.util.Optional;
 public class App {
     public static void main(String[] args) throws SQLException{
         int tipoCliente;
+        int azioneCliente;
         ClientePiattaforma c;
         Optional<Azienda> aziendaLoggata = Optional.empty();
 
         do{
             tipoCliente = Menu.sceltaTipoCliente();
             switch (tipoCliente) {
-                case 1 -> {}//cliente
+                case 1 -> {
+                    if(DashBoardCliente.mainMenu().isPresent()){
+                        do{
+                            azioneCliente = DashBoardCliente.sceltaAzioniUtente();
+                            switch (azioneCliente){
+                                case 1 ->  System.out.println("lista campagne da scegliere");
+                                case 2 ->   System.out.println("campagne aderite");
+                            }
+                        }while (azioneCliente!=0);
 
-                        //DashBoardCliente.menu();
+                    }else System.out.println("errore");
+                }//cliente
+
+                        //;
                 case 2 -> { //azienda
                     //switch () {
                     //    case 1 -> aziendaLoggata = DashBoardAzienda.login(); //login azienda

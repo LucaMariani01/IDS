@@ -14,7 +14,7 @@ public class DashBoardCliente {
             System.out.println("1)LOGIN CLIENTE");
             System.out.println("2)REGISTRAZIONE CLIENTE");
             System.out.println("0)EXIT");
-            System.out.println("Inserisci la tua scelta");
+            System.out.println("Inserisci la tua scelta: ");
             scelta=scr.nextInt();
         }while(scelta<0 || scelta>2);
 
@@ -26,6 +26,20 @@ public class DashBoardCliente {
             case 2 -> DbManager.registrazioneCliente();
             default -> Optional.empty();
         };
+    }
+
+    public static int sceltaAzioniUtente(){
+        int scelta;
+        Scanner scr = new Scanner(System.in);
+        do{
+            System.out.println("1)ISCRIVITI AD UNA CAMPAGNA SCONTI");
+            System.out.println("2)VISUALIZZA LE TUE CAMPAGNE SCONTI");
+            System.out.println("0)EXIT");
+            System.out.println("Inserisci la tua scelta: ");
+            scelta=scr.nextInt();
+        }while(scelta<0 || scelta>2);
+
+        return scelta;
     }
 
 
