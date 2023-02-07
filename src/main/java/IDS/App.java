@@ -9,6 +9,7 @@ public class App {
         int azioneCliente;
         ClientePiattaforma c;
         Optional<Azienda> aziendaLoggata = Optional.empty();
+        Optional<Customer> clienteLoggato = Optional.empty();
 
         do{
             tipoCliente = Menu.sceltaTipoCliente();
@@ -20,21 +21,21 @@ public class App {
                             switch (azioneCliente){
                                 case 1 ->  System.out.println("lista campagne da scegliere");
                                 case 2 ->   System.out.println("campagne aderite");
+                                case 0 ->   System.out.println("logout");
                             }
                         }while (azioneCliente!=0);
-
                     }else System.out.println("errore");
                 }
                 case 2 -> { //azienda
-                    //switch () {
-                    //    case 1 -> aziendaLoggata = DashBoardAzienda.login(); //login azienda
-                    //    case 2 -> DashBoardAzienda.registrazione(); //registrazione azienda
-                    //}
-                    //if (aziendaLoggata.isEmpty()) break; //se azienda non ha effettuato login esce
-                    //if (m.menuCampagna() == 1) {// TODO: 18/01/2023
-                    //} else {
-                    //    System.out.println("AL PROSSIMO AGGIORNAMENTO");
-                    //}
+                    if(DashBoardAzienda.mainMenu().isPresent()){
+                        if(DashBoardAzienda.menuAdmin().isPresent()){
+                            switch (DashBoardAzienda.menuAzienda()){
+                                case 1 ->  System.out.println("lista campagne da scegliere");
+                                case 2 ->  System.out.println("Work in progress...");
+                                case 0 ->  System.out.println("logout admin");
+                            }
+                        }else System.out.println("errore admin");
+                    }else System.out.println("errore azienda");
                 }
             }
         }while(tipoCliente!=0);

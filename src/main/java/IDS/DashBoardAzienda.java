@@ -2,9 +2,41 @@ package IDS;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class DashBoardAzienda {
+
+
+    private static int sceltaMainMenu(){
+        int scelta;
+        Scanner scr = new Scanner(System.in);
+        do{
+            System.out.println("1)LOGIN");
+            System.out.println("2)REGISTRAZIONE");
+            System.out.println("0)EXIT");
+            System.out.println("Inserisci la tua scelta: ");
+            scelta=scr.nextInt();
+        }while(scelta<0 || scelta>2);
+
+        return scelta;
+    }
+
+    public static Optional<Azienda> mainMenu() throws SQLException {
+        return switch (sceltaMainMenu()) {
+            case 1 -> DbManager.loginAzienda();
+            case 2 -> DbManager.registrazioneAzienda();
+            default -> Optional.empty();
+        };
+    }
+
+    public static Optional<Admin> menuAdmin() {
+        return switch (sceltaMainMenu()) {
+            //case 1 -> DbManager.loginAdmin();
+            //case 2 -> DbManager.registrazioneAdmin();
+            default -> Optional.empty();
+        };
+    }
 
     public void dash(Azienda a) throws SQLException, ParseException {
         int scelta;
@@ -17,7 +49,7 @@ public class DashBoardAzienda {
         }while(scelta!=0);
     }
 
-    private int menuAzienda(){
+    public static int menuAzienda(){
         Scanner s = new Scanner(System.in);
         int n;
         do{

@@ -19,6 +19,7 @@ public class DashBoardCliente {
 
         return scelta;
     }
+
     public static Optional<Customer> mainMenu() throws SQLException {
         return switch (sceltaMainMenu()) {
             case 1 -> DbManager.loginCliente();
@@ -33,7 +34,7 @@ public class DashBoardCliente {
         do{
             System.out.println("1)ISCRIVITI AD UNA CAMPAGNA SCONTI");
             System.out.println("2)VISUALIZZA LE TUE CAMPAGNE SCONTI");
-            System.out.println("0)EXIT");
+            System.out.println("0)LOGOUT");
             System.out.println("Inserisci la tua scelta: ");
             scelta=scr.nextInt();
         }while(scelta<0 || scelta>2);
