@@ -10,25 +10,23 @@ public class App {
         Optional<Azienda> aziendaLoggata = Optional.empty();
         int tipoCliente;
         do{
-            tipoCliente = m.sceltaTipoCliente();
+            tipoCliente=m.sceltaTipoCliente();
             switch (tipoCliente) {
-                case 1: //cliente
-                    DashBoardCliente.menu();
-                    break;
-                case 2: //azienda
+                case 1 -> //cliente
+                        DashBoardCliente.menu();
+                case 2 -> { //azienda
                     switch (m.scelteLog()) {
                         case 1 -> aziendaLoggata = DashBoardAzienda.login(); //login azienda
                         case 2 -> DashBoardAzienda.registrazione(); //registrazione azienda
                     }
-                    if(aziendaLoggata.isEmpty()) break; //se azienda non ha effettuato login esce
-                    switch (m.menuCampagna()) {
-                        case 1:
-                            // TODO: 18/01/2023
-                            break;
-                        default:System.out.println("AL PROSSIMO AGGIORNAMENTO");
+                    if (aziendaLoggata.isEmpty()) break; //se azienda non ha effettuato login esce
+                    if (m.menuCampagna() == 1) {// TODO: 18/01/2023
+                    } else {
+                        System.out.println("AL PROSSIMO AGGIORNAMENTO");
                     }
-                    break;
+                }
             }
-        }while(tipoCliente != 0);
+        }while(tipoCliente!=0);
+
     }
 }
