@@ -1,15 +1,17 @@
 package IDS;
 
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class DashBoardAzienda {
 
-    public void dash(){
+    public void dash(Azienda a) throws SQLException, ParseException {
         int scelta;
         do{
             scelta = menuAzienda();
             switch (scelta){
-                case (1):this.menuCampagna();
+                case (1):this.menuCampagna(a);
                     break;
             }
         }while(scelta!=0);
@@ -28,7 +30,7 @@ public class DashBoardAzienda {
         return n;
     }
 
-    private void menuCampagna() {
+    private void menuCampagna(Azienda a) throws SQLException, ParseException {
         int scelta;
         Scanner s = new Scanner(System.in);
         do{
@@ -42,13 +44,14 @@ public class DashBoardAzienda {
             scelta = s.nextInt();
         }while (scelta<1 || scelta>5);
 
-        this.creaCampagnaScelta(scelta);
+        this.creaCampagnaScelta(scelta,a);
 
     }
 
-    private void creaCampagnaScelta(int scelta){
+    private void creaCampagnaScelta(int scelta,Azienda a) throws SQLException, ParseException {
         switch (scelta){
-            case(1)://campagna punti
+            case(1):
+                DbManager.creaCampagnaPunti(a.getId());
                 break;
             case(2)://campagna livelli
                 break;

@@ -2,9 +2,9 @@ package IDS;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.util.*;
+import java.text.DateFormat;
 
 public class DbManager {
 
@@ -93,8 +93,38 @@ public class DbManager {
         result = DbConnector.executeQuery(queryLogin);
         if(result.next()) return Optional.empty();  //se esiste, non effettuo la registrazione
 
-        DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
+        DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) " +
+                "VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
+
+    public static Optional<CampagnaSconti> creaCampagnaPunti(String azienda) throws SQLException, ParseException {
+        DateFormat formatoData = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
+        Scanner input = new Scanner(System.in);
+        DbConnector.init();
+
+        System.out.println("NOME CAMPAGNA:"); //input dati login
+        String nome = input.next();
+        System.out.println("INSERIRE MASSIMALE:"); //input dati login
+        int maxPunti = Integer.parseInt(input.next());
+        System.out.println("Inserisci la data inizio [gg/mm/yyyy]: ");
+        String  dateIn = input.nextLine();
+        System.out.println("Inserisci la data fine [gg/mm/yyyy]: ");
+        String  dateFin = input.nextLine();
+        Date dIn = formatoData.parse(dateIn);
+        Date dF = formatoData.parse(dateFin);
+
+        if (dIn.getTime()>=dF.getTime()) return Optional.empty();
+        DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`) " +
+                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ formattaData(dIn)+"','"+ formattaData(dF)+"','"+azienda+"' );");
+
+        return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dF, dIn));
+    }
+
+    public static String formattaData(Date d)
+    {
+        return d.getYear() + "/" + d.getMonth() + "/" + d.getDay();
+    }
+
 
 }
