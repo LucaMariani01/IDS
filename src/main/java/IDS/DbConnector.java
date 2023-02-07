@@ -7,6 +7,9 @@ public class DbConnector {
     private static final String url = "jdbc:mysql://127.0.0.1:3306/LoyaltyPlatform";
     private static Connection connection;
 
+    /**
+     * Connection method
+     */
     public static void init() {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             DbConnector.connection = DriverManager.getConnection(url, username, password);
