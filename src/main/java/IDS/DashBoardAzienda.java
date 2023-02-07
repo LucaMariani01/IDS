@@ -78,7 +78,7 @@ public class DashBoardAzienda {
         return n;
     }
 
-    public static Optional<Azienda> login() throws SQLException {
+    public static Optional<Azienda> login() throws SQLException{
         Scanner input = new Scanner(System.in);
         DbConnector.init();
         ResultSet result;

@@ -4,18 +4,22 @@ import java.sql.*;
 public class DbConnector {
     private static final String username = "root";
     private static final String password = "";
-    private static final String url = "jdbc:mysql://127.0.0.1:3306/LoyaltyPlatform";
+    private static final String url = "jdbc:mysql://localhost:3306/loyaltyplatform";
     private static Connection connection;
 
     /**
      * Connection method
      */
-    public static void init() {
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            DbConnector.connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Connected!");
+    public static void init() throws SQLException {
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            //Connection connection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(url, username, password);
+            //DbConnector.connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             throw new IllegalStateException("Not connected", e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

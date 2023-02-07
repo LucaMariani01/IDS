@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 public class DashBoardCliente {
 
-    public static Optional<Customer> menu()
-    {
+    public static Optional<Customer> menu() throws SQLException {
         Menu m = new Menu();
         return switch (m.scelteLog()) {
             case 1 -> logIn();
@@ -18,14 +17,13 @@ public class DashBoardCliente {
         };
     }
 
-    public static Optional<Customer> logIn()
-    {
-        System.out.println("INSERISCI EMAIL :");
-        Scanner s = new Scanner(System.in);
-        String nome = s.next();
+    public static Optional<Customer> logIn() throws SQLException{
+        System.out.println("EMAIL: ");
+        Scanner input = new Scanner(System.in);
+        String nome = input.next();
 
-        System.out.println("INSERIRE PASSWORD");
-        String pass = s.next();
+        System.out.println("PASSWORD: ");
+        String pass = input.next();
 
         DbConnector.init();
         try {
@@ -42,29 +40,28 @@ public class DashBoardCliente {
     }
 
 
-    public static Optional<Customer> registrazione()
-    {
-        System.out.println("INSERISCI EMAIL :");
-        Scanner s = new Scanner(System.in);
-        String email = s.next();
-
-        System.out.println("INSERIRE PASSWORD");
-        String pass = s.next();
-
-        System.out.println("INSERISCI NOME :");
-        String nome = s.next();
-
-        System.out.println("INSERIRE PASSWORD");
-        String cognome = s.next();
-
+    public static Optional<Customer> registrazione() throws SQLException{
+        Scanner input = new Scanner(System.in);
         DbConnector.init();
+
+        System.out.println("NOME: ");
+        String nome = input.next();
+
+        System.out.println("PASSWORD: ");
+        String cognome = input.next();
+
+        System.out.println("EMAIL: ");
+        String email = input.next();
+
+        System.out.println("PASSWORD: ");
+        String pass = input.next();
+
         try {
             DbConnector.insertQuery("INSERT INTO clienti(email,nome,cognome,password) " +
                     "VALUES ("+email+","+nome+","+cognome+","+pass+")");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return Optional.of(new Customer(nome, cognome, email));
     }
 }
