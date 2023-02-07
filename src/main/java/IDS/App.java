@@ -24,9 +24,7 @@ public class App {
                         }while (azioneCliente!=0);
 
                     }else System.out.println("errore");
-                }//cliente
-
-                        //;
+                }
                 case 2 -> { //azienda
                     //switch () {
                     //    case 1 -> aziendaLoggata = DashBoardAzienda.login(); //login azienda
