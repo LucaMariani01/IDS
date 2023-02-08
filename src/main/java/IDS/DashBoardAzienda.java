@@ -92,6 +92,7 @@ public class DashBoardAzienda {
                 DbManager.creaCampagnaCashback(a.getId());
                 break;
             case (4)://membership esclusiva
+                DbManager.creaMembership(a.getId());
                 break;
             case (5)://programma coalizione
         }
