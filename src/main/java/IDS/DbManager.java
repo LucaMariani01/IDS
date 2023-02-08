@@ -164,8 +164,7 @@ public class DbManager {
         return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dF, dIn));
     }
 
-    public static String formattaData(Date d)
-    {
+    public static String formattaData(Date d) {
         return d.getYear() + "/" + d.getMonth() + "/" + d.getDay();
     }
 
