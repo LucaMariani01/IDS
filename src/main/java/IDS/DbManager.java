@@ -141,7 +141,7 @@ public class DbManager {
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
-    public static Optional<CampagnaSconti> creaCampagnaPunti(String azienda) throws SQLException, ParseException {
+    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException, ParseException {
         DateFormat formatoData = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
         Scanner input = new Scanner(System.in);
         DbConnector.init();
@@ -154,8 +154,8 @@ public class DbManager {
         String  dateIn = input.nextLine();
         System.out.println("Inserisci la data fine [gg/mm/yyyy]: ");
         String  dateFin = input.nextLine();
-        Date dIn = formatoData.parse(dateIn);
-        Date dF = formatoData.parse(dateFin);
+        String dIn = formatoData.parse(dateIn);
+        String dF = formatoData.parse(dateFin);
 
         if (dIn.getTime()>=dF.getTime()) return Optional.empty();
         DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`) " +
@@ -164,7 +164,7 @@ public class DbManager {
         return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dF, dIn));
     }
 
-    public static String formattaData(Date d) {
+    public static String formattaData(String d) {
         return d.getYear() + "/" + d.getMonth() + "/" + d.getDay();
     }
 

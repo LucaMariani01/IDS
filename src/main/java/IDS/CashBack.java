@@ -3,14 +3,13 @@ package IDS;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class CashBack extends Campagna{
     private  double  sogliaMinimaCashBack;
     private  double  sogliaMaxCashBack;
     private final ArrayList<Categoria> categorieProdotti;
 
-    public CashBack(int id,String nome, Date dataFine, Date dataInizio, double sogliaMinimaCashBack, double sogliaMaxCashBack) {
+    public CashBack(int id, String nome, String dataFine, String dataInizio, double sogliaMinimaCashBack, double sogliaMaxCashBack) {
         super(id, nome, dataFine, dataInizio);
         if(sogliaMaxCashBack < sogliaMinimaCashBack || sogliaMinimaCashBack < 0 ) throw new IllegalArgumentException();
         this.sogliaMinimaCashBack = sogliaMinimaCashBack;

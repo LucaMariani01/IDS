@@ -1,7 +1,5 @@
 package IDS;
 
-import java.util.Date;
-
 public interface CampagnaSconti {
     /**
      * @return id della campagna sconto
@@ -11,10 +9,10 @@ public interface CampagnaSconti {
     /**
      * @return data inizio campagna sconti
      */
-    public Date getDataInizio();
+    public String getDataInizio();
 
     /**
      * @return data fine della campagna sconti
      */
-    public Date getDataFine();
+    public String getDataFine();
 }

@@ -2,13 +2,12 @@ package IDS;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Membership extends Campagna{
     private final double costo;
     private ArrayList<Premio> catalogoPremi;
 
-    public Membership(int id, Date dataFine, double costo, String nome,  Date dataInizio) {
+    public Membership(int id, String dataFine, double costo, String nome, String dataInizio) {
         super(id,nome, dataFine, dataInizio);
         if (costo <= 0   ) throw new IllegalArgumentException();
         this.costo = costo;

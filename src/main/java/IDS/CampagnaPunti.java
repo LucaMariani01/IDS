@@ -7,7 +7,7 @@ public class CampagnaPunti extends Campagna{
     private final int maxPunti;
     private Map<Premio,Integer> premi;
 
-    public CampagnaPunti(int maxPunti,int id,String nome, Date dataFine,  Date dataInizio) {
+    public CampagnaPunti(int maxPunti, int id, String nome, String dataFine, String dataInizio) {
         super(id,nome,dataFine, dataInizio);
         this.maxPunti = maxPunti;
         this.premi = new HashMap<>();

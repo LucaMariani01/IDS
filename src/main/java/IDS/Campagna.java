@@ -1,14 +1,12 @@
 package IDS;
 
-import java.util.Date;
-
 public abstract class Campagna implements CampagnaSconti {
     private final int id;
     private final String nome;
-    private final Date dataInizio;
-    private final Date dataFine;
+    private final String dataInizio;
+    private final String dataFine;
 
-    public Campagna(int id, String nome, Date dataFine, Date dataInizio) {
+    public Campagna(int id, String nome, String dataFine, String dataInizio) {
         if (id < 0) throw new IllegalArgumentException();
         if (dataFine == null || dataInizio == null) throw new NullPointerException();
         this.id = id;
@@ -23,12 +21,12 @@ public abstract class Campagna implements CampagnaSconti {
     }
 
     @Override
-    public Date getDataInizio() {
+    public String getDataInizio() {
         return dataInizio;
     }
 
     @Override
-    public Date getDataFine() {
+    public String getDataFine() {
         return dataFine;
     }
 }

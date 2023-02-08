@@ -3,13 +3,13 @@ package IDS;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+
 public class ProgrammaLivelli extends Campagna{
 
     private int numeroLivelli;
     private ArrayList<Livello> listaLivelli;
 
-    public ProgrammaLivelli(int id,String nome, Date dataFine,int numeroLivelli, ArrayList<Livello> listaLivelli, Date dataInizio) {
+    public ProgrammaLivelli(int id, String nome, String dataFine, int numeroLivelli, ArrayList<Livello> listaLivelli, String dataInizio) {
         super(id,nome, dataFine, dataInizio);
         if((dataFine.getTime() < dataInizio.getTime()) || (numeroLivelli < 0) || (id < 0)) throw new IllegalArgumentException();
         this.listaLivelli=listaLivelli;
