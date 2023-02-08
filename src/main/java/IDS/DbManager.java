@@ -12,8 +12,6 @@ public class DbManager {
         ResultSet result;
         String codiceFiscale;
 
-        System.out.println("Nome: "); //input dati login
-        String nome = input.next();
         do{
             System.out.println("Codice Fiscale: ");
             codiceFiscale = input.next();
@@ -21,11 +19,11 @@ public class DbManager {
         System.out.println("Password: ");
         String password = input.next();
 
-        String queryLogin = "SELECT * FROM `admin` WHERE `codiceFiscale`='"+codiceFiscale+"' and `password`='"+password+"';";  //verifico che admin sia registrata
+        String queryLogin = "SELECT * FROM `admin` WHERE `codiceFiscale`='"+codiceFiscale+"' and `password`='"+password+"' and `azienda`='"+azienda.getId()+"';";  //verifico che admin sia registrata
         result = DbConnector.executeQuery(queryLogin);
         if(!result.next()) return Optional.empty();  //se admin non è registrato
         DbConnector.closeConnection();
-        return Optional.of(new Admin(codiceFiscale,nome,azienda));
+        return Optional.of(new Admin(codiceFiscale,result.getString("nome"),azienda));
     }
 
     public static Optional<Admin> registrazioneAdmin(Azienda azienda) throws SQLException {
@@ -183,27 +181,27 @@ public class DbManager {
         DbConnector.insertQuery("INSERT INTO `cashback` (`nome`, `dataInizio`,`dataFine`,`sogliaMinima`,`sogliaMassima`,`azienda`,`id`) " +
                 "VALUES ('"+nome+"', '"+dataInizio+"', '"+dataFine+"',"+sogliaMin+","+sogliaMax+",'"+partitaIvaAzienda+"','"+id+"');");
         DbConnector.closeConnection();
-        return Optional.of(new CashBack(id, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
 
+        return Optional.of(new CashBack(id, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
     }
-    public static Optional<CampagnaSconti> creaMembership(String partitaIvaAzienda) throws SQLException
-    {
+
+    public static Optional<CampagnaSconti> creaMembership(String partitaIvaAzienda) throws SQLException {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
         System.out.println("NOME: ");
-        String nome = input.next();
+        String nome = input.nextLine();
 
         int id = partitaIvaAzienda.hashCode() + nome.hashCode();
-
-        System.out.println("Inserisci la data inizio: ");
+        System.out.println("COSTO MEMBERSHIP ESCLUSIVA: ");
+        int costo = input.nextInt();
+        System.out.println("DATA INIZIO: ");
         String  dateIn = inputDataInizioFineCampagna();
-        System.out.println("Inserisci la data fine: ");
+        System.out.println("DATA FINE: ");
         String  dateFin = inputDataInizioFineCampagna();
-        int costo = Integer.parseInt(input.next());
 
         try {
-            DbConnector.insertQuery("INSERT INTO membership(`dateInizio`,`nome`,`dateFine`,`costo`,`azienda`,`id`) " +
+            DbConnector.insertQuery("INSERT INTO membership(`dataInizio`,`nome`,`dataFine`,`costo`,`azienda`,`id`) " +
                     "VALUES ('"+dateIn+"','"+nome+"','"+dateFin+"','"+costo+"','"+partitaIvaAzienda+"','"+id+"');");
         } catch (SQLException e) {
             throw new RuntimeException(e);

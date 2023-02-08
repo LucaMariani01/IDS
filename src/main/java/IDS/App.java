@@ -25,7 +25,7 @@ public class App {
                                 case 0 ->  System.out.println("logout");
                             }
                         }while (azioneCliente!=0);
-                    }else System.out.println("errore");
+                    }
                 }
                 case 2 -> { //azienda
                     aziendaLoggata = DashBoardAzienda.mainMenu();

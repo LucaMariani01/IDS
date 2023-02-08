@@ -7,7 +7,6 @@ public abstract class Campagna implements CampagnaSconti {
     private final String dataFine;
 
     public Campagna(int id, String nome, String dataFine, String dataInizio) {
-        if (id < 0) throw new IllegalArgumentException();
         if (dataFine == null || dataInizio == null) throw new NullPointerException();
         this.id = id;
         this.nome = nome;
