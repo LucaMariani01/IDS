@@ -141,61 +141,33 @@ public class DbManager {
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
-    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException {
+    public static Optional<CampagnaSconti> creaCampagnaPunti(String azienda) throws SQLException, ParseException {
+        DateFormat formatoData = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
-        System.out.println("NOME CAMPAGNA: "); //input dati login
+        System.out.println("NOME CAMPAGNA:"); //input dati login
         String nome = input.next();
-        System.out.println("INSERIRE MASSIMALE: "); //input dati login
+        System.out.println("INSERIRE MASSIMALE:"); //input dati login
         int maxPunti = Integer.parseInt(input.next());
-        System.out.println("Inserisci la data inizio: ");
-        String  dateIn = inputDataInizioFineCampagna();
-        System.out.println("Inserisci la data fine: ");
-        String  dateFin = inputDataInizioFineCampagna();
+        System.out.println("Inserisci la data inizio [gg/mm/yyyy]: ");
+        String  dateIn = input.nextLine();
+        System.out.println("Inserisci la data fine [gg/mm/yyyy]: ");
+        String  dateFin = input.nextLine();
+        Date dIn = formatoData.parse(dateIn);
+        Date dF = formatoData.parse(dateFin);
 
+        if (dIn.getTime()>=dF.getTime()) return Optional.empty();
         DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`) " +
-                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ dateIn+"','"+ dateFin+"','"+azienda+"' );");
+                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ formattaData(dIn)+"','"+ formattaData(dF)+"','"+azienda+"' );");
 
-        return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dateFin, dateIn));
+        return Optional.of(new CampagnaPunti(maxPunti, 0, nome, formattaData(dF), formattaData(dIn)));
     }
 
-
-    private static String inputDataInizioFineCampagna() {
-        Scanner input = new Scanner(System.in);
-        String giorno, mese, anno;
-        System.out.println("Giorno: ");
-        giorno = input.nextLine();
-        System.out.println("Mese: ");
-        mese = input.nextLine();
-        System.out.println("Anno: ");
-        anno = input.nextLine();
-        return anno + "-" + mese + "-" + giorno;
+    public static String formattaData(Date d)
+    {
+        return d.getYear() + "/" + d.getMonth() + "/" + d.getDay();
     }
-
-
-    public static Optional<CampagnaSconti> creaCampagnaCashback(String partitaIvaAzienda) throws SQLException {
-        Scanner input = new Scanner(System.in);
-        DbConnector.init();
-
-        System.out.println("NOME CAMPAGNA CASHBACK: ");
-        String nome = input.next();
-        System.out.println("SOGLIA MINIMA: ");
-        int sogliaMin = input.nextInt();
-        System.out.println("SOGLIA MASSIMA: ");
-        int sogliaMax = input.nextInt();
-        System.out.println("DATA INIZIO");
-        String dataInizio = inputDataInizioFineCampagna();
-        System.out.println("DATA FINE");
-        String dataFine = inputDataInizioFineCampagna();
-
-        DbConnector.insertQuery("INSERT INTO `cashback` (`nome`, `dataInizio`,`dataFine`,`sogliaMinima`,`sogliaMassima`,`azienda`) " +
-                "VALUES ('"+nome+"', '"+dataInizio+"', '"+dataFine+"',"+sogliaMin+","+sogliaMax+",'"+partitaIvaAzienda+"');");
-
-        return Optional.of(new CashBack(0, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
-
-    }
-
 
 
 }
