@@ -103,7 +103,7 @@ public class DbManager {
 
         System.out.println("Partita IVA:"); //input dati login
         String partitaIva = input.next();
-        System.out.println("Password:");
+        System.out.println("Password: ");
         String password = input.next();
 
         String queryLogin = "SELECT * FROM `aziende` WHERE `partitaIva`='"+partitaIva+"' and `password`='"+password+"';";  //verifico che azienda sia registrata
