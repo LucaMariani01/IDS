@@ -32,12 +32,12 @@ public class App {
                     if(aziendaLoggata.isPresent()){
                         if(DashBoardAzienda.menuAdmin(aziendaLoggata.get()).isPresent()){
                             switch (DashBoardAzienda.menuAzienda()){
-                                case 1 ->  System.out.println("lista campagne da scegliere");
+                                case 1 ->  DashBoardAzienda.menuCampagna(aziendaLoggata.get());
                                 case 2 ->  System.out.println("Work in progress...");
                                 case 0 ->  System.out.println("logout admin");
                             }
                         }else System.out.println("errore admin");
-                    }else System.out.println("errore azienda");
+                    }
                 }
             }
         }while(tipoCliente!=0);

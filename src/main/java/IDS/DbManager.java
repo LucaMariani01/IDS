@@ -46,7 +46,7 @@ public class DbManager {
         result = DbConnector.executeQuery(queryLogin);
         if(result.next()) return Optional.empty();  //se esiste, non effettuo la registrazione
 
-        DbConnector.insertQuery("INSERT INTO `admin` (`nome`, `codiceFiscale`, `password`) VALUES ('"+nome+"', '"+codiceFiscale+"', '"+password+"');");
+        DbConnector.insertQuery("INSERT INTO `admin` (`codiceFiscale`, `nome`, `password`, `azienda`) VALUES ('"+codiceFiscale+"','"+nome+"', '"+password+"','"+azienda.getId()+"');");
         return Optional.of(new Admin(codiceFiscale,nome,azienda));
     }
 
@@ -112,7 +112,7 @@ public class DbManager {
 
         Azienda azienda = new Azienda(result.getString("nome"),result.getString("partitaIva"),new ArrayList<>());
 
-        result = DbConnector.executeQuery("SELECT * FROM `admin` WHERE `Azienda`='"+partitaIva+"';");
+        result = DbConnector.executeQuery("SELECT * FROM `admin` WHERE `azienda`='"+partitaIva+"';");
         while(result.next()){
             admin = new Admin(result.getString("codiceFiscale"),result.getString("nome"),azienda);
             azienda.addAdmin(admin);

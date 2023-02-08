@@ -22,10 +22,11 @@ public class Azienda extends myCliente{
         return listaAdmin;
     }
     
-    public boolean addAdmin(Admin newAdmin) throws SQLException {
-        String insertAdminQuery = "INSERT INTO `admin` (`codiceFiscale`, `nome`, `Azienda`) VALUES ('"+newAdmin.getCodiceFiscale()+"', '"+newAdmin.getNome()+"', '"+newAdmin.getAziendaAppartenenza()+"');";
+    public void addAdmin(Admin newAdmin) {
+        /*String insertAdminQuery = "INSERT INTO `admin` (`codiceFiscale`, `nome`, `azienda`, `password`) VALUES ('"+newAdmin.getCodiceFiscale()+"', '"+newAdmin.getNome()+"', '"+newAdmin.getAziendaAppartenenza()+"','"+newAdmin.()+"');";
         DbConnector.init();
         DbConnector.insertQuery(insertAdminQuery);
-        return true;
+        return true;*/
+        this.listaAdmin.add(newAdmin);
     }
 }

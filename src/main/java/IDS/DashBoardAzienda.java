@@ -14,7 +14,7 @@ public class DashBoardAzienda {
         do{
             System.out.println("1)LOGIN");
             System.out.println("2)REGISTRAZIONE");
-            System.out.println("0)EXIT");
+            System.out.println("0)ESCI");
             System.out.println("Inserisci la tua scelta: ");
             scelta=scr.nextInt();
         }while(scelta<0 || scelta>2);
@@ -23,6 +23,7 @@ public class DashBoardAzienda {
     }
 
     public static Optional<Azienda> mainMenu() throws SQLException {
+        System.out.println("\nMENU AZIENDA");
         return switch (sceltaMainMenu()) {
             case 1 -> DbManager.loginAzienda();
             case 2 -> DbManager.registrazioneAzienda();
@@ -31,6 +32,7 @@ public class DashBoardAzienda {
     }
 
     public static Optional<Admin> menuAdmin(Azienda azienda) throws SQLException {
+        System.out.println("\nMENU ADMIN");
          return switch (sceltaMainMenu()) {
             case 1 -> DbManager.loginAdmin(azienda);
             case 2 -> DbManager.registrazioneAdmin(azienda);
@@ -61,7 +63,7 @@ public class DashBoardAzienda {
         return n;
     }
 
-    private void menuCampagna(Azienda a) throws SQLException, ParseException {
+    public static void menuCampagna(Azienda a) throws SQLException {
         int scelta;
         Scanner s = new Scanner(System.in);
         do{
@@ -75,11 +77,10 @@ public class DashBoardAzienda {
             scelta = s.nextInt();
         }while (scelta<1 || scelta>5);
 
-        this.creaCampagnaScelta(scelta,a);
-
+        creaCampagnaScelta(scelta,a);
     }
 
-    private void creaCampagnaScelta(int scelta,Azienda a) throws SQLException, ParseException {
+    public static void creaCampagnaScelta(int scelta,Azienda a) throws SQLException{
         switch (scelta){
             case(1):
                 if(DbManager.creaCampagnaPunti(a.getId()).isPresent()) System.out.println("CAMPAGNA CREATA CON SUCCESSO");
