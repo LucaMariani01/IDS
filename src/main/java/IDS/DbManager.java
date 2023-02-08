@@ -162,6 +162,7 @@ public class DbManager {
 
 
     private static String inputDataInizioFineCampagna() {
+        //usato per fare input delle date
         Scanner input = new Scanner(System.in);
         String giorno, mese, anno;
         System.out.println("Inserisci il giorno: ");
