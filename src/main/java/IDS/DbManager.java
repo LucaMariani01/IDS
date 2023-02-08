@@ -184,7 +184,7 @@ public class DbManager {
         return Optional.of(new CashBack(0, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
 
     }
-    public static Optional<CampagnaSconti> creaMemebership(String partitaIvaAzienda) throws SQLException
+    public static Optional<CampagnaSconti> creaMembership(String partitaIvaAzienda) throws SQLException
     {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
