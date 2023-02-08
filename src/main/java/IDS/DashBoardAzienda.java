@@ -87,6 +87,7 @@ public class DashBoardAzienda {
             case(2)://campagna livelli
                 break;
             case (3): //campagna cashback
+                DbManager.creaCampagnaCashback(a.getId());
                 break;
             case (4)://membership esclusiva
                 break;
