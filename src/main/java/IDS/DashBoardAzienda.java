@@ -82,7 +82,8 @@ public class DashBoardAzienda {
     private void creaCampagnaScelta(int scelta,Azienda a) throws SQLException, ParseException {
         switch (scelta){
             case(1):
-                DbManager.creaCampagnaPunti(a.getId());
+                if(DbManager.creaCampagnaPunti(a.getId()).isPresent()) System.out.println("CAMPAGNA CREATA CON SUCCESSO");
+                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA");
                 break;
             case(2)://campagna livelli
                 break;
