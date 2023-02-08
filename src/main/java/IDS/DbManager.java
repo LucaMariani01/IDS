@@ -157,7 +157,7 @@ public class DbManager {
         System.out.println("Inserisci la data fine: ");
         String  dateFin = inputDataInizioFineCampagna();
 
-        DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`,,`id`) " +
+        DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`,`id`) " +
                 "VALUES ('"+nome+"', '"+maxPunti+"', '"+ dateIn+"','"+ dateFin+"','"+azienda+"','"+id+"' );");
         DbConnector.closeConnection();
         return Optional.of(new CampagnaPunti(maxPunti, id, nome, dateFin, dateIn));
@@ -203,7 +203,7 @@ public class DbManager {
         int costo = Integer.parseInt(input.next());
 
         try {
-            DbConnector.insertQuery("INSERT INTO membership(`dateIn`,`nome`,`dateFin`,`costo`,`azienda`,`id`) " +
+            DbConnector.insertQuery("INSERT INTO membership(`dateInizio`,`nome`,`dateFine`,`costo`,`azienda`,`id`) " +
                     "VALUES ('"+dateIn+"','"+nome+"','"+dateFin+"','"+costo+"','"+partitaIvaAzienda+"','"+id+"');");
         } catch (SQLException e) {
             throw new RuntimeException(e);
