@@ -141,7 +141,8 @@ public class DbManager {
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
-    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException {
+    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException, ParseException {
+        DateFormat formatoData = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
@@ -149,15 +150,22 @@ public class DbManager {
         String nome = input.next();
         System.out.println("INSERIRE MASSIMALE: "); //input dati login
         int maxPunti = Integer.parseInt(input.next());
-        System.out.println("Inserisci la data inizio: ");
-        String  dateIn = inputDataInizioFineCampagna();
-        System.out.println("Inserisci la data fine: ");
-        String  dateFin = inputDataInizioFineCampagna();
+        System.out.println("Inserisci la data inizio [gg/mm/yyyy]: ");
+        String  dateIn = input.nextLine();
+        System.out.println("Inserisci la data fine [gg/mm/yyyy]: ");
+        String  dateFin = input.nextLine();
+        String dIn = formatoData.parse(dateIn);
+        String dF = formatoData.parse(dateFin);
 
+        if (dIn.getTime()>=dF.getTime()) return Optional.empty();
         DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`) " +
-                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ dateIn+"','"+ dateFin+"','"+azienda+"' );");
+                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ formattaData(dIn)+"','"+ formattaData(dF)+"','"+azienda+"' );");
 
-        return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dateFin, dateIn));
+        return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dF, dIn));
+    }
+
+    public static String formattaData(String d) {
+        return d.getYear() + "/" + d.getMonth() + "/" + d.getDay();
     }
 
 
