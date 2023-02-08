@@ -182,7 +182,31 @@ public class DbManager {
         return Optional.of(new CashBack(0, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
 
     }
+    public static Optional<CampagnaSconti> creaMemebership(String partitaIvaAzienda) throws SQLException
+    {
+        Scanner input = new Scanner(System.in);
+        DbConnector.init();
 
+        System.out.println("NOME: ");
+        String nome = input.next();
+        System.out.println("ID: ");
+        int id = Integer.parseInt(input.next());
+
+        System.out.println("Inserisci la data inizio: ");
+        String  dateIn = inputDataInizioFineCampagna();
+        System.out.println("Inserisci la data fine: ");
+        String  dateFin = inputDataInizioFineCampagna();
+        int costo = Integer.parseInt(input.next());
+
+        try {
+            DbConnector.insertQuery("INSERT INTO membership(`dateIn`,`nome`,`dateFin`,`costo`,`azienda`,`id`) " +
+                    "VALUES ('"+dateIn+"','"+nome+"','"+dateFin+"','"+costo+"','"+partitaIvaAzienda+"','"+id+"');");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        DbConnector.closeConnection();
+        return Optional.of(new Membership(id,dateFin, costo,  nome,dateIn));
+    }
 
     private static String inputDataInizioFineCampagna() {
         Scanner input = new Scanner(System.in);
