@@ -141,8 +141,7 @@ public class DbManager {
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
-    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException, ParseException {
-        DateFormat formatoData = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
+    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
@@ -150,27 +149,19 @@ public class DbManager {
         String nome = input.next();
         System.out.println("INSERIRE MASSIMALE: "); //input dati login
         int maxPunti = Integer.parseInt(input.next());
-        System.out.println("Inserisci la data inizio [gg/mm/yyyy]: ");
-        String  dateIn = input.nextLine();
-        System.out.println("Inserisci la data fine [gg/mm/yyyy]: ");
-        String  dateFin = input.nextLine();
-        String dIn = formatoData.parse(dateIn);
-        String dF = formatoData.parse(dateFin);
+        System.out.println("Inserisci la data inizio: ");
+        String  dateIn = inputDataInizioFineCampagna();
+        System.out.println("Inserisci la data fine: ");
+        String  dateFin = inputDataInizioFineCampagna();
 
-        if (dIn.getTime()>=dF.getTime()) return Optional.empty();
         DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`) " +
-                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ formattaData(dIn)+"','"+ formattaData(dF)+"','"+azienda+"' );");
+                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ dateIn+"','"+ dateFin+"','"+azienda+"' );");
 
-        return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dF, dIn));
-    }
-
-    public static String formattaData(String d) {
-        return d.getYear() + "/" + d.getMonth() + "/" + d.getDay();
+        return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dateFin, dateIn));
     }
 
 
     private static String inputDataInizioFineCampagna() {
-        //usato per fare input delle date
         Scanner input = new Scanner(System.in);
         String giorno, mese, anno;
         System.out.println("Inserisci il giorno: ");
@@ -181,5 +172,6 @@ public class DbManager {
         anno = input.nextLine();
         return anno + "-" + mese + "-" + giorno;
     }
+
 
 }
