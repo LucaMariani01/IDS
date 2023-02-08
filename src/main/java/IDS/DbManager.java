@@ -170,7 +170,6 @@ public class DbManager {
         mese = input.nextLine();
         System.out.println("Inserisci l'anno: ");
         anno = input.nextLine();
-
         return anno + "-" + mese + "-" + giorno;
     }
 
