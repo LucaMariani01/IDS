@@ -21,8 +21,8 @@ public class App {
                             azioneCliente = DashBoardCliente.sceltaAzioniUtente();
                             switch (azioneCliente){
                                 case 1 ->  System.out.println("lista campagne da scegliere");
-                                case 2 ->   System.out.println("campagne aderite");
-                                case 0 ->   System.out.println("logout");
+                                case 2 ->  System.out.println("campagne aderite");
+                                case 0 ->  System.out.println("logout");
                             }
                         }while (azioneCliente!=0);
                     }else System.out.println("errore");

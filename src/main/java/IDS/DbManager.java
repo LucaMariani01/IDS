@@ -146,9 +146,9 @@ public class DbManager {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
-        System.out.println("NOME CAMPAGNA:"); //input dati login
+        System.out.println("NOME CAMPAGNA: "); //input dati login
         String nome = input.next();
-        System.out.println("INSERIRE MASSIMALE:"); //input dati login
+        System.out.println("INSERIRE MASSIMALE: "); //input dati login
         int maxPunti = Integer.parseInt(input.next());
         System.out.println("Inserisci la data inizio [gg/mm/yyyy]: ");
         String  dateIn = input.nextLine();
@@ -168,6 +168,8 @@ public class DbManager {
     {
         return d.getYear() + "/" + d.getMonth() + "/" + d.getDay();
     }
+
+
 
 
 }

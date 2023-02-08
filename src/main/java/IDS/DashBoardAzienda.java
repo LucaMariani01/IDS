@@ -56,7 +56,6 @@ public class DashBoardAzienda {
             System.out.println("1)CREA NUOVA CAMPAGNA ");
             System.out.println("2)...");
             System.out.println("0)ESCI");
-
             n = s.nextInt();
         }while ((n<0)||(n>2)) ;
         return n;
