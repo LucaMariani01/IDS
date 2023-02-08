@@ -2,9 +2,7 @@ package IDS;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.*;
-import java.text.DateFormat;
 
 public class DbManager {
 
@@ -26,7 +24,7 @@ public class DbManager {
         String queryLogin = "SELECT * FROM `admin` WHERE `codiceFiscale`='"+codiceFiscale+"' and `password`='"+password+"';";  //verifico che admin sia registrata
         result = DbConnector.executeQuery(queryLogin);
         if(!result.next()) return Optional.empty();  //se admin non è registrato
-
+        DbConnector.closeConnection();
         return Optional.of(new Admin(codiceFiscale,nome,azienda));
     }
 
@@ -47,6 +45,7 @@ public class DbManager {
         if(result.next()) return Optional.empty();  //se esiste, non effettuo la registrazione
 
         DbConnector.insertQuery("INSERT INTO `admin` (`codiceFiscale`, `nome`, `password`, `azienda`) VALUES ('"+codiceFiscale+"','"+nome+"', '"+password+"','"+azienda.getId()+"');");
+        DbConnector.closeConnection();
         return Optional.of(new Admin(codiceFiscale,nome,azienda));
     }
 
@@ -68,6 +67,7 @@ public class DbManager {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        DbConnector.closeConnection();
         return Optional.empty();
     }
 
@@ -117,6 +117,7 @@ public class DbManager {
             admin = new Admin(result.getString("codiceFiscale"),result.getString("nome"),azienda);
             azienda.addAdmin(admin);
         }
+        DbConnector.closeConnection();
         return Optional.of(azienda);
     }
 
@@ -138,6 +139,7 @@ public class DbManager {
 
         DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) " +
                 "VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
+        DbConnector.closeConnection();
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
@@ -156,7 +158,7 @@ public class DbManager {
 
         DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`) " +
                 "VALUES ('"+nome+"', '"+maxPunti+"', '"+ dateIn+"','"+ dateFin+"','"+azienda+"' );");
-
+        DbConnector.closeConnection();
         return Optional.of(new CampagnaPunti(maxPunti, 0, nome, dateFin, dateIn));
     }
 
@@ -178,7 +180,7 @@ public class DbManager {
 
         DbConnector.insertQuery("INSERT INTO `cashback` (`nome`, `dataInizio`,`dataFine`,`sogliaMinima`,`sogliaMassima`,`azienda`) " +
                 "VALUES ('"+nome+"', '"+dataInizio+"', '"+dataFine+"',"+sogliaMin+","+sogliaMax+",'"+partitaIvaAzienda+"');");
-
+        DbConnector.closeConnection();
         return Optional.of(new CashBack(0, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
 
     }
