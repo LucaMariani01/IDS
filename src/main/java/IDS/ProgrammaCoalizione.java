@@ -9,7 +9,6 @@ public class ProgrammaCoalizione extends Campagna{
 
     public ProgrammaCoalizione(int id, String nome, String dataFine, CampagnaSconti campagnaScelta, String dataInizio) {
         super(id,nome, dataFine,dataInizio);
-        if(dataFine.getTime() < dataInizio.getTime()) throw new IllegalArgumentException();
         this.campagnaScelta = campagnaScelta;
     }
 
