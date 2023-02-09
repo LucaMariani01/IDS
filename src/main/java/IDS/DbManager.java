@@ -22,8 +22,9 @@ public class DbManager {
         String queryLogin = "SELECT * FROM `admin` WHERE `codiceFiscale`='"+codiceFiscale+"' and `password`='"+password+"' and `azienda`='"+azienda.getId()+"';";  //verifico che admin sia registrata
         result = DbConnector.executeQuery(queryLogin);
         if(!result.next()) return Optional.empty();  //se admin non è registrato
+        String nome = result.getString("nome");
         DbConnector.closeConnection();
-        return Optional.of(new Admin(codiceFiscale,result.getString("nome"),azienda));
+        return Optional.of(new Admin(codiceFiscale,nome,azienda));
     }
 
     public static Optional<Admin> registrazioneAdmin(Azienda azienda) throws SQLException {
@@ -220,6 +221,69 @@ public class DbManager {
         System.out.println("Anno: ");
         anno = input.nextLine();
         return anno + "-" + mese + "-" + giorno;
+    }
+
+    public static Optional<CampagnaSconti> creaCampagnaLivelli(String partitaIvaAzienda) throws SQLException{
+        Scanner input = new Scanner(System.in);
+        ArrayList<myLivello<MyPremio>> listaLivelli = new ArrayList<>();
+        ArrayList<MyPremio> listaPremi = new ArrayList<>();
+        DbConnector.init();
+
+
+        System.out.println("NOME CAMPAGNA: "); //input dati login
+        String nome = input.nextLine();
+        int idCampagna = partitaIvaAzienda.hashCode() + nome.hashCode();
+        System.out.println("INSERIRE NUMERO LIVELLI: "); //input dati login
+        int numLivelli = input.nextInt();
+        System.out.println("Inserisci la data inizio: ");
+        String  dateIn = inputDataInizioFineCampagna();
+        System.out.println("Inserisci la data fine: ");
+        String  dateFin = inputDataInizioFineCampagna();
+
+        DbConnector.insertQuery("INSERT INTO `campagnelivello` (`id`,`nome`, `numLivelli`, `dataInizio`,`dataFine`,`azienda`) " +
+                "VALUES ('"+idCampagna+"','"+nome+"', '"+numLivelli+"', '"+ dateIn+"','"+ dateFin+"','"+partitaIvaAzienda+"' );");
+
+        String nomeLivello;
+        double requisiti;
+        int numeroLivello;
+        for(int i = 0 ; i < numLivelli; i++){
+            System.out.println("Inserisci il nome del livello: ");
+            nomeLivello = input.next();
+            System.out.println("Inserisci la requisito Entrata: ");
+            requisiti = input.nextDouble();
+            numeroLivello = (i+1);
+            int idLivello = nomeLivello.hashCode() + Integer.hashCode(idCampagna);
+            listaPremi.addAll(getPremi(idLivello));
+
+            listaLivelli.add(new myLivello<>(numeroLivello,nomeLivello,listaPremi,requisiti));
+
+            DbConnector.insertQuery("INSERT INTO `livelli`(`id`, `numLivello`, `campagnaLivello`, `nome`, `requisitoEntrata`)"+
+                    "VALUES ('"+idLivello+"','"+numeroLivello+"','"+idCampagna+"','"+nomeLivello+"','"+requisiti+"');");
+
+            for (MyPremio myPremio : listaPremi) {
+                DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioLivello`) VALUES" +
+                        " ('"+myPremio.getCod()+"','"+myPremio.getNome()+"','"+idLivello+"');");
+            }
+        }
+        return Optional.of(new ProgrammaLivelli<>(idCampagna,nome,dateFin ,numLivelli, listaLivelli,dateIn));
+    }
+
+    static ArrayList<MyPremio> getPremi(int idLivello){
+        Scanner input = new Scanner(System.in);
+        ArrayList<MyPremio> listaPremi = new ArrayList<>();
+        String continua = "s";
+        String nomePremio;
+        System.out.println("aggiunta premi per livello");
+        while(continua.compareToIgnoreCase("s") == 0){
+            System.out.println("inserisci il premio");
+            nomePremio = input.nextLine();
+            int codPremio = Integer.hashCode(idLivello) + nomePremio.hashCode() ;
+            listaPremi.add(new MyPremio(codPremio, nomePremio));
+            System.out.println("Vuoi inserire un nuovo premio? (s/n)");
+            continua = input.nextLine();
+        }
+
+        return listaPremi;
     }
 
 }

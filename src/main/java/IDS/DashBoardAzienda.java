@@ -40,7 +40,7 @@ public class DashBoardAzienda {
         };
     }
 
-    public void dash(Azienda a) throws SQLException, ParseException {
+    public void dash(Azienda a) throws SQLException {
         int scelta;
         do{
             scelta = menuAzienda();
@@ -87,6 +87,8 @@ public class DashBoardAzienda {
                 else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA");
                 break;
             case(2)://campagna livelli
+                if(DbManager.creaCampagnaLivelli(a.getId()).isPresent())System.out.println("CAMPAGNA CREATA CON SUCCESSO");
+                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA");
                 break;
             case (3): //campagna cashback
                 DbManager.creaCampagnaCashback(a.getId());

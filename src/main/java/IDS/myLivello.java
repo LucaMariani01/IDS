@@ -2,13 +2,13 @@ package IDS;
 
 import java.util.ArrayList;
 
-public class myLivello implements Livello{
+public class myLivello<P extends Premio> implements Livello<P>{
     private final int numero;
     private final String nome;
-    private final ArrayList<Premio> catalogoPremi;
+    private final ArrayList<P> catalogoPremi;
     private final double requisitoEntrata;
 
-    public myLivello(int numero, String nome, ArrayList<Premio> catalogoPremi, double requisitoEntrata) {
+    public myLivello(int numero, String nome, ArrayList<P> catalogoPremi, double requisitoEntrata) {
         if((numero < 0) || (requisitoEntrata < 0)) throw new IllegalArgumentException();
         this.numero = numero;
         this.nome = nome;
@@ -27,7 +27,7 @@ public class myLivello implements Livello{
     }
 
     @Override
-    public ArrayList<Premio> catalogoPremi() {
+    public ArrayList<P> catalogoPremi() {
         return this.catalogoPremi;
     }
 
