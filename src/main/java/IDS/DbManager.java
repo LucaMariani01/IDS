@@ -229,41 +229,39 @@ public class DbManager {
         ArrayList<MyPremio> listaPremi = new ArrayList<>();
         DbConnector.init();
 
-
         System.out.println("NOME CAMPAGNA: "); //input dati login
         String nome = input.nextLine();
         int idCampagna = partitaIvaAzienda.hashCode() + nome.hashCode();
-        System.out.println("INSERIRE NUMERO LIVELLI: "); //input dati login
+        System.out.println("NUMERO LIVELLI: "); //input dati login
         int numLivelli = input.nextInt();
-        System.out.println("Inserisci la data inizio: ");
+        System.out.println("DATA INIZIO: ");
         String  dateIn = inputDataInizioFineCampagna();
-        System.out.println("Inserisci la data fine: ");
+        System.out.println("DATA FINE: ");
         String  dateFin = inputDataInizioFineCampagna();
 
         DbConnector.insertQuery("INSERT INTO `campagnelivello` (`id`,`nome`, `numLivelli`, `dataInizio`,`dataFine`,`azienda`) " +
                 "VALUES ('"+idCampagna+"','"+nome+"', '"+numLivelli+"', '"+ dateIn+"','"+ dateFin+"','"+partitaIvaAzienda+"' );");
 
-        String nomeLivello;
-        double requisiti;
-        int numeroLivello;
         for(int i = 0 ; i < numLivelli; i++){
-            System.out.println("Inserisci il nome del livello: ");
-            nomeLivello = input.next();
-            System.out.println("Inserisci la requisito Entrata: ");
-            requisiti = input.nextDouble();
-            numeroLivello = (i+1);
-            int idLivello = nomeLivello.hashCode() + Integer.hashCode(idCampagna);
-            listaPremi.addAll(getPremi(idLivello));
+            System.out.println("NOME LIVELLO: ");
+            String nomeLivello = input.next();
+            System.out.println("SPESA MINIMA NECESSARIA: ");
+            double requisito = input.nextDouble();
 
-            listaLivelli.add(new myLivello<>(numeroLivello,nomeLivello,listaPremi,requisiti));
+            int idLivello = nomeLivello.hashCode() + Integer.hashCode(idCampagna); //hash tra partita iva e nome livello
+            listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
 
+            listaLivelli.add(new myLivello<>((i+1),nomeLivello,listaPremi,requisito));
+
+            //aggiunta livello al db
             DbConnector.insertQuery("INSERT INTO `livelli`(`id`, `numLivello`, `campagnaLivello`, `nome`, `requisitoEntrata`)"+
-                    "VALUES ('"+idLivello+"','"+numeroLivello+"','"+idCampagna+"','"+nomeLivello+"','"+requisiti+"');");
+                    "VALUES ('"+idLivello+"','"+(i+1)+"','"+idCampagna+"','"+nomeLivello+"','"+requisito+"');");
 
-            for (MyPremio myPremio : listaPremi) {
+            for (MyPremio myPremio : listaPremi) {  //aggiunta premi al livello corrispondente al db
                 DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioLivello`) VALUES" +
                         " ('"+myPremio.getCod()+"','"+myPremio.getNome()+"','"+idLivello+"');");
             }
+            listaPremi.clear();
         }
         return Optional.of(new ProgrammaLivelli<>(idCampagna,nome,dateFin ,numLivelli, listaLivelli,dateIn));
     }
@@ -272,17 +270,15 @@ public class DbManager {
         Scanner input = new Scanner(System.in);
         ArrayList<MyPremio> listaPremi = new ArrayList<>();
         String continua = "s";
-        String nomePremio;
-        System.out.println("aggiunta premi per livello");
+        System.out.println("AGGIUNTA PREMI PER LIVELLO APPENA CREATO");
         while(continua.compareToIgnoreCase("s") == 0){
-            System.out.println("inserisci il premio");
-            nomePremio = input.nextLine();
-            int codPremio = Integer.hashCode(idLivello) + nomePremio.hashCode() ;
+            System.out.println("NOME PREMIO");
+            String nomePremio = input.nextLine();
+            int codPremio = Integer.hashCode(idLivello) + nomePremio.hashCode();  //codice premio è hash code tra id livello e nome premio
             listaPremi.add(new MyPremio(codPremio, nomePremio));
             System.out.println("Vuoi inserire un nuovo premio? (s/n)");
             continua = input.nextLine();
         }
-
         return listaPremi;
     }
 
