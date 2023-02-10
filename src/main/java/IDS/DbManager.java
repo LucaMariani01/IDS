@@ -285,6 +285,10 @@ public class DbManager {
         return Optional.of(new ProgrammaLivelli<>(idCampagna,nome,dateFin ,numLivelli, listaLivelli,dateIn));
     }
 
+    private void prova(){
+        System.out.println("ciao");
+    }
+
     /**
      * Verifica se si sta cercando di inserire un premio duplicato per il livello corrente
      * @param listaPremi è la lista dei premi del livello corrente
