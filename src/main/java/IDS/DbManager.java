@@ -301,6 +301,11 @@ public class DbManager {
         return false;
     }
 
+    /**
+     * Aggiunge premi alla campagna
+     * @param idLivello livello dei premi
+     * @return lista dei premi
+     */
     static ArrayList<MyPremio> getPremi(int idLivello){
         Scanner input = new Scanner(System.in);
         ArrayList<MyPremio> listaPremi = new ArrayList<>();
