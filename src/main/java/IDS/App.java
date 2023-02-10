@@ -20,7 +20,7 @@ public class App {
                         do{
                             azioneCliente = DashBoardCliente.sceltaAzioniUtente();
                             switch (azioneCliente){
-                                case 1 ->  System.out.println("lista campagne da scegliere");
+                                case 1 ->  DbManager.sceltaAziendaCampagneDisponibili(clienteLoggato.get());
                                 case 2 ->  System.out.println("campagne aderite");
                                 case 0 ->  System.out.println("logout");
                             }

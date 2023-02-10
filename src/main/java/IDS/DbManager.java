@@ -58,22 +58,23 @@ public class DbManager {
     public static Optional<Customer> loginCliente() throws SQLException {
         System.out.println("EMAIL: ");
         Scanner input = new Scanner(System.in);
+        ResultSet result;
         String nome = input.next();
 
         System.out.println("PASSWORD: ");
         String pass = input.next();
 
         DbConnector.init();
-        try {
-            if(DbConnector.executeQuery("SELECT * FROM `clienti` WHERE `email` = '"+nome+"' and `password` = '"+pass+"';").next()){
-                ResultSet r =  DbConnector.executeQuery("SELECT * FROM `clienti` WHERE `email` = '"+nome+"' and `password` = "+pass+"';");
-                return Optional.of(new Customer(r.getNString("nome"), r.getNString("cognome"), r.getNString("email")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        String queryLogin = "SELECT * FROM `clienti` WHERE `email` = '"+nome+"' AND `password` = '"+pass+"';";
+        result = DbConnector.executeQuery(queryLogin);
+        String nomeUtente = result.getString("nome");
+        String cognomeUtente =  result.getString("cognome");
+        String emailUtente =  result.getString("email");
         DbConnector.closeConnection();
-        return Optional.empty();
+        if(!result.next()) return Optional.empty();
+        return Optional.of(new Customer(nomeUtente,cognomeUtente,emailUtente));
+
     }
 
     public static Optional<Customer> registrazioneCliente() throws SQLException{
@@ -371,7 +372,6 @@ public class DbManager {
         return true;
 
     }
-
 
     public static void sceltaAziendaCampagneDisponibili(Customer cliente)throws SQLException{
         DbConnector.init();
