@@ -267,7 +267,10 @@ public class DbManager {
 
             do {
                 sqlError = false;
-                listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
+                do {
+                    listaPremi.clear();
+                    listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
+                }while(premioPresente(listaPremi)); //verifico che i premi per questo livello non siano duplicati
                 listaLivelli.add(new myLivello<>((i + 1), nomeLivello, listaPremi, requisito));
                 for (MyPremio myPremio : listaPremi){ //aggiunta premi al livello corrispondente al db
                     try {
@@ -280,6 +283,22 @@ public class DbManager {
             }while(sqlError);
         }
         return Optional.of(new ProgrammaLivelli<>(idCampagna,nome,dateFin ,numLivelli, listaLivelli,dateIn));
+    }
+
+    /**
+     * Verifica se si sta cercando di inserire un premio duplicato per il livello corrente
+     * @param listaPremi è la lista dei premi del livello corrente
+     * @return true se uno dei premi è già presente in questo livello
+     */
+    private static boolean premioPresente(ArrayList<MyPremio> listaPremi) {
+        for(int i = 0 ; i < listaPremi.size() ; i ++) {
+            MyPremio premio = listaPremi.get(i);
+            for (MyPremio premioAttuale : listaPremi) {
+                if(listaPremi.indexOf(premioAttuale) != i)
+                    if(premio.getNome().compareTo(premioAttuale.getNome())==0) return true;
+            }
+        }
+        return false;
     }
 
     static ArrayList<MyPremio> getPremi(int idLivello){
