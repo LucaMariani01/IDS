@@ -228,40 +228,56 @@ public class DbManager {
         ArrayList<myLivello<MyPremio>> listaLivelli = new ArrayList<>();
         ArrayList<MyPremio> listaPremi = new ArrayList<>();
         DbConnector.init();
+        int idCampagna=0,idLivello=0,numLivelli=0;
+        double requisito=0;
+        String dateFin="", dateIn="",nome="",nomeLivello="";
+        boolean sqlError = false;
 
-        System.out.println("NOME CAMPAGNA: "); //input dati login
-        String nome = input.nextLine();
-        int idCampagna = partitaIvaAzienda.hashCode() + nome.hashCode();
-        System.out.println("NUMERO LIVELLI: "); //input dati login
-        int numLivelli = input.nextInt();
-        System.out.println("DATA INIZIO: ");
-        String  dateIn = inputDataInizioFineCampagna();
-        System.out.println("DATA FINE: ");
-        String  dateFin = inputDataInizioFineCampagna();
+        do {
+            sqlError = false;
+            System.out.println("NOME CAMPAGNA: "); //input dati login
+            nome = input.nextLine();
+            idCampagna = partitaIvaAzienda.hashCode() + nome.hashCode();
+            System.out.println("NUMERO LIVELLI: "); //input dati login
+            numLivelli = input.nextInt();
+            System.out.println("DATA INIZIO: ");
+            dateIn = inputDataInizioFineCampagna();
+            System.out.println("DATA FINE: ");
+            dateFin = inputDataInizioFineCampagna();
+            try {
+                DbConnector.insertQuery("INSERT INTO `campagnelivello` (`id`,`nome`,`numLivelli`,`dataInizio`,`dataFine`,`azienda`) " +
+                        "VALUES ('"+idCampagna+"','"+nome+"','"+numLivelli+"','"+dateIn+"','"+dateFin+"','"+partitaIvaAzienda+"');");
+            } catch (SQLException e) { sqlError = true; }
+        }while(sqlError);
 
-        DbConnector.insertQuery("INSERT INTO `campagnelivello` (`id`,`nome`, `numLivelli`, `dataInizio`,`dataFine`,`azienda`) " +
-                "VALUES ('"+idCampagna+"','"+nome+"', '"+numLivelli+"', '"+ dateIn+"','"+ dateFin+"','"+partitaIvaAzienda+"' );");
+        for(int i = 0 ; i < numLivelli; i++){  //input livelli appartenenti alla campagna a livelli creata
+            do{
+                sqlError = false;
+                System.out.println("NOME LIVELLO: ");
+                nomeLivello = input.next();
+                System.out.println("SPESA MINIMA NECESSARIA: ");
+                requisito = input.nextDouble();
+                idLivello = nomeLivello.hashCode() + Integer.hashCode(idCampagna); //id livello è hash tra partita iva e nome livello
 
-        for(int i = 0 ; i < numLivelli; i++){
-            System.out.println("NOME LIVELLO: ");
-            String nomeLivello = input.next();
-            System.out.println("SPESA MINIMA NECESSARIA: ");
-            double requisito = input.nextDouble();
+                try { //aggiunta livello al db
+                    DbConnector.insertQuery("INSERT INTO `livelli`(`id`, `numLivello`, `campagnaLivello`, `nome`, `requisitoEntrata`)" +
+                        "VALUES ('"+idLivello+"','"+(i+1)+"','"+idCampagna+"','"+nomeLivello+"','"+requisito+"');");
+                }catch (SQLException e) { System.out.println("Nome del livello già esistente per questa campagna a livelli, riprovare."); sqlError = true; }
+            }while(sqlError);
 
-            int idLivello = nomeLivello.hashCode() + Integer.hashCode(idCampagna); //hash tra partita iva e nome livello
-            listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
-
-            listaLivelli.add(new myLivello<>((i+1),nomeLivello,listaPremi,requisito));
-
-            //aggiunta livello al db
-            DbConnector.insertQuery("INSERT INTO `livelli`(`id`, `numLivello`, `campagnaLivello`, `nome`, `requisitoEntrata`)"+
-                    "VALUES ('"+idLivello+"','"+(i+1)+"','"+idCampagna+"','"+nomeLivello+"','"+requisito+"');");
-
-            for (MyPremio myPremio : listaPremi) {  //aggiunta premi al livello corrispondente al db
-                DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioLivello`) VALUES" +
-                        " ('"+myPremio.getCod()+"','"+myPremio.getNome()+"','"+idLivello+"');");
-            }
-            listaPremi.clear();
+            do {
+                sqlError = false;
+                listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
+                listaLivelli.add(new myLivello<>((i + 1), nomeLivello, listaPremi, requisito));
+                for (MyPremio myPremio : listaPremi){ //aggiunta premi al livello corrispondente al db
+                    try {
+                        DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioLivello`) VALUES ('" + myPremio.getCod() + "','" + myPremio.getNome() + "','" + idLivello + "');");
+                    } catch (SQLException e) {
+                        sqlError = true;
+                    }
+                }
+                listaPremi.clear();
+            }while(sqlError);
         }
         return Optional.of(new ProgrammaLivelli<>(idCampagna,nome,dateFin ,numLivelli, listaLivelli,dateIn));
     }
