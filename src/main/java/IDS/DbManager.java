@@ -177,7 +177,19 @@ public class DbManager {
             return Optional.empty();
         }
         DbConnector.closeConnection();
-        return Optional.of(new CampagnaPunti(maxPunti, id, nome, dateFin, dateIn));
+
+        CampagnaPunti c = new CampagnaPunti(maxPunti, id, nome, dateFin, dateIn);
+        int flag = 1;
+        while (flag == 1)
+        {
+            System.out.println("INSERISCI PREMI :");
+            c.aggiungiPremi();
+
+            System.out.println("VUOI INSERIRE ALTRI PREMI : [ALTRO-no] [1-si]");
+            flag = input.nextInt();
+        }
+
+        return Optional.of(c);
     }
 
 
@@ -345,6 +357,19 @@ public class DbManager {
             continua = input.nextLine();
         }
         return listaPremi;
+    }
+
+    public static boolean aggiungiPremio(Premio p,int puntiNecessari,int codiceCampagna) throws SQLException {
+        DbConnector.init();
+
+        try {
+            DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioPunti`, `puntiNecessari`) " +
+                    "VALUES ('" + p.getCod() + "','" + p.getNome() + "','" + codiceCampagna + "','"+puntiNecessari+"');");
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
+
     }
 
 }
