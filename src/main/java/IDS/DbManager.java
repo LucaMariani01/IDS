@@ -317,4 +317,16 @@ public class DbManager {
         return listaPremi;
     }
 
+    public static boolean aggiungiPremio(Premio p,int puntiNecessari,int codiceCampagna) throws SQLException {
+        DbConnector.init();
+
+        try {
+            DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioPunti`, `puntiNecessari`) " +
+                    "VALUES ('" + p.getCod() + "','" + p.getNome() + "','" + codiceCampagna + "','"+puntiNecessari+"');");
+            } catch (SQLException e) {
+                return false;
+            }
+        return true;
+
+    }
 }
