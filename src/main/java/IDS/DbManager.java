@@ -164,9 +164,9 @@ public class DbManager {
         int id = azienda.hashCode() + nome.hashCode();
         System.out.println("INSERIRE MASSIMALE: "); //input dati login
         int maxPunti = Integer.parseInt(input.next());
-        System.out.println("Inserisci la data inizio: ");
+        System.out.println("DATA INIZIO: ");
         String  dateIn = inputDataInizioFineCampagna();
-        System.out.println("Inserisci la data fine: ");
+        System.out.println("DATA FINE: ");
         String  dateFin = inputDataInizioFineCampagna();
 
         try {
