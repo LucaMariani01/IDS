@@ -1,5 +1,6 @@
 package IDS;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -27,7 +28,6 @@ public class DashBoardCliente {
             default -> Optional.empty();
         };
     }
-
     public static int sceltaAzioniUtente(){
         int scelta;
         Scanner scr = new Scanner(System.in);
@@ -41,7 +41,6 @@ public class DashBoardCliente {
 
         return scelta;
     }
-
 
 
 }

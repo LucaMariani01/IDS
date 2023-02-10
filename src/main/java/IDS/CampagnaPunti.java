@@ -17,13 +17,17 @@ public class CampagnaPunti extends Campagna{
         return this.maxPunti;
     }
 
-    public boolean aggiungiPremi(Map<Premio,Integer> premi) throws SQLException {
-        //premi.putAll(Objects.requireNonNull(premi));
-        DbConnector.init();
-        for ( Premio premio : premi.keySet() ){
-            String insertPremioQuery = "INSERT INTO `premi` (`nome`, `campagnaSconto`) VALUES ('"+premio.getNome()+"', '"+this.getId()+"');";
-            DbConnector.insertQuery(insertPremioQuery);
+    public boolean aggiungiPremi() throws SQLException {
+        int puntiNecessari = DashBoardAzienda.inputPuntiNecessari(this.maxPunti);
+
+        for (Premio p: DbManager.getPremi(puntiNecessari)){
+            if(this.premi.containsKey(p)) System.out.println("PREMIO PRESENTE NON INSERITO");
+            else{
+                this.premi.put(p,puntiNecessari);
+                DbManager.aggiungiPremio(p,puntiNecessari,super.getId());
+            }
         }
+
         return true;
     }
 

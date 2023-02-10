@@ -111,4 +111,17 @@ public class DashBoardAzienda {
 
         return n;
     }
+
+    public static int inputPuntiNecessari(int maxPunti)
+    {
+        int n;
+        Scanner s = new Scanner(System.in);
+        System.out.println("INSERIRE I PUNTI NECESSARI PER ENTRARE IN QUEL LIVELLO : ");
+        do {
+            n = s.nextInt();
+            if (n<0 || n >maxPunti) System.out.println("VALORE INSERITO NON VALIDO");
+        }while (n<0 || n >maxPunti);
+
+        return n;
+    }
 }
