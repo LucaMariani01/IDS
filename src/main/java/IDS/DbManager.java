@@ -43,7 +43,13 @@ public class DbManager {
         result = DbConnector.executeQuery(queryLogin);
         if(result.next()) return Optional.empty();  //se esiste, non effettuo la registrazione
 
-        DbConnector.insertQuery("INSERT INTO `admin` (`codiceFiscale`, `nome`, `password`, `azienda`) VALUES ('"+codiceFiscale+"','"+nome+"', '"+password+"','"+azienda.getId()+"');");
+        try {
+            DbConnector.insertQuery("INSERT INTO `admin` (`codiceFiscale`, `nome`, `password`, `azienda`) VALUES ('"+codiceFiscale+"','"+nome+"', '"+password+"','"+azienda.getId()+"');");
+        } catch (SQLException e) {
+            System.out.println("Errore nella registrazione dell'admin, codice fiscale già presente.");
+            return Optional.empty();
+        }
+
         DbConnector.closeConnection();
         return Optional.of(new Admin(codiceFiscale,nome,azienda));
     }
@@ -85,11 +91,13 @@ public class DbManager {
 
         System.out.println("PASSWORD: ");
         String pass = input.next();
+
         try {
             DbConnector.insertQuery("INSERT INTO clienti(`email`,`nome`,`cognome`,`password`) " +
                     "VALUES ('"+email+"','"+nome+"','"+cognome+"','"+pass+"');");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Errore nella registrazione cliente, email già presente.");
+            return Optional.empty();
         }
         return Optional.of(new Customer(nome, cognome, email));
     }
@@ -136,8 +144,13 @@ public class DbManager {
         result = DbConnector.executeQuery(queryLogin);
         if(result.next()) return Optional.empty();  //se esiste, non effettuo la registrazione
 
-        DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) " +
-                "VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
+        try {
+            DbConnector.insertQuery("INSERT INTO `aziende` (`nome`, `partitaIva`, `password`) " +
+                    "VALUES ('"+nome+"', '"+partitaIva+"', '"+password+"');");
+        } catch (SQLException e) {
+            System.out.println("Errore nella registrazione dell'azienda, partita iva già presente.");
+            return Optional.empty();
+        }
         DbConnector.closeConnection();
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
@@ -156,8 +169,13 @@ public class DbManager {
         System.out.println("Inserisci la data fine: ");
         String  dateFin = inputDataInizioFineCampagna();
 
-        DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`,`id`) " +
-                "VALUES ('"+nome+"', '"+maxPunti+"', '"+ dateIn+"','"+ dateFin+"','"+azienda+"','"+id+"' );");
+        try {
+            DbConnector.insertQuery("INSERT INTO `campagnepunti` (`nome`, `maxPunti`, `dataInizio`,`dataFine`,`azienda`,`id`) " +
+                    "VALUES ('"+nome+"', '"+maxPunti+"', '"+ dateIn+"','"+ dateFin+"','"+azienda+"','"+id+"' );");
+        } catch (SQLException e) {
+            System.out.println("Errore nella creazione della campagna sconto, nome già inserito.");
+            return Optional.empty();
+        }
         DbConnector.closeConnection();
         return Optional.of(new CampagnaPunti(maxPunti, id, nome, dateFin, dateIn));
     }
@@ -179,8 +197,14 @@ public class DbManager {
         System.out.println("DATA FINE");
         String dataFine = inputDataInizioFineCampagna();
 
-        DbConnector.insertQuery("INSERT INTO `cashback` (`nome`, `dataInizio`,`dataFine`,`sogliaMinima`,`sogliaMassima`,`azienda`,`id`) " +
-                "VALUES ('"+nome+"', '"+dataInizio+"', '"+dataFine+"',"+sogliaMin+","+sogliaMax+",'"+partitaIvaAzienda+"','"+id+"');");
+        try {
+            DbConnector.insertQuery("INSERT INTO `cashback` (`nome`, `dataInizio`,`dataFine`,`sogliaMinima`,`sogliaMassima`,`azienda`,`id`) " +
+                    "VALUES ('"+nome+"', '"+dataInizio+"', '"+dataFine+"',"+sogliaMin+","+sogliaMax+",'"+partitaIvaAzienda+"','"+id+"');");
+        } catch (SQLException e) {
+            System.out.println("Errore nella creazione della campagna sconto, nome già inserito.");
+            return Optional.empty();
+        }
+
         DbConnector.closeConnection();
 
         return Optional.of(new CashBack(id, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
@@ -192,7 +216,6 @@ public class DbManager {
 
         System.out.println("NOME: ");
         String nome = input.nextLine();
-
         int id = partitaIvaAzienda.hashCode() + nome.hashCode();
         System.out.println("COSTO MEMBERSHIP ESCLUSIVA: ");
         int costo = input.nextInt();
@@ -205,7 +228,8 @@ public class DbManager {
             DbConnector.insertQuery("INSERT INTO membership(`dataInizio`,`nome`,`dataFine`,`costo`,`azienda`,`id`) " +
                     "VALUES ('"+dateIn+"','"+nome+"','"+dateFin+"','"+costo+"','"+partitaIvaAzienda+"','"+id+"');");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Errore nella creazione della campagna sconto, nome già inserito.");
+            return Optional.empty();
         }
         DbConnector.closeConnection();
         return Optional.of(new Membership(id,dateFin, costo,  nome,dateIn));
@@ -231,28 +255,28 @@ public class DbManager {
         int idCampagna=0,idLivello=0,numLivelli=0;
         double requisito=0;
         String dateFin="", dateIn="",nome="",nomeLivello="";
-        boolean sqlError = false;
+        boolean erroreInserimento = false;
 
-        do {
-            sqlError = false;
-            System.out.println("NOME CAMPAGNA: "); //input dati login
-            nome = input.nextLine();
-            idCampagna = partitaIvaAzienda.hashCode() + nome.hashCode();
-            System.out.println("NUMERO LIVELLI: "); //input dati login
-            numLivelli = input.nextInt();
-            System.out.println("DATA INIZIO: ");
-            dateIn = inputDataInizioFineCampagna();
-            System.out.println("DATA FINE: ");
-            dateFin = inputDataInizioFineCampagna();
-            try {
-                DbConnector.insertQuery("INSERT INTO `campagnelivello` (`id`,`nome`,`numLivelli`,`dataInizio`,`dataFine`,`azienda`) " +
-                        "VALUES ('"+idCampagna+"','"+nome+"','"+numLivelli+"','"+dateIn+"','"+dateFin+"','"+partitaIvaAzienda+"');");
-            } catch (SQLException e) { sqlError = true; }
-        }while(sqlError);
+        System.out.println("NOME CAMPAGNA: "); //input dati login
+        nome = input.nextLine();
+        idCampagna = partitaIvaAzienda.hashCode() + nome.hashCode();
+        System.out.println("NUMERO LIVELLI: "); //input dati login
+        numLivelli = input.nextInt();
+        System.out.println("DATA INIZIO: ");
+        dateIn = inputDataInizioFineCampagna();
+        System.out.println("DATA FINE: ");
+        dateFin = inputDataInizioFineCampagna();
+        try {
+            DbConnector.insertQuery("INSERT INTO `campagnelivello` (`id`,`nome`,`numLivelli`,`dataInizio`,`dataFine`,`azienda`) " +
+                    "VALUES ('"+idCampagna+"','"+nome+"','"+numLivelli+"','"+dateIn+"','"+dateFin+"','"+partitaIvaAzienda+"');");
+        } catch (SQLException e) {
+            System.out.println("Errore nella creazione della campagna sconto, nome già inserito.");
+            return Optional.empty();
+        }
 
         for(int i = 0 ; i < numLivelli; i++){  //input livelli appartenenti alla campagna a livelli creata
             do{
-                sqlError = false;
+                erroreInserimento = false;
                 System.out.println("NOME LIVELLO: ");
                 nomeLivello = input.next();
                 System.out.println("SPESA MINIMA NECESSARIA: ");
@@ -262,11 +286,11 @@ public class DbManager {
                 try { //aggiunta livello al db
                     DbConnector.insertQuery("INSERT INTO `livelli`(`id`, `numLivello`, `campagnaLivello`, `nome`, `requisitoEntrata`)" +
                         "VALUES ('"+idLivello+"','"+(i+1)+"','"+idCampagna+"','"+nomeLivello+"','"+requisito+"');");
-                }catch (SQLException e) { System.out.println("Nome del livello già esistente per questa campagna a livelli, riprovare."); sqlError = true; }
-            }while(sqlError);
+                }catch (SQLException e) { System.out.println("Nome del livello già esistente per questa campagna a livelli, riprovare."); erroreInserimento = true; }
+            }while(erroreInserimento);
 
             do {
-                sqlError = false;
+                erroreInserimento = false;
                 do {
                     listaPremi.clear();
                     listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
@@ -276,17 +300,14 @@ public class DbManager {
                     try {
                         DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioLivello`) VALUES ('" + myPremio.getCod() + "','" + myPremio.getNome() + "','" + idLivello + "');");
                     } catch (SQLException e) {
-                        sqlError = true;
+                        System.out.println("Il nome di uno o più premi già esistente per questo livello, riprovare.");
+                        erroreInserimento = true;
                     }
                 }
                 listaPremi.clear();
-            }while(sqlError);
+            }while(erroreInserimento);
         }
         return Optional.of(new ProgrammaLivelli<>(idCampagna,nome,dateFin ,numLivelli, listaLivelli,dateIn));
-    }
-
-    private void prova(){
-        System.out.println("ciao");
     }
 
     /**

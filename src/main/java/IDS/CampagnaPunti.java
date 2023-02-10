@@ -16,7 +16,7 @@ public class CampagnaPunti extends Campagna{
     public int getMaxPunti(){
         return this.maxPunti;
     }
-
+/*
     public boolean aggiungiPremi() throws SQLException {
         int puntiNecessari = DashBoardAzienda.inputPuntiNecessari(this.maxPunti);
 
@@ -29,7 +29,7 @@ public class CampagnaPunti extends Campagna{
         }
 
         return true;
-    }
+    }*/
 
     public Map<Premio,Integer> getPremi()
     {
