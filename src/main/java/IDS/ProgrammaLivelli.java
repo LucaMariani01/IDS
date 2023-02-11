@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProgrammaLivelli<P extends Premio> extends Campagna{
-
+    // VAA RIVASTA
     private int numeroLivelli;
     private ArrayList<myLivello<P>> listaLivelli;
 
@@ -29,6 +29,7 @@ public class ProgrammaLivelli<P extends Premio> extends Campagna{
                 "VALUES ('"+l.getNumero()+"','"+this.getId()+"','"+l.getNome()+"','"+l.getRequisitoEntrata()+"');";
         DbConnector.insertQuery(insertLivelloQuery);
         DbConnector.closeConnection();
+        this.numeroLivelli++;
         return true;
     }
 
@@ -51,6 +52,7 @@ public class ProgrammaLivelli<P extends Premio> extends Campagna{
         }
         idLivelloDaRimuovere =DashBoardAzienda.livelloDaEliminare(i);
         String removeLivelloQuery = "DELETE FROM `livelli` WHERE `livelli`.`id` = "+idLivelloDaRimuovere+"";
+        this.numeroLivelli--;
         DbConnector.removeQuery(removeLivelloQuery);
         DbConnector.closeConnection();
     }

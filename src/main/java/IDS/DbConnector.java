@@ -10,7 +10,7 @@ public class DbConnector {
     /**
      * Connection method
      */
-    public static void init() throws SQLException {
+    public static void init() {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             //Connection connection = DriverManager.getConnection(url, username, password);
@@ -30,8 +30,7 @@ public class DbConnector {
 
     public static ResultSet executeQuery(String query) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet result = statement.executeQuery(query);
-        return result;
+        return statement.executeQuery(query);
     }
 
     public static void removeQuery(String query) throws SQLException {

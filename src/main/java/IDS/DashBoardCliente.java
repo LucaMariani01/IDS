@@ -1,6 +1,5 @@
 package IDS;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Scanner;

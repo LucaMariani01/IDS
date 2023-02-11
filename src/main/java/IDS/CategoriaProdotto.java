@@ -1,7 +1,7 @@
 package IDS;
 
 public class CategoriaProdotto implements Categoria{
-    private String nome;
+    private final String nome;
     private String descrizione;
 
     public CategoriaProdotto(String nome, String descrizione){

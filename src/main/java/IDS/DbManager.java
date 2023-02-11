@@ -73,7 +73,7 @@ public class DbManager {
         return Optional.of(cliente);
     }
 
-    public static Optional<Customer> registrazioneCliente() throws SQLException{
+    public static Optional<Customer> registrazioneCliente() {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
@@ -180,7 +180,8 @@ public class DbManager {
         while (flag == 1)
         {
             System.out.println("INSERISCI PREMI :");
-            c.aggiungiPremi();
+            if(c.aggiungiPremi()) System.out.println("PREMI AGGIUNTI CON SUCCESSO");
+            else System.out.println("PREMI NON AGGIUNTI ");
 
             System.out.println("VUOI INSERIRE ALTRI PREMI : [ALTRO-no] [1-si]");
             flag = input.nextInt();
@@ -190,7 +191,7 @@ public class DbManager {
     }
 
 
-    public static Optional<CampagnaSconti> creaCampagnaCashback(String partitaIvaAzienda) throws SQLException {
+    public static Optional<CampagnaSconti> creaCampagnaCashback(String partitaIvaAzienda) {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
@@ -219,7 +220,7 @@ public class DbManager {
         return Optional.of(new CashBack(id, nome,dataFine,dataInizio,sogliaMin,sogliaMax));
     }
 
-    public static Optional<CampagnaSconti> creaMembership(String partitaIvaAzienda) throws SQLException {
+    public static Optional<CampagnaSconti> creaMembership(String partitaIvaAzienda) {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
 
@@ -256,15 +257,15 @@ public class DbManager {
         return anno + "-" + mese + "-" + giorno;
     }
 
-    public static Optional<CampagnaSconti> creaCampagnaLivelli(String partitaIvaAzienda) throws SQLException{
+    public static Optional<CampagnaSconti> creaCampagnaLivelli(String partitaIvaAzienda) {
         Scanner input = new Scanner(System.in);
         ArrayList<myLivello<MyPremio>> listaLivelli = new ArrayList<>();
         ArrayList<MyPremio> listaPremi = new ArrayList<>();
         DbConnector.init();
-        int idCampagna=0,idLivello=0,numLivelli=0;
-        double requisito=0;
-        String dateFin="", dateIn="",nome="",nomeLivello="";
-        boolean erroreInserimento = false;
+        int idCampagna,idLivello,numLivelli;
+        double requisito;
+        String dateFin, dateIn,nome,nomeLivello;
+        boolean erroreInserimento;
 
         System.out.println("NOME CAMPAGNA: "); //input dati login
         nome = input.nextLine();
@@ -356,7 +357,7 @@ public class DbManager {
         return listaPremi;
     }
 
-    public static boolean aggiungiPremio(Premio p,int puntiNecessari,int codiceCampagna) throws SQLException {
+    public static boolean aggiungiPremio(Premio p,int puntiNecessari,int codiceCampagna) {
         DbConnector.init();
         try {
             DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioPunti`, `puntiNecessari`) " +
@@ -466,7 +467,7 @@ public class DbManager {
     }
 
     public static String getCampagneUtente(String email) throws SQLException {
-        String app="";
+        StringBuilder app= new StringBuilder();
         DbConnector.init();
         // NOME CAMPAGNA VA CAMBIATO PERO NON MI RICORDAVO COME L'AVEVAMO CHIAMATO NEL DB L'HO LASCIATO COSI.
         ResultSet result = DbConnector.executeQuery("SELECT `id`,nomeCampagna FROM `clienticampagnaaderite` as cc," +
@@ -475,10 +476,11 @@ public class DbManager {
         int i = 0 ;
         while (result.next())
         {
-            app.concat(i+") ID CAMPAGNA : "+result.getString("id")+ " NOME CAMPAGNA : "+result.getString("nomeCampagna"));
+            app.append(i).append(") ID CAMPAGNA : ").append(result.getString("id")).append(" NOME CAMPAGNA : ").append(result.getString("nomeCampagna"));
+            app.append("\n");
             i++;
         }
-        return app;
+        return app.toString();
     }
 
 

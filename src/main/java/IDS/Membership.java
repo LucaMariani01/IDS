@@ -30,7 +30,7 @@ public class Membership extends Campagna{
         DbConnector.closeConnection();
         return true;
     }
-    public boolean removePremio(Premio p)
+    public boolean removePremio(Premio p) // VA TOLTO?
     {
         if (p == null) throw new NullPointerException();
         return this.catalogoPremi.remove(p);

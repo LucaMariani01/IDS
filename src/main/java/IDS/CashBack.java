@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class CashBack extends Campagna{
     private  double  sogliaMinimaCashBack;
     private  double  sogliaMaxCashBack;
-    private final ArrayList<Categoria> categorieProdotti;
+    private final ArrayList<Categoria> categorieProdotti; // VA TOLTA
 
     public CashBack(int id, String nome, String dataFine, String dataInizio, double sogliaMinimaCashBack, double sogliaMaxCashBack) {
         super(id, nome, dataFine, dataInizio);
