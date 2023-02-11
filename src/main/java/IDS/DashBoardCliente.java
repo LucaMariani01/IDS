@@ -42,5 +42,23 @@ public class DashBoardCliente {
         return scelta;
     }
 
+    public static void azioneCliente() throws SQLException {
+        int azioneCliente;
+        Optional<Customer>  clienteLoggato = DashBoardCliente.mainMenu();
+        if(clienteLoggato.isPresent()){
+            do{
+                azioneCliente = DashBoardCliente.sceltaAzioniUtente();
+                switch (azioneCliente){
+                    case 1 ->  DbManager.sceltaAziendaCampagneDisponibili(clienteLoggato.get());
+                    case 2 ->  clienteLoggato.get().stampaCampagneAderite();
+                    case 0 ->  {
+                        clienteLoggato = Optional.empty();
+                        System.out.println("logout");
+                    }
+                }
+            }while (azioneCliente!=0);
+        }
+    }
+
 
 }

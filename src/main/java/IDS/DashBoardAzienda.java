@@ -124,4 +124,24 @@ public class DashBoardAzienda {
 
         return n;
     }
+
+    public static void azioneAzienda() throws SQLException {
+        Optional<Azienda> aziendaLoggata;
+        aziendaLoggata = DashBoardAzienda.mainMenu();
+        if(aziendaLoggata.isPresent()){
+            if(DashBoardAzienda.menuAdmin(aziendaLoggata.get()).isPresent()){
+                switch (DashBoardAzienda.menuAzienda()){
+                    case 1 ->  DashBoardAzienda.menuCampagna(aziendaLoggata.get());
+                    case 2 ->  System.out.println("Work in progress...");
+                    case 0 ->  {
+                        System.out.println("logout admin");
+                        aziendaLoggata = Optional.empty();
+                    }
+                }
+            }else System.out.println("errore admin");
+        }
+    }
 }
+
+
+
