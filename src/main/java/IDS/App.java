@@ -22,7 +22,10 @@ public class App {
                             switch (azioneCliente){
                                 case 1 ->  DbManager.sceltaAziendaCampagneDisponibili(clienteLoggato.get());
                                 case 2 ->  clienteLoggato.get().stampaCampagneAderite();
-                                case 0 ->  System.out.println("logout");
+                                case 0 ->  {
+                                    clienteLoggato = Optional.empty();
+                                    System.out.println("logout");
+                                }
                             }
                         }while (azioneCliente!=0);
                     }
@@ -34,7 +37,10 @@ public class App {
                             switch (DashBoardAzienda.menuAzienda()){
                                 case 1 ->  DashBoardAzienda.menuCampagna(aziendaLoggata.get());
                                 case 2 ->  System.out.println("Work in progress...");
-                                case 0 ->  System.out.println("logout admin");
+                                case 0 ->  {
+                                    System.out.println("logout admin");
+                                    aziendaLoggata = Optional.empty();
+                                }
                             }
                         }else System.out.println("errore admin");
                     }
