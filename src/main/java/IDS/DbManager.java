@@ -465,4 +465,21 @@ public class DbManager {
         return campagneDisponibili.get(scelta-1);
     }
 
+    public static String getCampagneUtente(String email) throws SQLException {
+        String app="";
+        DbConnector.init();
+        // NOME CAMPAGNA VA CAMBIATO PERO NON MI RICORDAVO COME L'AVEVAMO CHIAMATO NEL DB L'HO LASCIATO COSI.
+        ResultSet result = DbConnector.executeQuery("SELECT `id`,nomeCampagna FROM `clienticampagnaaderite` as cc," +
+                "`campagnelivello` as c,`campagnepunti` as p,`cashback` as ca,`membership` as m " +
+                "WHERE  emailCliente ="+email+" and c.id = cc.id and p.id = cc.id and cc.id = ca.id and m.id =cc.id;");
+        int i = 0 ;
+        while (result.next())
+        {
+            app.concat(i+") ID CAMPAGNA : "+result.getString("id")+ " NOME CAMPAGNA : "+result.getString("nomeCampagna"));
+            i++;
+        }
+        return app;
+    }
+
+
 }
