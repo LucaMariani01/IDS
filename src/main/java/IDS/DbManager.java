@@ -54,27 +54,23 @@ public class DbManager {
         return Optional.of(new Admin(codiceFiscale,nome,azienda));
     }
 
-
     public static Optional<Customer> loginCliente() throws SQLException {
-        System.out.println("EMAIL: ");
         Scanner input = new Scanner(System.in);
         ResultSet result;
-        String nome = input.next();
-
-        System.out.println("PASSWORD: ");
-        String pass = input.next();
-
         DbConnector.init();
 
-        String queryLogin = "SELECT * FROM `clienti` WHERE `email` = '"+nome+"' AND `password` = '"+pass+"';";
-        result = DbConnector.executeQuery(queryLogin);
-        String nomeUtente = result.getString("nome");
-        String cognomeUtente =  result.getString("cognome");
-        String emailUtente =  result.getString("email");
-        DbConnector.closeConnection();
-        if(!result.next()) return Optional.empty();
-        return Optional.of(new Customer(nomeUtente,cognomeUtente,emailUtente));
+        System.out.println("EMAIL: ");
+        String email = input.next();
+        System.out.println("PASSWORD: ");
+        String password = input.next();
 
+        String queryLogin = "SELECT * FROM `clienti` WHERE `email` = '"+email+"' AND `password` = '"+password+"';";
+        result = DbConnector.executeQuery(queryLogin);
+        if(!result.next()) return Optional.empty();
+
+        Customer cliente = new Customer(result.getString("nome"),result.getString("cognome"),result.getString("email"));
+        DbConnector.closeConnection();
+        return Optional.of(cliente);
     }
 
     public static Optional<Customer> registrazioneCliente() throws SQLException{
@@ -362,96 +358,111 @@ public class DbManager {
 
     public static boolean aggiungiPremio(Premio p,int puntiNecessari,int codiceCampagna) throws SQLException {
         DbConnector.init();
-
         try {
             DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioPunti`, `puntiNecessari`) " +
                     "VALUES ('" + p.getCod() + "','" + p.getNome() + "','" + codiceCampagna + "','"+puntiNecessari+"');");
         } catch (SQLException e) {
+            System.out.println("Errore nell'aggiunta di un premio.");
             return false;
         }
         return true;
-
     }
 
     public static void sceltaAziendaCampagneDisponibili(Customer cliente)throws SQLException{
         DbConnector.init();
         Scanner scr = new Scanner(System.in);
-        int scelta;
-        String campagnaScelta;
-        String continua ;
-        //scleta dell'azienda
-        ResultSet result = DbConnector.executeQuery("SELECT `partitaIva`,`nome` FROM `aziende`;");
-        int index = 1;
-        System.out.println("Aziende iscritte alla piattaforma");
-        while(result.next()){
-            System.out.println(index+") "+result.getString("nome"));
-            index++;
+        String campagnaScelta,continua;
+        Optional<Azienda> aziendaScelta = scegliAzienda();
+        if (aziendaScelta.isEmpty()) {
+            System.out.println("NESSUNA AZIENDA ISCRITTA ALLA PIATTAFORMA AL MOMENTO");
+            return;
         }
 
-        //scelta della campgna sconti
         do{
-            System.out.println("Scegli l'aziende di cui vuoi visualizzare la campagna socnti");
-            scelta = scr.nextInt();
-        }while(scelta<0 || scelta>index);
+            TipologiaCampagnaSconto tipoCampagnaScelta = TipologiaCampagnaSconto.values()[scegliCategoriaCampagna(aziendaScelta.get().getName())];
+            String queryCampagneAzScelta = "SELECT * FROM `"+tipoCampagnaScelta+"` WHERE `azienda` = '"+aziendaScelta.get().getId()+"';";
+            ResultSet campagneAzSel = DbConnector.executeQuery(queryCampagneAzScelta);
+            campagnaScelta = scegliCampagna(campagneAzSel);  //metodo per selezionare la scelta tra le campagne sconto disponibili
+            if(campagnaScelta.compareTo("") != 0){
+                ResultSet listaCategoriaCampagnaSconto = DbConnector.executeQuery("SELECT * FROM `"+tipoCampagnaScelta+"` WHERE `nome` = '"+campagnaScelta+"';");
 
-        do{
-            System.out.println("Quale categoria di campagne sconti vuoi visualizzare fra?");
-            do{
-                System.out.println(TipologiaCampagnaSconto.campagneLivelli.name());
-                System.out.println(TipologiaCampagnaSconto.campagnePunti.name());
-                System.out.println(TipologiaCampagnaSconto.cashback.name());
-                System.out.println(TipologiaCampagnaSconto.membership.name());
-                scelta = scr.nextInt();
-            }while( (scelta < 1) || (scelta > (TipologiaCampagnaSconto.values().length)));
+                while (listaCategoriaCampagnaSconto.next())
+                    DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite` (`emailCliente`, `"+tipoCampagnaScelta+"`)" +
+                        " VALUES ('"+cliente.getId()+"',"+listaCategoriaCampagnaSconto.getInt("id")+");");
+            } else System.out.println("PROCEDURA DI ISCRIZIONE ANNULLATA.");
 
-            //visualizzo le campagne sconti dell'azienda scelta
-            switch(scelta){
-                case(1)->{
-                    ResultSet result2 = DbConnector.executeQuery("SELECT * FROM `campagnelivello` WHERE azienda = '"+result.getInt("partitaIva")+"';");
-                    campagnaScelta = scegliCampagna(result2);
-                    result2 = DbConnector.executeQuery("SELECT * FROM `campagnelivello` WHERE `nome` = '"+campagnaScelta+"';");
-                    DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite`(`emailCliente`, `idCampagna`)"+
-                            "VALUES ('"+cliente.getId()+"','"+result2.getInt("id")+"';");
-                }
-                case(2)->{
-                    ResultSet result2 = DbConnector.executeQuery("SELECT * FROM `campagnePunti` WHERE azienda = '"+result.getInt("partitaIva")+"';");
-                    campagnaScelta = scegliCampagna(result2);
-                    result2 = DbConnector.executeQuery("SELECT * FROM `campagnePunti` WHERE `nome` = '"+campagnaScelta+"';");
-                    DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite`(`emailCliente`, `idCampagna`)"+
-                            "VALUES ('"+cliente.getId()+"','"+result2.getInt("id")+"';");
-                }
-                case(3)->{
-                    ResultSet result2 = DbConnector.executeQuery("SELECT * FROM `cashback` WHERE azienda = '"+result.getInt("partitaIva")+"';");
-                    campagnaScelta = scegliCampagna(result2);
-                    result2 = DbConnector.executeQuery("SELECT * FROM `cashback` WHERE `nome` = '"+campagnaScelta+"';");
-                    DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite`(`emailCliente`, `idCampagna`)"+
-                            "VALUES ('"+cliente.getId()+"','"+result2.getInt("id")+"';");
-                }
-                case(4)->{
-                    ResultSet result2 = DbConnector.executeQuery("SELECT * FROM `membership` WHERE azienda = '"+result.getInt("partitaIva")+"';");
-                    campagnaScelta = scegliCampagna(result2);
-                    result2 = DbConnector.executeQuery("SELECT * FROM `membership` WHERE `nome` = '"+campagnaScelta+"';");
-                    DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite`(`emailCliente`, `idCampagna`)"+
-                            "VALUES ('"+cliente.getId()+"','"+result2.getInt("id")+"';");
-                }
-            }
-            System.out.println("Vuoi visualizzare altre campagne sconti? (s/n)");
-            continua = scr.nextLine();
+            System.out.println("VUOLE ISCRIVERSI AD UN'ALTRA CAMPAGNA SCONTO? (s/n)");
+            continua = scr.next();
         }while(!(continua.compareToIgnoreCase("n") ==0));
     }
 
+    /**
+     * Metodo per scegliere l'azienda di cui visualizzare le campagne sconto
+     * @return azienda scelta
+     */
+    private static Optional<Azienda> scegliAzienda() throws SQLException {
+        ArrayList<Azienda> aziendeIscritte = new ArrayList<>();
+        Scanner scr = new Scanner(System.in);
+        DbConnector.init();
+        int scelta;
+
+        ResultSet result = DbConnector.executeQuery("SELECT `partitaIva`,`nome` FROM `aziende`;");  //scelta dell'azienda
+        System.out.println("AZIENDE ISCRITTE: \n0) Annulla");
+        while(result.next()){
+            System.out.println(result.getRow()+") "+result.getString("nome"));
+            aziendeIscritte.add(new Azienda(result.getString("nome"),result.getString("partitaIva"),null));
+        }
+        do{
+            System.out.println("AZIENDA DI CUI VISUALIZZARE LE CAMPAGNE SCONTO: "); //scelta azienda della campagna sconti
+            scelta = scr.nextInt();
+        }while(scelta<0 || scelta>aziendeIscritte.size());
+        if(scelta == 0) return Optional.empty();
+        return Optional.of(aziendeIscritte.get(scelta-1));
+    }
+
+    /**
+     * Metodo per scegliere la categoria di campagna sconto interessata al cliente
+     * @param nomeAzienda nome dell'azienda avente la campagna sconto
+     * @return
+     */
+    private static int scegliCategoriaCampagna(String nomeAzienda){
+        Scanner scr = new Scanner(System.in);
+        int scelta, index = 1;
+        System.out.println("TIPOLOGIA CAMPAGNE SCONTO "+nomeAzienda);
+        do{
+            System.out.println(index+") "+TipologiaCampagnaSconto.campagnelivello.nome);
+            System.out.println((++index)+") "+TipologiaCampagnaSconto.campagnepunti.nome);
+            System.out.println((++index)+") "+TipologiaCampagnaSconto.cashback.nome);
+            System.out.println((++index)+") "+TipologiaCampagnaSconto.membership.nome);
+            scelta = scr.nextInt();
+        }while( (scelta < 1) || (scelta > (TipologiaCampagnaSconto.values().length)));
+        return scelta-1;
+    }
+
+    /**
+     * Permette la scelta di una campagna di un certo tipo appartenente ad una azienda già scelta
+     * @param result lista campagna appartenenti ad una certa azienda di un certo tipo
+     * @return nome campagna sconto scelta
+     */
     public static String scegliCampagna(ResultSet result) throws SQLException {
         Scanner scr = new Scanner(System.in);
-        String scelta;
-        int i = 1;
-        System.out.println("Campagne disponibili");
+        int scelta,index=1;
+        String campagnaSconto;
+        ArrayList<String> campagneDisponibili = new ArrayList<>();
+
+        System.out.println("CAMPAGNE DISPONIBILI\n0) Annulla");
         while(result.next()){
-            System.out.println(i+") "+result.getString("nome"));
-            i++;
+            campagnaSconto = result.getString("nome");
+            System.out.println(index+") "+campagnaSconto);
+            campagneDisponibili.add(campagnaSconto);
+            index ++;
         }
-        System.out.println("scegli a quale campagna vuoi iscriverti");
-        scelta = scr.nextLine();
-        return scelta;
+        do {
+            System.out.println("A QUALE CAMPAGNA VUOI ISCRIVERTI?");
+            scelta = scr.nextInt();
+        }while(scelta<0 || scelta>index);
+        if(scelta == 0) return "";  //il cliente non è interessato alle campagne sconto proposte
+        return campagneDisponibili.get(scelta-1);
     }
 
 }
