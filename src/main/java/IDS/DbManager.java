@@ -374,7 +374,7 @@ public class DbManager {
         String campagnaScelta,continua;
         Optional<Azienda> aziendaScelta = scegliAzienda();
         if (aziendaScelta.isEmpty()) {
-            System.out.println("NESSUNA AZIENDA ISCRITTA ALLA PIATTAFORMA AL MOMENTO");
+            System.out.println("OPERAZIONE ANNULLATA.");
             return;
         }
 
