@@ -9,11 +9,12 @@ public class DashBoardCliente {
     private static int sceltaMainMenu(){
         int scelta;
         Scanner scr = new Scanner(System.in);
+        System.out.println("\nDASHBOARD CLIENTE");
         do{
             System.out.println("1)LOGIN CLIENTE");
             System.out.println("2)REGISTRAZIONE CLIENTE");
             System.out.println("0)EXIT");
-            System.out.println("Inserisci la tua scelta: ");
+            System.out.println("SCEGLI UN'OPZIONE: ");
             scelta=scr.nextInt();
         }while(scelta<0 || scelta>2);
 
@@ -30,11 +31,12 @@ public class DashBoardCliente {
     public static int sceltaAzioniUtente(){
         int scelta;
         Scanner scr = new Scanner(System.in);
+        System.out.println("\nDASHBOARD CLIENTE");
         do{
             System.out.println("1)ISCRIVITI AD UNA CAMPAGNA SCONTI");
             System.out.println("2)VISUALIZZA LE TUE CAMPAGNE SCONTI");
             System.out.println("0)LOGOUT");
-            System.out.println("Inserisci la tua scelta: ");
+            System.out.println("SCEGLI UN'OPZIONE: ");
             scelta=scr.nextInt();
         }while(scelta<0 || scelta>2);
 
@@ -52,7 +54,7 @@ public class DashBoardCliente {
                     case 2 ->  clienteLoggato.get().stampaCampagneAderite();
                     case 0 ->  {
                         clienteLoggato = Optional.empty();
-                        System.out.println("logout");
+                        System.out.println("LOGOUT EFFETTUATO");
                     }
                 }
             }while (azioneCliente!=0);

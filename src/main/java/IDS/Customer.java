@@ -29,8 +29,7 @@ public class Customer extends myCliente{
         return listaCampagneAderite;
     }
 
-    public void stampaCampagneAderite()
-    {
+    public void stampaCampagneAderite() {
         System.out.println("Campagne aderite dal cliente : "+this.cognome);
         try {
             DbManager.getCampagneUtente(this.getId());

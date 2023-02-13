@@ -11,11 +11,12 @@ public class DashBoardAzienda {
     private static int sceltaMainMenu(){
         int scelta;
         Scanner scr = new Scanner(System.in);
+        System.out.println("\nDASHBOARD AZIENDA");
         do{
             System.out.println("1)LOGIN");
             System.out.println("2)REGISTRAZIONE");
             System.out.println("0)ESCI");
-            System.out.println("Inserisci la tua scelta: ");
+            System.out.println("SCEGLI UN'OPZIONE: ");
             scelta=scr.nextInt();
         }while(scelta<0 || scelta>2);
 
@@ -23,7 +24,7 @@ public class DashBoardAzienda {
     }
 
     public static Optional<Azienda> mainMenu() throws SQLException {
-        System.out.println("\nMENU AZIENDA");
+        System.out.println("\nDASHBOARD AZIENDA");
         return switch (sceltaMainMenu()) {
             case 1 -> DbManager.loginAzienda();
             case 2 -> DbManager.registrazioneAzienda();
@@ -32,7 +33,7 @@ public class DashBoardAzienda {
     }
 
     public static Optional<Admin> menuAdmin(Azienda azienda) throws SQLException {
-        System.out.println("\nMENU ADMIN");
+        System.out.println("\nDASHBOARD ADMIN");
          return switch (sceltaMainMenu()) {
             case 1 -> DbManager.loginAdmin(azienda);
             case 2 -> DbManager.registrazioneAdmin(azienda);
@@ -54,6 +55,7 @@ public class DashBoardAzienda {
     public static int menuAzienda(){
         Scanner s = new Scanner(System.in);
         int n;
+        System.out.println("\nDASHBOARD AZIENDA");
         do{
             System.out.println("1)CREA NUOVA CAMPAGNA ");
             System.out.println("2)...");
@@ -66,14 +68,14 @@ public class DashBoardAzienda {
     public static void menuCampagna(Azienda a) throws SQLException {
         int scelta;
         Scanner s = new Scanner(System.in);
+        System.out.println("\nDASHBOARD CREAZIONE CAMPAGNA SCONTO");
         do{
-            System.out.println("Seleziona la campagna Sconti da creare");
             System.out.println("1)CREA CAMPAGNA A PUNTI ");
             System.out.println("2)CREA PROGRAMMMA A LIVELLI");
             System.out.println("3)CREA CAMPAGNA CASHBACK");
             System.out.println("4)CREA MEMBERSHIP ESCLUSIVA");
             System.out.println("5)CREA PROGRAMMA COALIZIONE");
-
+            System.out.println("SCEGLI UNA CAMPAGNA SCONTO DA CREARE: ");
             scelta = s.nextInt();
         }while (scelta<1 || scelta>5);
 
@@ -83,45 +85,33 @@ public class DashBoardAzienda {
     public static void creaCampagnaScelta(int scelta,Azienda a) throws SQLException{
         switch (scelta){
             case(1):
-                if(DbManager.creaCampagnaPunti(a.getId()).isPresent()) System.out.println("CAMPAGNA CREATA CON SUCCESSO");
-                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA");
+                if(DbManager.creaCampagnaPunti(a.getId()).isPresent()) System.out.println("CAMPAGNA A PUNTI CREATA CON SUCCESSO");
+                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA A PUNTI");
                 break;
             case(2)://campagna livelli
-                if(DbManager.creaCampagnaLivelli(a.getId()).isPresent())System.out.println("CAMPAGNA CREATA CON SUCCESSO");
-                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA");
+                if(DbManager.creaCampagnaLivelli(a.getId()).isPresent())System.out.println("CAMPAGNA A LIVELLI CREATA CON SUCCESSO");
+                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA A LIVELLI");
                 break;
             case (3): //campagna cashback
-                DbManager.creaCampagnaCashback(a.getId());
+                if(DbManager.creaCampagnaCashback(a.getId()).isPresent())System.out.println("CAMPAGNA CASHBACK CREATA CON SUCCESSO");
+                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA CASHBACK");
                 break;
             case (4)://membership esclusiva
-                DbManager.creaMembership(a.getId());
+                if(DbManager.creaMembership(a.getId()).isPresent())System.out.println("CAMPAGNA MEMBERSHIP CREATA CON SUCCESSO");
+                else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA MEMBERSHIP");
                 break;
             case (5)://programma coalizione
         }
     }
 
-    public static int livelloDaEliminare(int i) {
-        int n ;
-        Scanner s = new Scanner(System.in);
-        System.out.println("INSERISCI LIVELLO :");
-        do {
-            n = s.nextInt();
-            if(n < 1 || n >i) System.out.println("VALORE INSERITO NON VALIDO RIPROVA :");
-        }while (n<1 || n>i );
-
-        return n;
-    }
-
-    public static int inputPuntiNecessari(int maxPunti)
-    {
+    public static int inputPuntiNecessari(int maxPunti) {
         int n;
         Scanner s = new Scanner(System.in);
-        System.out.println("INSERIRE I PUNTI NECESSARI PER ENTRARE IN QUEL LIVELLO : ");
+        System.out.println("PUNTI NECESSARI PER ENTRARE IN QUESTO LIVELLO : ");
         do {
             n = s.nextInt();
             if (n<0 || n >maxPunti) System.out.println("VALORE INSERITO NON VALIDO");
         }while (n<0 || n >maxPunti);
-
         return n;
     }
 
@@ -132,9 +122,9 @@ public class DashBoardAzienda {
             if(DashBoardAzienda.menuAdmin(aziendaLoggata.get()).isPresent()){
                 switch (DashBoardAzienda.menuAzienda()){
                     case 1 ->  DashBoardAzienda.menuCampagna(aziendaLoggata.get());
-                    case 2 ->  System.out.println("Work in progress...");
+                    case 2 ->  System.out.println("WORK IN PROGRESS...");
                     case 0 ->  {
-                        System.out.println("logout admin");
+                        System.out.println("LOGOUT ADMIN EFFETTUATO");
                         aziendaLoggata = Optional.empty();
                     }
                 }

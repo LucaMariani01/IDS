@@ -466,21 +466,35 @@ public class DbManager {
         return campagneDisponibili.get(scelta-1);
     }
 
-    public static String getCampagneUtente(String email) throws SQLException {
-        StringBuilder app= new StringBuilder();
+    public static void getCampagneUtente(String email) throws SQLException {
         DbConnector.init();
-        // NOME CAMPAGNA VA CAMBIATO PERO NON MI RICORDAVO COME L'AVEVAMO CHIAMATO NEL DB L'HO LASCIATO COSI.
-        ResultSet result = DbConnector.executeQuery("SELECT `id`,nomeCampagna FROM `clienticampagnaaderite` as cc," +
-                "`campagnelivello` as c,`campagnepunti` as p,`cashback` as ca,`membership` as m " +
-                "WHERE  emailCliente ="+email+" and c.id = cc.id and p.id = cc.id and cc.id = ca.id and m.id =cc.id;");
-        int i = 0 ;
-        while (result.next())
-        {
-            app.append(i).append(") ID CAMPAGNA : ").append(result.getString("id")).append(" NOME CAMPAGNA : ").append(result.getString("nomeCampagna"));
-            app.append("\n");
+        ResultSet campagneLivello = DbConnector.executeQuery("SELECT cl.`nome`,cl.`dataInizio`,cl.`dataFine`,cl.`numLivelli`,az.`nome` as azienda  FROM `clienticampagnaaderite` as cc,`campagnelivello` as cl,`aziende` as az WHERE cc.`campagnelivello` = cl.`id` and cl.`azienda` = az.`partitaIva` and cc.`emailCliente`='"+email+"';");
+        ResultSet campagnePunti = DbConnector.executeQuery("SELECT cp.`nome`,cp.`dataInizio`,cp.`dataFine`,cp.`maxPunti`,az.`nome` as azienda FROM `clienticampagnaaderite` as cc,`campagnepunti` as cp,`aziende` as az WHERE cc.`campagnepunti` = cp.`id` and cp.`azienda` = az.`partitaIva` and cc.`emailCliente`='"+email+"';");
+        ResultSet campagneCashback = DbConnector.executeQuery("SELECT cb.`nome`,cb.`dataInizio`,cb.`dataFine`,cb.`sogliaMinima`,cb.`sogliaMassima`,az.`nome` as azienda FROM `clienticampagnaaderite` as cc,`cashback` as cb,`aziende` as az WHERE cc.`cashback` = cb.`id` and cb.`azienda` = az.`partitaIva` and cc.`emailCliente`='"+email+"';");
+        ResultSet campagneMembership = DbConnector.executeQuery("SELECT cm.`nome`,cm.`dataInizio`,cm.`dataFine`,cm.`costo`,az.`nome` as azienda FROM `clienticampagnaaderite` as cc,`membership` as cm,`aziende` as az WHERE cc.`membership` = cm.`id` and cm.`azienda` = az.`partitaIva` and cc.`emailCliente`='"+email+"';");
+
+        int i = 0;
+        while (campagneLivello.next()) {
+            System.out.println(i+") "+campagneLivello.getString("nome")+"\t"+campagneLivello.getDate("dataInizio")+
+                    "\t"+campagneLivello.getDate("dataFine")+"\tAzienda: "+campagneLivello.getString("azienda")+"\tNum Livelli: "+campagneLivello.getInt("numLivelli"));
             i++;
         }
-        return app.toString();
+        while (campagnePunti.next()) {
+            System.out.println(i+")"+campagnePunti.getString("nome")+"\t"+campagnePunti.getDate("dataInizio")+
+                    "\t"+campagnePunti.getDate("dataFine")+"\tAzienda: "+campagnePunti.getString("azienda")+"\tMassimo punti: "+campagnePunti.getInt("maxPunti"));
+            i++;
+        }
+        while (campagneCashback.next()) {
+            System.out.println(i+")"+campagneCashback.getString("nome")+"\t"+campagneCashback.getDate("dataInizio")+
+                    "\t"+campagneCashback.getDate("dataFine")+"\tAzienda: "+campagneCashback.getString("azienda")+
+                    "\tSoglia minima: "+campagneCashback.getInt("sogliaMinima")+"\tSoglia massima: "+campagneCashback.getInt("sogliaMassima"));
+            i++;
+        }
+        while (campagneMembership.next()) {
+            System.out.println(i + ")" + campagneMembership.getString("nome") + "\t" + campagneMembership.getDate("dataInizio") +
+                    "\t" + campagneMembership.getDate("dataFine") + "\tAzienda: " + campagneMembership.getString("azienda") + "\tCosto: " + campagneMembership.getInt("costo"));
+            i++;
+        }
     }
 
 
