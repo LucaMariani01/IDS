@@ -383,7 +383,7 @@ public class DbManager {
             TipologiaCampagnaSconto tipoCampagnaScelta = TipologiaCampagnaSconto.values()[scegliCategoriaCampagna(aziendaScelta.get().getName())];
             String queryCampagneAzScelta = "SELECT * FROM `"+tipoCampagnaScelta+"` WHERE `azienda` = '"+aziendaScelta.get().getId()+"';";
             ResultSet campagneAzSel = DbConnector.executeQuery(queryCampagneAzScelta);
-            campagnaScelta = scegliCampagna(campagneAzSel);  //metodo per selezionare la scelta tra le campagne sconto disponibili
+            campagnaScelta = scegliCampagna(campagneAzSel,cliente, tipoCampagnaScelta);  //metodo per selezionare la scelta tra le campagne sconto disponibili
             if(campagnaScelta.compareTo("") != 0){
                 ResultSet listaCategoriaCampagnaSconto = DbConnector.executeQuery("SELECT * FROM `"+tipoCampagnaScelta+"` WHERE `nome` = '"+campagnaScelta+"';");
 
@@ -441,29 +441,38 @@ public class DbManager {
     }
 
     /**
-     * Permette la scelta di una campagna di un certo tipo appartenente ad una azienda già scelta
-     * @param result lista campagna appartenenti ad una certa azienda di un certo tipo
+     * Permette la scelta di una campagna di un certo tipo appartenente a un'azienda già scelta
+     * @param result lista campagna appartenenti a una certa azienda di un certo tipo
      * @return nome campagna sconto scelta
      */
-    public static String scegliCampagna(ResultSet result) throws SQLException {
+    public static String scegliCampagna(ResultSet result, Customer cliente, TipologiaCampagnaSconto tipoScelto) throws SQLException {
         Scanner scr = new Scanner(System.in);
         int scelta,index=1;
         String campagnaSconto;
         ArrayList<String> campagneDisponibili = new ArrayList<>();
-
         System.out.println("CAMPAGNE DISPONIBILI\n0) Annulla");
+        //ResultSet tabellaCampagnaScontoUtenti = DbConnector.executeQuery("SELECT *  FROM `clienticampagnaaderite`;");
         while(result.next()){
-            campagnaSconto = result.getString("nome");
-            System.out.println(index+") "+campagnaSconto);
-            campagneDisponibili.add(campagnaSconto);
-            index ++;
+            if(!checkDoppiaIscrione(cliente,tipoScelto,result.getInt("id"))){
+                campagnaSconto = result.getString("nome");
+                System.out.println(index+") "+campagnaSconto);
+                campagneDisponibili.add(campagnaSconto);
+                index ++;
+            }
         }
         do {
             System.out.println("A QUALE CAMPAGNA VUOI ISCRIVERTI?");
             scelta = scr.nextInt();
         }while(scelta<0 || scelta>index);
+
+
         if(scelta == 0) return "";  //il cliente non è interessato alle campagne sconto proposte
         return campagneDisponibili.get(scelta-1);
+    }
+
+    public static boolean checkDoppiaIscrione(Customer cliente, TipologiaCampagnaSconto tipoScelto,int codiceCampagnaSconto ) throws SQLException {
+        ResultSet resultSet = DbConnector.executeQuery("SELECT `emailCliente` ,'"+tipoScelto+"'  FROM `clienticampagnaaderite` WHERE "+tipoScelto+" = "+codiceCampagnaSconto+" and  emailCliente = '"+cliente.getId()+"' ;");
+        return resultSet.next();
     }
 
     public static void getCampagneUtente(String email) throws SQLException {
