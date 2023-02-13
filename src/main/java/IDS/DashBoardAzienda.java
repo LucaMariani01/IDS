@@ -26,8 +26,8 @@ public class DashBoardAzienda {
     public static Optional<Azienda> mainMenu() throws SQLException {
         System.out.println("\nDASHBOARD AZIENDA");
         return switch (sceltaMainMenu()) {
-            case 1 -> DbManager.loginAzienda();
-            case 2 -> DbManager.registrazioneAzienda();
+            case 1 -> DbManagerAzienda.loginAzienda();
+            case 2 -> DbManagerAzienda.registrazioneAzienda();
             default -> Optional.empty();
         };
     }
@@ -35,8 +35,8 @@ public class DashBoardAzienda {
     public static Optional<Admin> menuAdmin(Azienda azienda) throws SQLException {
         System.out.println("\nDASHBOARD ADMIN");
          return switch (sceltaMainMenu()) {
-            case 1 -> DbManager.loginAdmin(azienda);
-            case 2 -> DbManager.registrazioneAdmin(azienda);
+            case 1 -> DbManagerAdmin.loginAdmin(azienda);
+            case 2 -> DbManagerAdmin.registrazioneAdmin(azienda);
             default -> Optional.empty();
         };
     }
@@ -85,19 +85,19 @@ public class DashBoardAzienda {
     public static void creaCampagnaScelta(int scelta,Azienda a) throws SQLException{
         switch (scelta){
             case(1):
-                if(DbManager.creaCampagnaPunti(a.getId()).isPresent()) System.out.println("CAMPAGNA A PUNTI CREATA CON SUCCESSO");
+                if(DbManagerCampagne.creaCampagnaPunti(a.getId()).isPresent()) System.out.println("CAMPAGNA A PUNTI CREATA CON SUCCESSO");
                 else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA A PUNTI");
                 break;
             case(2)://campagna livelli
-                if(DbManager.creaCampagnaLivelli(a.getId()).isPresent())System.out.println("CAMPAGNA A LIVELLI CREATA CON SUCCESSO");
+                if(DbManagerCampagne.creaCampagnaLivelli(a.getId()).isPresent())System.out.println("CAMPAGNA A LIVELLI CREATA CON SUCCESSO");
                 else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA A LIVELLI");
                 break;
             case (3): //campagna cashback
-                if(DbManager.creaCampagnaCashback(a.getId()).isPresent())System.out.println("CAMPAGNA CASHBACK CREATA CON SUCCESSO");
+                if(DbManagerCampagne.creaCampagnaCashback(a.getId()).isPresent())System.out.println("CAMPAGNA CASHBACK CREATA CON SUCCESSO");
                 else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA CASHBACK");
                 break;
             case (4)://membership esclusiva
-                if(DbManager.creaMembership(a.getId()).isPresent())System.out.println("CAMPAGNA MEMBERSHIP CREATA CON SUCCESSO");
+                if(DbManagerCampagne.creaMembership(a.getId()).isPresent())System.out.println("CAMPAGNA MEMBERSHIP CREATA CON SUCCESSO");
                 else System.out.println("ERRORE NELLA CREAZIONE DELLA CAMPAGNA MEMBERSHIP");
                 break;
             case (5)://programma coalizione

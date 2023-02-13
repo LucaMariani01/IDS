@@ -20,11 +20,11 @@ public class CampagnaPunti extends Campagna{
     public boolean aggiungiPremi() throws SQLException {
         int puntiNecessari = DashBoardAzienda.inputPuntiNecessari(this.maxPunti);
 
-        for (Premio p: DbManager.getPremi(puntiNecessari)){
+        for (Premio p: DbManagerCampagne.getPremi(puntiNecessari)){
             if(this.premi.containsKey(p)) System.out.println("PREMIO PRESENTE NON INSERITO");
             else{
                 this.premi.put(p,puntiNecessari);
-                DbManager.aggiungiPremio(p,puntiNecessari,super.getId());
+                DbManagerCampagne.aggiungiPremio(p,puntiNecessari,super.getId());
             }
         }
 

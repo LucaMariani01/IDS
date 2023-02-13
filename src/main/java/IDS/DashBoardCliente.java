@@ -23,8 +23,8 @@ public class DashBoardCliente {
 
     public static Optional<Customer> mainMenu() throws SQLException {
         return switch (sceltaMainMenu()) {
-            case 1 -> DbManager.loginCliente();
-            case 2 -> DbManager.registrazioneCliente();
+            case 1 -> DbManagerCliente.loginCliente();
+            case 2 -> DbManagerCliente.registrazioneCliente();
             default -> Optional.empty();
         };
     }
@@ -50,7 +50,7 @@ public class DashBoardCliente {
             do{
                 azioneCliente = DashBoardCliente.sceltaAzioniUtente();
                 switch (azioneCliente){
-                    case 1 ->  DbManager.sceltaAziendaCampagneDisponibili(clienteLoggato.get());
+                    case 1 ->  DbManagerCliente.sceltaAziendaCampagneDisponibili(clienteLoggato.get());
                     case 2 ->  clienteLoggato.get().stampaCampagneAderite();
                     case 0 ->  {
                         clienteLoggato = Optional.empty();

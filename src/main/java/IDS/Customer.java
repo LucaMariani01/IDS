@@ -32,7 +32,7 @@ public class Customer extends myCliente{
     public void stampaCampagneAderite() {
         System.out.println("Campagne aderite dal cliente : "+this.cognome);
         try {
-            DbManager.getCampagneUtente(this.getId());
+            DbManagerCliente.getCampagneUtente(this.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
