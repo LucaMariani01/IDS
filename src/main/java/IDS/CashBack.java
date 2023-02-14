@@ -24,20 +24,6 @@ public class CashBack extends Campagna{
 
     }
 
-    public ArrayList<Categoria> getCategorieProdotti() throws SQLException {
-        ArrayList<Categoria> categorieProdotti = new ArrayList<>();
-        Categoria categoria;
-        DbConnector dbConnector = new DbConnector();
-        String selectCategorie = "SELECT * FROM `categorieProdotti` WHERE `programmaCashBack` = "+this.getId()+"";
-        DbConnector.init();
-        ResultSet result = dbConnector.executeQuery(selectCategorie);
-        while (result.next()){
-             categoria = new CategoriaProdotto(result.getString("nome"),result.getString("descrizione"));
-             categorieProdotti.add(categoria);
-        }
-        return categorieProdotti;
-    }
-
     public double getSogliaMinimaCashBack() {
         return sogliaMinimaCashBack;
     }

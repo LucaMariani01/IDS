@@ -29,16 +29,12 @@ public class DbManagerCliente {
     public static Optional<Customer> registrazioneCliente() {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
-
         System.out.println("NOME: ");
         String nome = input.next();
-
         System.out.println("COGNOME: ");
         String cognome = input.next();
-
         System.out.println("EMAIL: ");
         String email = input.next();
-
         System.out.println("PASSWORD: ");
         String pass = input.next();
 
@@ -70,10 +66,11 @@ public class DbManagerCliente {
                 ResultSet listaCategoriaCampagnaSconto = DbConnector.executeQuery("SELECT * FROM `"+tipoCampagnaScelta+"` WHERE `nome` = '"+campagnaScelta+"';");
 
                 while (listaCategoriaCampagnaSconto.next()){
-                    int id=listaCategoriaCampagnaSconto.getInt("id");
-                    DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite` (`emailCliente`, `"+tipoCampagnaScelta+"`)" +
-                            " VALUES ('"+cliente.getId()+"',"+id+");");
-                    if(DbManagerCarte.creaNuovaCarta(cliente.getId(),tipoCampagnaScelta,id).isPresent()) System.out.println("NUOVA CARTA CREATA");
+                    int idCampScelta=listaCategoriaCampagnaSconto.getInt("id");
+                    DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite` (`emailCliente`, `"+tipoCampagnaScelta+"`) VALUES ('"+cliente.getId()+"',"+idCampScelta+");");
+
+                    if(DbManagerCarte.creaNuovaCarta(cliente.getId(),tipoCampagnaScelta,idCampScelta).isPresent())
+                        System.out.println("NUOVA CARTA CREATA");
                     else System.out.println("ERRORE CREAZIONE CARTA");
                 }
             } else System.out.println("PROCEDURA DI ISCRIZIONE ANNULLATA.");
@@ -149,7 +146,6 @@ public class DbManagerCliente {
             System.out.println("A QUALE CAMPAGNA VUOI ISCRIVERTI?");
             scelta = scr.nextInt();
         }while(scelta<0 || scelta>index);
-
 
         if(scelta == 0) return "";  //il cliente non è interessato alle campagne sconto proposte
         return campagneDisponibili.get(scelta-1);

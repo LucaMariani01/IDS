@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Customer extends myCliente{
+public class Customer extends MyCliente {
     private final String cognome;
     private final ArrayList<CampagnaSconti> listaCampagneAderite; // puo essere tolto
     private final String email;

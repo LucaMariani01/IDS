@@ -6,17 +6,15 @@ import java.util.Optional;
 public class DbManagerCarte {
 
     public static Optional<Carte> creaNuovaCarta(String utente,TipologiaCampagnaSconto tipo , int id) throws SQLException {
-
-        return switch (tipo)
-        {
-            case cashback -> creaNuovaCartaCash(utente,id);
+        return switch (tipo) {
+            //case cashback -> creaNuovaCartaCash(utente,id);
             case campagnelivello -> creaNuovaCartaLivello(utente,id);
             case membership -> creaNuovaCartaMember(utente,id);
             case campagnepunti -> creaNuovaCartaPunti(utente,id);
             default -> Optional.empty();
         };
-
     }
+
     // TODO: 14/02/2023 creare le tabelle per ogni carta con le 3 collone
     public static Optional<Carte> creaNuovaCartaLivello(String utente, int id) throws SQLException {
         DbConnector.init();
@@ -42,12 +40,14 @@ public class DbManagerCarte {
         return Optional.of(new CarteMembership(m, utente));
     }
 
-    public static Optional<Carte> creaNuovaCartaCash(String utente, int c) throws SQLException {
+    /*public static Optional<Carte> creaNuovaCartaCash(String utente, int c) throws SQLException {
         DbConnector.init();
         DbConnector.insertQuery("INSERT INTO `cartacash` (`emailCliente`, `idCampagna`,`cash`)" +
                 " VALUES ('"+utente+"','"+c+"','"+0+"');");
 
         return Optional.of(new CarteCashback(c,utente,0));
     }
+
+     */
 
 }

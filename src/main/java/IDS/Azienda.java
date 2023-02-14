@@ -2,7 +2,7 @@ package IDS;
 
 import java.util.List;
 
-public class Azienda extends myCliente{
+public class Azienda extends MyCliente {
     private final String partitaIva;
     private final List<Admin> listaAdmin;
 

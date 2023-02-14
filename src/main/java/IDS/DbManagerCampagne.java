@@ -114,7 +114,7 @@ public class DbManagerCampagne {
 
     public static Optional<CampagnaSconti> creaCampagnaLivelli(String partitaIvaAzienda) {
         Scanner input = new Scanner(System.in);
-        ArrayList<myLivello<MyPremio>> listaLivelli = new ArrayList<>();
+        ArrayList<MyLivello<MyPremio>> listaLivelli = new ArrayList<>();
         ArrayList<MyPremio> listaPremi = new ArrayList<>();
         DbConnector.init();
         int idCampagna,idLivello,numLivelli;
@@ -160,7 +160,7 @@ public class DbManagerCampagne {
                     listaPremi.clear();
                     listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
                 }while(premioPresente(listaPremi)); //verifico che i premi per questo livello non siano duplicati
-                listaLivelli.add(new myLivello<>((i + 1), nomeLivello, listaPremi, requisito));
+                listaLivelli.add(new MyLivello<>((i + 1), nomeLivello, listaPremi, requisito));
                 for (MyPremio myPremio : listaPremi){ //aggiunta premi al livello corrispondente al db
                     try {
                         DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioLivello`) VALUES ('" + myPremio.getCod() + "','" + myPremio.getNome() + "','" + idLivello + "');");

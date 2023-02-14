@@ -1,9 +1,9 @@
 package IDS;
 
-public abstract class myCliente implements ClientePiattaforma{
+public abstract class MyCliente implements ClientePiattaforma{
     private final String nome;
 
-    public myCliente(String nome) {
+    public MyCliente(String nome) {
         this.nome = nome;
     }
 
