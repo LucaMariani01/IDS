@@ -1,5 +1,6 @@
 package IDS;
 
+import java.lang.ref.Cleaner;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -68,10 +69,7 @@ public class DbManagerCliente {
                 while (listaCategoriaCampagnaSconto.next()){
                     int idCampScelta=listaCategoriaCampagnaSconto.getInt("id");
                     DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite` (`emailCliente`, `"+tipoCampagnaScelta+"`) VALUES ('"+cliente.getId()+"',"+idCampScelta+");");
-
-                    if(DbManagerCarte.creaNuovaCarta(cliente.getId(),tipoCampagnaScelta,idCampScelta).isPresent())
-                        System.out.println("NUOVA CARTA CREATA");
-                    else System.out.println("ERRORE CREAZIONE CARTA");
+                    creaTessera(cliente,tipoCampagnaScelta,idCampScelta);
                 }
             } else System.out.println("PROCEDURA DI ISCRIZIONE ANNULLATA.");
             System.out.println("VUOLE ISCRIVERSI AD UN'ALTRA CAMPAGNA SCONTO? (s/n)");
@@ -101,6 +99,22 @@ public class DbManagerCliente {
         }while(scelta<0 || scelta>aziendeIscritte.size());
         if(scelta == 0) return Optional.empty();
         return Optional.of(aziendeIscritte.get(scelta-1));
+    }
+    private static void creaTessera(Customer cliente, TipologiaCampagnaSconto tipoCampagna, int idCampScelta )throws SQLException{
+        ResultSet res = DbConnector.executeQuery("SELECT idAdesione FROM `clienticampagnaaderite` " +
+                "WHERE `emailCliente`='"+cliente.getId()+"' and `"+tipoCampagna+"` = "+idCampScelta+";");
+        if(!res.next()) return;
+        switch (tipoCampagna) {
+            case cashback -> DbConnector.insertQuery("INSERT INTO `tessere`(`utente`,`cashbackAccumulato`, `adesione`) " +
+                    "VALUES ('" + cliente.getId() + "','" + 0 + "','" + res.getInt("idAdesione") + "');");
+
+            case campagnelivello -> DbConnector.insertQuery("INSERT INTO `tessere`(`utente`,`livelloAttuale`, `adesione`) " +
+                    "VALUES ('"+cliente.getId()+"','"+1+"','"+res.getInt("idAdesione")+"');");
+
+            case campagnepunti ->  DbConnector.insertQuery("INSERT INTO `tessere`(`utente`,`puntiAccumulati`, `adesione`) " +
+                    "VALUES ('" + cliente.getId() + "','" + 0 + "','" + res.getInt("idAdesione") + "');");
+        }
+        System.out.println("TESSERA CREATA!");
     }
 
     /**
