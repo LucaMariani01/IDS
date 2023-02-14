@@ -61,7 +61,6 @@ public class DbManagerCliente {
             System.out.println("OPERAZIONE ANNULLATA.");
             return;
         }
-
         do{
             TipologiaCampagnaSconto tipoCampagnaScelta = TipologiaCampagnaSconto.values()[scegliCategoriaCampagna(aziendaScelta.get().getName())];
             String queryCampagneAzScelta = "SELECT * FROM `"+tipoCampagnaScelta+"` WHERE `azienda` = '"+aziendaScelta.get().getId()+"';";
@@ -70,11 +69,14 @@ public class DbManagerCliente {
             if(campagnaScelta.compareTo("") != 0){
                 ResultSet listaCategoriaCampagnaSconto = DbConnector.executeQuery("SELECT * FROM `"+tipoCampagnaScelta+"` WHERE `nome` = '"+campagnaScelta+"';");
 
-                while (listaCategoriaCampagnaSconto.next())
+                while (listaCategoriaCampagnaSconto.next()){
+                    int id=listaCategoriaCampagnaSconto.getInt("id");
                     DbConnector.insertQuery("INSERT INTO `clienticampagnaaderite` (`emailCliente`, `"+tipoCampagnaScelta+"`)" +
-                            " VALUES ('"+cliente.getId()+"',"+listaCategoriaCampagnaSconto.getInt("id")+");");
+                            " VALUES ('"+cliente.getId()+"',"+id+");");
+                    if(DbManagerCarte.creaNuovaCarta(cliente.getId(),tipoCampagnaScelta,id).isPresent()) System.out.println("NUOVA CARTA CREATA");
+                    else System.out.println("ERRORE CREAZIONE CARTA");
+                }
             } else System.out.println("PROCEDURA DI ISCRIZIONE ANNULLATA.");
-
             System.out.println("VUOLE ISCRIVERSI AD UN'ALTRA CAMPAGNA SCONTO? (s/n)");
             continua = scr.next();
         }while(!(continua.compareToIgnoreCase("n") ==0));
