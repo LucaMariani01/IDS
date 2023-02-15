@@ -105,17 +105,6 @@ public class DashBoardAzienda {
         }
     }
 
-    public static int inputPuntiNecessari(int maxPunti) {
-        int n;
-        Scanner s = new Scanner(System.in);
-        System.out.println("PUNTI NECESSARI PER ENTRARE IN QUESTO LIVELLO : ");
-        do {
-            n = s.nextInt();
-            if (n<0 || n >maxPunti) System.out.println("VALORE INSERITO NON VALIDO");
-        }while (n<0 || n >maxPunti);
-        return n;
-    }
-
     public static void azioneAzienda() throws SQLException {
         Optional<Azienda> aziendaLoggata;
         aziendaLoggata = DashBoardAzienda.mainMenu();

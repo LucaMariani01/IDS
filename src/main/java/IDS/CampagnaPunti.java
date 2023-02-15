@@ -17,22 +17,7 @@ public class CampagnaPunti extends Campagna{
         return this.maxPunti;
     }
 
-    public boolean aggiungiPremi() throws SQLException {
-        int puntiNecessari = DashBoardAzienda.inputPuntiNecessari(this.maxPunti);
 
-        for (Premio p: DbManagerCampagne.getPremi(puntiNecessari)){
-            if(this.premi.containsKey(p)) System.out.println("PREMIO PRESENTE NON INSERITO");
-            else{
-                this.premi.put(p,puntiNecessari);
-                DbManagerCampagne.aggiungiPremio(p,puntiNecessari,super.getId());
-            }
-        }
 
-        return true;
-    }
 
-    public Map<Premio,Integer> getPremi()
-    {
-        return this.premi;
-    }
 }

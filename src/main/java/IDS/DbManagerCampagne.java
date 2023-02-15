@@ -1,20 +1,21 @@
 package IDS;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class DbManagerCampagne {
 
     public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException {
         Scanner input = new Scanner(System.in);
+        Map<MyPremio,Integer> premi = new HashMap<>();
+        String nomePremio;
+        int puntiRiscatto;
         DbConnector.init();
 
         System.out.println("NOME CAMPAGNA: "); //input dati login
         String nome = input.next();
         int id = azienda.hashCode() + nome.hashCode();
-        System.out.println("INSERIRE MASSIMALE: "); //input dati login
+        System.out.println("INSERIRE MAX PUNTI: "); //input dati login
         int maxPunti = Integer.parseInt(input.next());
         System.out.println("DATA INIZIO: ");
         String  dateIn = inputDataInizioFineCampagna();
@@ -28,21 +29,26 @@ public class DbManagerCampagne {
             System.out.println("Errore nella creazione della campagna sconto, nome già inserito.");
             return Optional.empty();
         }
-        DbConnector.closeConnection();
+        String continua = "s";
+        System.out.println("INSERIRE I PREMI  :");
 
-        CampagnaPunti c = new CampagnaPunti(maxPunti, id, nome, dateFin, dateIn);
-        int flag = 1;
-        while (flag == 1)
-        {
-            System.out.println("INSERISCI PREMI :");
-            if(c.aggiungiPremi()) System.out.println("PREMI AGGIUNTI CON SUCCESSO");
-            else System.out.println("PREMI NON AGGIUNTI ");
-
-            System.out.println("VUOI INSERIRE ALTRI PREMI : [ALTRO-no] [1-si]");
-            flag = input.nextInt();
+        while(continua.compareToIgnoreCase("s") == 0){
+            System.out.println("PREMIO: ");
+            nomePremio=input.next();
+            do{
+                System.out.println("INSERIRE I NECESSARI PUNTI PER RISCATTARE IL PREMIO (max: "+maxPunti+"): ");
+                puntiRiscatto = input.nextInt();
+            }while(puntiRiscatto<0 || puntiRiscatto> maxPunti);
+            MyPremio p = new MyPremio((nome.hashCode()+Integer.hashCode(puntiRiscatto)), nomePremio);
+            premi.put(p,puntiRiscatto);
+            System.out.println("INSERIRE ALTRI PREMI? (s/n) :");
+            continua = input.next();
         }
 
-        return Optional.of(c);
+        aggiungiPremi(premi,id);
+        DbConnector.closeConnection();
+        return Optional.of(new CampagnaPunti(maxPunti, id, nome, dateFin, dateIn));
+
     }
 
 
@@ -156,6 +162,7 @@ public class DbManagerCampagne {
 
             do {
                 erroreInserimento = false;
+                System.out.println("AGGIUNTA PREMI PER LIVELLO APPENA CREATO");
                 do {
                     listaPremi.clear();
                     listaPremi.addAll(getPremi(idLivello));  //input premi corrispondenti al livello
@@ -200,7 +207,7 @@ public class DbManagerCampagne {
         Scanner input = new Scanner(System.in);
         ArrayList<MyPremio> listaPremi = new ArrayList<>();
         String continua = "s";
-        System.out.println("AGGIUNTA PREMI PER LIVELLO APPENA CREATO");
+
         while(continua.compareToIgnoreCase("s") == 0){
             System.out.println("NOME PREMIO");
             String nomePremio = input.nextLine();
@@ -212,15 +219,17 @@ public class DbManagerCampagne {
         return listaPremi;
     }
 
-    public static boolean aggiungiPremio(Premio p,int puntiNecessari,int codiceCampagna) {
-        DbConnector.init();
-        try {
-            DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioPunti`, `puntiNecessari`) " +
-                    "VALUES ('" + p.getCod() + "','" + p.getNome() + "','" + codiceCampagna + "','"+puntiNecessari+"');");
-        } catch (SQLException e) {
-            System.out.println("Errore nell'aggiunta di un premio.");
-            return false;
+
+    private static void aggiungiPremi(Map<MyPremio, Integer> premi, int codiceCampagna){
+        for (MyPremio key : premi.keySet()) {
+            Integer puntiNecessari = premi.get(key);
+            try {
+                DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioPunti`, `puntiNecessari`) " +
+                        "VALUES (" + key.getCod() + ",'" + key.getNome() + "'," + codiceCampagna + ","+puntiNecessari+");");
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
         }
-        return true;
+
     }
 }
