@@ -219,6 +219,10 @@ public class DbManagerCliente {
         DbConnector.closeConnection();
     }
 
+    /**
+     * permette al cliente di visualizzare le recensioni lasciate da altri clienti per ogni azienda
+     * @throws SQLException
+     */
     public static void visualizzaRecensioni() throws SQLException {
         DbConnector.init();
         System.out.println("SELEZIONA L'AZIENDA DI CUI VISUALIZZARE LE RECENSIONI: ");
