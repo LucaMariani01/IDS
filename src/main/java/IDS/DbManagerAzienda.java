@@ -59,6 +59,11 @@ public class DbManagerAzienda {
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
+    /**
+     * permette all'azienda di visualizzare tutte le recensioni lasciate dai clienti
+     * @param azienda azienda loggata che visualizza le recensioni
+     * @throws SQLException
+     */
     public static void visualizzaRecensioniClienti(Azienda azienda)throws SQLException{
         DbConnector.init();
         System.out.println("RECENSIONI AZIENDA");
