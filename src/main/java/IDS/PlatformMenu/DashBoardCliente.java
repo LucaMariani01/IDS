@@ -1,4 +1,7 @@
-package IDS;
+package IDS.PlatformMenu;
+
+import IDS.DbManager.DbManagerCliente;
+import IDS.PlatformData.Customer;
 
 import java.sql.SQLException;
 import java.util.Optional;

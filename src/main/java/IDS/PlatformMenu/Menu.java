@@ -1,4 +1,4 @@
-package IDS;
+package IDS.PlatformMenu;
 
 import java.util.Scanner;
 

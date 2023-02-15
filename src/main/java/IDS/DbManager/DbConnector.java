@@ -1,4 +1,4 @@
-package IDS;
+package IDS.DbManager;
 import java.sql.*;
 
 public class DbConnector {

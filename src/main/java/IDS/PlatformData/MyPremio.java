@@ -1,6 +1,8 @@
-package IDS;
+package IDS.PlatformData;
 
-public class MyPremio implements Premio{
+import IDS.PlatformData.Premio;
+
+public class MyPremio implements Premio {
 
     private int codice;
 

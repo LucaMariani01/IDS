@@ -1,4 +1,6 @@
-package IDS;
+package IDS.PlatformData;
+
+import IDS.DbManager.DbManagerCliente;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -1,4 +1,7 @@
-package IDS;
+package IDS.DbManager;
+
+import IDS.PlatformData.Azienda;
+import IDS.PlatformData.Customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

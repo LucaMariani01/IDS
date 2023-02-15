@@ -1,8 +1,8 @@
-package IDS;
+package IDS.PlatformData;
 
 import java.util.ArrayList;
 
-public class Membership extends Campagna{
+public class Membership extends Campagna {
     private final double costo;
     private ArrayList<Premio> catalogoPremi;
 

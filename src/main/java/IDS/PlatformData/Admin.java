@@ -1,4 +1,6 @@
-package IDS;
+package IDS.PlatformData;
+
+import IDS.PlatformData.Azienda;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package IDS;
+package IDS.PlatformData;
 
 import java.util.List;
 

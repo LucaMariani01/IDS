@@ -1,4 +1,6 @@
-package IDS;
+package IDS.DbManager;
+
+import IDS.PlatformData.*;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -219,8 +221,7 @@ public class DbManagerCampagne {
         return listaPremi;
     }
 
-
-    private static void aggiungiPremi(Map<MyPremio, Integer> premi, int codiceCampagna){
+    public static void aggiungiPremi(Map<MyPremio, Integer> premi, int codiceCampagna){
         for (MyPremio key : premi.keySet()) {
             Integer puntiNecessari = premi.get(key);
             try {
@@ -230,6 +231,5 @@ public class DbManagerCampagne {
                 System.out.println(e.toString());
             }
         }
-
     }
 }

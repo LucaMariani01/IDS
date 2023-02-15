@@ -1,4 +1,4 @@
-package IDS;
+package IDS.PlatformData;
 
 public abstract class Campagna implements CampagnaSconti {
     private final int id;

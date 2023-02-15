@@ -1,9 +1,8 @@
-package IDS;
+package IDS.PlatformData;
 
-import java.sql.SQLException;
 import java.util.*;
 
-public class CampagnaPunti extends Campagna{
+public class CampagnaPunti extends Campagna {
     private final int maxPunti;
     private final Map<Premio,Integer> premi;
 

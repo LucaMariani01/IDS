@@ -1,4 +1,4 @@
-package IDS;
+package IDS.DbManager;
 
 public enum TipologiaCampagnaSconto {
     campagnelivello ("CAMPAGNA A LIVELLI"),

@@ -1,7 +1,8 @@
-package IDS;
+package IDS.PlatformData;
+
 import java.util.ArrayList;
 
-public class ProgrammaLivelli<P extends Premio> extends Campagna{
+public class ProgrammaLivelli<P extends Premio> extends Campagna {
 
     private final int numeroLivelli;
     private final ArrayList<MyLivello<P>> listaLivelli;

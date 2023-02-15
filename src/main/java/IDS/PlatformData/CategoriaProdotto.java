@@ -1,6 +1,8 @@
-package IDS;
+package IDS.PlatformData;
 
-public class CategoriaProdotto implements Categoria{
+import IDS.PlatformData.Categoria;
+
+public class CategoriaProdotto implements Categoria {
     private final String nome;
     private String descrizione;
 

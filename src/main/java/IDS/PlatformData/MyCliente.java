@@ -1,6 +1,8 @@
-package IDS;
+package IDS.PlatformData;
 
-public abstract class MyCliente implements ClientePiattaforma{
+import IDS.PlatformData.ClientePiattaforma;
+
+public abstract class MyCliente implements ClientePiattaforma {
     private final String nome;
 
     public MyCliente(String nome) {

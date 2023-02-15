@@ -1,10 +1,11 @@
-package IDS;
+package IDS.PlatformData;
 
-import java.sql.ResultSet;
+import IDS.DbManager.DbConnector;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CashBack extends Campagna{
+public class CashBack extends Campagna {
     private  double  sogliaMinimaCashBack;
     private  double  sogliaMaxCashBack;
     private final ArrayList<Categoria> categorieProdotti; // VA TOLTA

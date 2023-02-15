@@ -1,6 +1,11 @@
-package IDS;
+package IDS.PlatformMenu;
 
-import java.sql.ResultSet;
+import IDS.DbManager.DbManagerAdmin;
+import IDS.DbManager.DbManagerAzienda;
+import IDS.DbManager.DbManagerCampagne;
+import IDS.PlatformData.Admin;
+import IDS.PlatformData.Azienda;
+
 import java.sql.SQLException;
 
 import java.util.Optional;

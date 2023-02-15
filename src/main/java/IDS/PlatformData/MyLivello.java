@@ -1,8 +1,11 @@
-package IDS;
+package IDS.PlatformData;
+
+import IDS.PlatformData.Livello;
+import IDS.PlatformData.Premio;
 
 import java.util.ArrayList;
 
-public class MyLivello<P extends Premio> implements Livello<P>{
+public class MyLivello<P extends Premio> implements Livello<P> {
     private final int numero;
     private final String nome;
     private final ArrayList<P> catalogoPremi;
