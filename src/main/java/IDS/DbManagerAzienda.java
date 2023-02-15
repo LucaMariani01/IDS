@@ -59,5 +59,15 @@ public class DbManagerAzienda {
         return Optional.of(new Azienda(nome,partitaIva,new ArrayList<>()));
     }
 
+    public static void visualizzaRecensioniClienti(Azienda azienda)throws SQLException{
+        DbConnector.init();
+        System.out.println("RECENSIONI AZIENDA");
+        ResultSet result = DbConnector.executeQuery("SELECT * FROM `recensioni` " +
+                "inner join clienti on recensioni.utente = clienti.email WHERE azienda = "+azienda.getId()+";");
+        while(result.next()){
+            System.out.println(result.getString("nome")+": "+result.getString("recensione"));
+        }
+        DbConnector.closeConnection();
+    }
 
 }

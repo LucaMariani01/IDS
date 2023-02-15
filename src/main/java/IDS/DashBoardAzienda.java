@@ -1,5 +1,6 @@
 package IDS;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.Optional;
@@ -58,7 +59,7 @@ public class DashBoardAzienda {
         System.out.println("\nDASHBOARD AZIENDA");
         do{
             System.out.println("1)CREA NUOVA CAMPAGNA ");
-            System.out.println("2)...");
+            System.out.println("2)VISUALIZZA LE RECENSIONI DEI CLIENTI");
             System.out.println("0)ESCI");
             n = s.nextInt();
         }while ((n<0)||(n>2)) ;
@@ -122,7 +123,7 @@ public class DashBoardAzienda {
             if(DashBoardAzienda.menuAdmin(aziendaLoggata.get()).isPresent()){
                 switch (DashBoardAzienda.menuAzienda()){
                     case 1 ->  DashBoardAzienda.menuCampagna(aziendaLoggata.get());
-                    case 2 ->  System.out.println("WORK IN PROGRESS...");
+                    case 2 ->  DbManagerAzienda.visualizzaRecensioniClienti(aziendaLoggata.get());
                     case 0 ->  {
                         System.out.println("LOGOUT ADMIN EFFETTUATO");
                         aziendaLoggata = Optional.empty();
@@ -131,6 +132,8 @@ public class DashBoardAzienda {
             }else System.out.println("errore admin");
         }
     }
+
+
 }
 
 

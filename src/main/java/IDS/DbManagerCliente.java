@@ -1,5 +1,6 @@
 package IDS;
 
+import java.lang.ref.Cleaner;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,12 +8,6 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class DbManagerCliente {
-
-    /**
-     * Permette al cliente di effettuare il login alla piattaforma, se le informazioni inserite sono
-     * corrette un oggetto di tipo Customer viene restituito, altrimenti un Optional empty
-     * @return un oggetto di tipo Customer
-     */
     public static Optional<Customer> loginCliente() throws SQLException {
         Scanner input = new Scanner(System.in);
         ResultSet result;
@@ -25,18 +20,13 @@ public class DbManagerCliente {
 
         String queryLogin = "SELECT * FROM `clienti` WHERE `email` = '"+email+"' AND `password` = '"+password+"';";
         result = DbConnector.executeQuery(queryLogin);
-        if(!result.next()) return Optional.empty();  //utente non trovato
+        if(!result.next()) return Optional.empty();
 
         Customer cliente = new Customer(result.getString("nome"),result.getString("cognome"),result.getString("email"));
         DbConnector.closeConnection();
         return Optional.of(cliente);
     }
 
-    /**
-     * Permette al cliente di registrarsi alla piattaforma, se va a buon fine un oggetto di tipo Customer
-     * viene restituito, altrimenti un Optional empty viene restituito
-     * @return l'oggetto di tipo Customer contenente le informazioni
-     */
     public static Optional<Customer> registrazioneCliente() {
         Scanner input = new Scanner(System.in);
         DbConnector.init();
@@ -59,10 +49,6 @@ public class DbManagerCliente {
         return Optional.of(new Customer(nome, cognome, email));
     }
 
-    /**
-     * Permette al cliente di selezionare l'azienda di cui vuole visualizzare le campagne sconto disponibili
-     * @param cliente è il cliente che vuole effettuare l'iscrizione
-     */
     public static void sceltaAziendaCampagneDisponibili(Customer cliente)throws SQLException{
         DbConnector.init();
         Scanner scr = new Scanner(System.in);
@@ -114,14 +100,7 @@ public class DbManagerCliente {
         if(scelta == 0) return Optional.empty();
         return Optional.of(aziendeIscritte.get(scelta-1));
     }
-
-    /**
-     * Permette al cliente la creazione di una tessera al momento dell'iscrizione ad una certa campagna sconto
-     * @param cliente è il cliente che otterrà la tessera
-     * @param tipoCampagna è il tipo di campagna sconto scelta dal cliente a cui vuole iscriversi
-     * @param idCampScelta codice identificativo della campagna sconto scelta
-     */
-    private static void creaTessera(Customer cliente, TipologiaCampagnaSconto tipoCampagna, int idCampScelta) throws SQLException{
+    private static void creaTessera(Customer cliente, TipologiaCampagnaSconto tipoCampagna, int idCampScelta )throws SQLException{
         ResultSet res = DbConnector.executeQuery("SELECT idAdesione FROM `clienticampagnaaderite` " +
                 "WHERE `emailCliente`='"+cliente.getId()+"' and `"+tipoCampagna+"` = "+idCampScelta+";");
         if(!res.next()) return;
@@ -190,10 +169,6 @@ public class DbManagerCliente {
         return resultSet.next();
     }
 
-    /**
-     * Permette all'utente di visualizzare le campagne a cui è iscritto
-     * @param email email dell'utente
-     */
     public static void getCampagneUtente(String email) throws SQLException {
         DbConnector.init();
         ResultSet campagneLivello = DbConnector.executeQuery("SELECT cl.`nome`,cl.`dataInizio`,cl.`dataFine`,cl.`numLivelli`,az.`nome` as azienda  FROM `clienticampagnaaderite` as cc,`campagnelivello` as cl,`aziende` as az WHERE cc.`campagnelivello` = cl.`id` and cl.`azienda` = az.`partitaIva` and cc.`emailCliente`='"+email+"';");
@@ -226,15 +201,15 @@ public class DbManagerCliente {
     }
 
     /**
-     * Permette al cliente di lasciare una recensione a una determinata azienda
+     * permette al cliente di lasciare una recensione a una determinata azienda
      * @param cliente cliente che lascia la recensione
+     * @throws SQLException
      */
     public static void lasciaRecensione(Customer cliente) throws SQLException {
         DbConnector.init();
         Scanner scr = new Scanner(System.in);
         System.out.println("SELEZIONA L'AZIENDA DA RECENSIRE: ");
         Optional<Azienda> aziendaScelta = scegliAzienda();
-        if (aziendaScelta.isEmpty()) return;
         System.out.println("LASCIA UNA RECENSIONE: ");
         String recensione = scr.nextLine();
 
@@ -245,7 +220,8 @@ public class DbManagerCliente {
     }
 
     /**
-     * Permette al cliente di visualizzare le recensioni lasciate da altri clienti per l'azienda scelta
+     * permette al cliente di visualizzare le recensioni lasciate da altri clienti per ogni azienda
+     * @throws SQLException
      */
     public static void visualizzaRecensioni() throws SQLException {
         DbConnector.init();
@@ -256,9 +232,9 @@ public class DbManagerCliente {
                 "WHERE `azienda`='"+aziendaScelta.get().getId()+"';";
         ResultSet result = DbConnector.executeQuery(query);
 
-        while (result.next())
+        while (result.next()){
             System.out.println(result.getString("nomeCliente")+": "+result.getString("recensione"));
-
+        }
         DbConnector.closeConnection();
     }
 }
