@@ -94,7 +94,7 @@ public class DbManagerCliente {
             aziendeIscritte.add(new Azienda(result.getString("nome"),result.getString("partitaIva"),null));
         }
         do{
-            System.out.println("AZIENDA DI CUI VISUALIZZARE LE CAMPAGNE SCONTO: "); //scelta azienda della campagna sconti
+            System.out.println("SCEGLI AZIENDA: "); //scelta azienda della campagna sconti
             scelta = scr.nextInt();
         }while(scelta<0 || scelta>aziendeIscritte.size());
         if(scelta == 0) return Optional.empty();
@@ -147,7 +147,6 @@ public class DbManagerCliente {
         String campagnaSconto;
         ArrayList<String> campagneDisponibili = new ArrayList<>();
         System.out.println("CAMPAGNE DISPONIBILI\n0) Annulla");
-        //ResultSet tabellaCampagnaScontoUtenti = DbConnector.executeQuery("SELECT *  FROM `clienticampagnaaderite`;");
         while(result.next()){
             if(!checkDoppiaIscrizione(cliente,tipoScelto,result.getInt("id"))){
                 campagnaSconto = result.getString("nome");
@@ -199,5 +198,39 @@ public class DbManagerCliente {
                     "\t" + campagneMembership.getDate("dataFine") + "\tAzienda: " + campagneMembership.getString("azienda") + "\tCosto: " + campagneMembership.getInt("costo"));
             i++;
         }
+    }
+
+    /**
+     * permette al cliente di lasciare una recensione a una determinata azienda
+     * @param cliente cliente che lascia la recensione
+     * @throws SQLException
+     */
+    public static void lasciaRecensione(Customer cliente) throws SQLException {
+        DbConnector.init();
+        Scanner scr = new Scanner(System.in);
+        System.out.println("SELEZIONA L'AZIENDA DA RECENSIRE: ");
+        Optional<Azienda> aziendaScelta = scegliAzienda();
+        System.out.println("LASCIA UNA RECENSIONE: ");
+        String recensione = scr.nextLine();
+
+        DbConnector.insertQuery("INSERT INTO `recensioni`(`utente`, `recensione`, `azienda`) " +
+                "VALUES ('"+cliente.getId()+"','"+recensione+"','"+aziendaScelta.get().getId()+"')");
+
+        DbConnector.closeConnection();
+    }
+
+    public static void visualizzaRecensioni() throws SQLException {
+        DbConnector.init();
+        System.out.println("SELEZIONA L'AZIENDA DI CUI VISUALIZZARE LE RECENSIONI: ");
+        Optional<Azienda> aziendaScelta = scegliAzienda();
+        if(aziendaScelta.isEmpty()) return;
+        String query="SELECT DISTINCT c.`nome` as nomeCliente,`recensione` FROM `recensioni` as r,`clienti` as c, `aziende` as a " +
+                "WHERE `azienda`='"+aziendaScelta.get().getId()+"';";
+        ResultSet result = DbConnector.executeQuery(query);
+
+        while (result.next()){
+            System.out.println(result.getString("nomeCliente")+": "+result.getString("recensione"));
+        }
+        DbConnector.closeConnection();
     }
 }

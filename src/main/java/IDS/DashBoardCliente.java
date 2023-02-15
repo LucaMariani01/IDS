@@ -16,7 +16,7 @@ public class DashBoardCliente {
             System.out.println("0)EXIT");
             System.out.println("SCEGLI UN'OPZIONE: ");
             scelta=scr.nextInt();
-        }while(scelta<0 || scelta>2);
+        }while(scelta<0 || scelta>3);
 
         return scelta;
     }
@@ -35,10 +35,12 @@ public class DashBoardCliente {
         do{
             System.out.println("1)ISCRIVITI AD UNA CAMPAGNA SCONTI");
             System.out.println("2)VISUALIZZA LE TUE CAMPAGNE SCONTI");
+            System.out.println("3)LASCIA UNA RECENSIONE");
+            System.out.println("4)VISUALIZZA RECENSIONI");
             System.out.println("0)LOGOUT");
             System.out.println("SCEGLI UN'OPZIONE: ");
             scelta=scr.nextInt();
-        }while(scelta<0 || scelta>2);
+        }while(scelta<0 || scelta>4);
 
         return scelta;
     }
@@ -52,6 +54,8 @@ public class DashBoardCliente {
                 switch (azioneCliente){
                     case 1 ->  DbManagerCliente.sceltaAziendaCampagneDisponibili(clienteLoggato.get());
                     case 2 ->  clienteLoggato.get().stampaCampagneAderite();
+                    case 3 -> DbManagerCliente.lasciaRecensione(clienteLoggato.get());
+                    case 4 -> DbManagerCliente.visualizzaRecensioni();
                     case 0 ->  {
                         clienteLoggato = Optional.empty();
                         System.out.println("LOGOUT EFFETTUATO");
