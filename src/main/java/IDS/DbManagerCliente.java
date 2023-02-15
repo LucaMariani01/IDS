@@ -200,6 +200,11 @@ public class DbManagerCliente {
         }
     }
 
+    /**
+     * permette al cliente di lasciare una recensione a una determinata azienda
+     * @param cliente cliente che lascia la recensione
+     * @throws SQLException
+     */
     public static void lasciaRecensione(Customer cliente) throws SQLException {
         DbConnector.init();
         Scanner scr = new Scanner(System.in);
