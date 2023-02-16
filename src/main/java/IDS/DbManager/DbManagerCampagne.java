@@ -7,7 +7,7 @@ import java.util.*;
 
 public class DbManagerCampagne {
 
-    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) throws SQLException {
+    public static Optional<CampagnaPunti> creaCampagnaPunti(String azienda) {
         Scanner input = new Scanner(System.in);
         Map<MyPremio,Integer> premi = new HashMap<>();
         String nomePremio;
@@ -185,7 +185,7 @@ public class DbManagerCampagne {
     }
 
     /**
-     * Verifica se si sta cercando di inserire un premio duplicato per il livello corrente
+     * Verifica se si sta cercando d'inserire un premio duplicato per il livello corrente
      * @param listaPremi è la lista dei premi del livello corrente
      * @return true se uno dei premi è già presente in questo livello
      */
@@ -227,9 +227,7 @@ public class DbManagerCampagne {
             try {
                 DbConnector.insertQuery("INSERT INTO `premi`(`codice`, `nome`, `premioPunti`, `puntiNecessari`) " +
                         "VALUES (" + key.getCod() + ",'" + key.getNome() + "'," + codiceCampagna + ","+puntiNecessari+");");
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            } catch (SQLException ignored) {}
         }
     }
 }

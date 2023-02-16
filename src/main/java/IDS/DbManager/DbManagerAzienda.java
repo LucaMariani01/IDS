@@ -65,7 +65,7 @@ public class DbManagerAzienda {
     /**
      * permette all'azienda di visualizzare tutte le recensioni lasciate dai clienti
      * @param azienda azienda loggata che visualizza le recensioni
-     * @throws SQLException
+     * @throws SQLException quando si creano errori di nelle query
      */
     public static void visualizzaRecensioniClienti(Azienda azienda)throws SQLException{
         DbConnector.init();

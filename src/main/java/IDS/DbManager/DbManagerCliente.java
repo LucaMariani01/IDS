@@ -119,7 +119,7 @@ public class DbManagerCliente {
     }
 
     /**
-     * Permette al cliente la creazione di una tessera al momento dell'iscrizione ad una certa campagna sconto
+     * Permette al cliente la creazione di una tessera al momento dell'iscrizione a una certa campagna sconto
      * @param cliente è il cliente che otterrà la tessera
      * @param tipoCampagna è il tipo di campagna sconto scelta dal cliente a cui vuole iscriversi
      * @param idCampScelta codice identificativo della campagna sconto scelta
@@ -144,7 +144,7 @@ public class DbManagerCliente {
     /**
      * Metodo per scegliere la categoria di campagna sconto interessata al cliente
      * @param nomeAzienda nome dell'azienda avente la campagna sconto
-     * @return
+     * @return l'intero di riferimento alla categoria scelta
      */
     private static int scegliCategoriaCampagna(String nomeAzienda){
         Scanner scr = new Scanner(System.in);
