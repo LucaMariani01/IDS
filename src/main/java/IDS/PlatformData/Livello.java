@@ -3,8 +3,8 @@ package IDS.PlatformData;
 import java.util.ArrayList;
 
 public interface Livello<P> {
-    public int getNumero();
-    public double getRequisitoEntrata();
+    public int numero();
+    public double requisitoEntrata();
     public ArrayList<P> catalogoPremi();
-    public String getNome();
+    public String nome();
 }

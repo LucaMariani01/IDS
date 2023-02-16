@@ -12,8 +12,6 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class DashBoardAzienda {
-
-
     private static int sceltaMainMenu(){
         int scelta;
         Scanner scr = new Scanner(System.in);
@@ -47,17 +45,6 @@ public class DashBoardAzienda {
         };
     }
 
-    public void dash(Azienda a) throws SQLException { // ??
-        int scelta;
-        do{
-            scelta = menuAzienda();
-            switch (scelta){
-                case (1):this.menuCampagna(a);
-                    break;
-            }
-        }while(scelta!=0);
-    }
-
     public static int menuAzienda(){
         Scanner s = new Scanner(System.in);
         int n;
@@ -71,7 +58,7 @@ public class DashBoardAzienda {
         return n;
     }
 
-    public static void menuCampagna(Azienda a) throws SQLException {
+    public static void menuCampagna(Azienda a) {
         int scelta;
         Scanner s = new Scanner(System.in);
         System.out.println("\nDASHBOARD CREAZIONE CAMPAGNA SCONTO");
@@ -88,7 +75,7 @@ public class DashBoardAzienda {
         creaCampagnaScelta(scelta,a);
     }
 
-    public static void creaCampagnaScelta(int scelta,Azienda a) throws SQLException{
+    public static void creaCampagnaScelta(int scelta,Azienda a) {
         switch (scelta){
             case(1):
                 if(DbManagerCampagne.creaCampagnaPunti(a.getId()).isPresent()) System.out.println("CAMPAGNA A PUNTI CREATA CON SUCCESSO");

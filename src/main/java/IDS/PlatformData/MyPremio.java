@@ -1,12 +1,9 @@
 package IDS.PlatformData;
 
-import IDS.PlatformData.Premio;
-
 public class MyPremio implements Premio {
 
-    private int codice;
-
-    private String nome;
+    private final int codice;
+    private final String nome;
 
     public MyPremio(int codice, String nome){
         this.codice = codice;

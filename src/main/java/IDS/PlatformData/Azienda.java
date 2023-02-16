@@ -22,10 +22,7 @@ public class Azienda extends MyCliente {
     }
     
     public void addAdmin(Admin newAdmin) {
-        /*String insertAdminQuery = "INSERT INTO `admin` (`codiceFiscale`, `nome`, `azienda`, `password`) VALUES ('"+newAdmin.getCodiceFiscale()+"', '"+newAdmin.getNome()+"', '"+newAdmin.getAziendaAppartenenza()+"','"+newAdmin.()+"');";
-        DbConnector.init();
-        DbConnector.insertQuery(insertAdminQuery);
-        return true;*/
+
         this.listaAdmin.add(newAdmin);
     }
 }

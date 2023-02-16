@@ -14,7 +14,6 @@ public class ProgrammaLivelli<P extends Premio> extends Campagna {
     }
 
     public int getNumeroLivelli() {
-        // TODO: 13/02/2023 query
         return numeroLivelli;
     }
 
