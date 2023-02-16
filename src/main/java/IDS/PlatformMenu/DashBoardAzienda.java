@@ -102,14 +102,16 @@ public class DashBoardAzienda {
         aziendaLoggata = DashBoardAzienda.mainMenu();
         if(aziendaLoggata.isPresent()){
             if(DashBoardAzienda.menuAdmin(aziendaLoggata.get()).isPresent()){
-                switch (DashBoardAzienda.menuAzienda()){
-                    case 1 ->  DashBoardAzienda.menuCampagna(aziendaLoggata.get());
-                    case 2 ->  DbManagerAzienda.visualizzaRecensioniClienti(aziendaLoggata.get());
-                    case 0 ->  {
-                        System.out.println("LOGOUT ADMIN EFFETTUATO");
-                        aziendaLoggata = Optional.empty();
+                do {
+                    switch (DashBoardAzienda.menuAzienda()){
+                        case 1 ->  DashBoardAzienda.menuCampagna(aziendaLoggata.get());
+                        case 2 ->  DbManagerAzienda.visualizzaRecensioniClienti(aziendaLoggata.get());
+                        case 0 ->  {
+                            System.out.println("LOGOUT ADMIN EFFETTUATO");
+                            aziendaLoggata = Optional.empty();
+                        }
                     }
-                }
+                }while (aziendaLoggata.isPresent());
             }else System.out.println("errore admin");
         }
     }
