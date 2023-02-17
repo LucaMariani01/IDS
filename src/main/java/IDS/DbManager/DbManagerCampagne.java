@@ -89,15 +89,15 @@ public class DbManagerCampagne {
 
         System.out.println("NOME: ");
         String nome = input.nextLine();
-        int id = partitaIvaAzienda.hashCode() + nome.hashCode();
-        System.out.println("COSTO MEMBERSHIP ESCLUSIVA: ");
-        int costo = input.nextInt();
+        System.out.println("DESCRIZIONE VANTAGGI MEMBERSHIP ESCLUSIVA: ");
+        String vantaggi = input.nextLine();
         System.out.println("DATA INIZIO: ");
         String  dateIn = inputDataInizioFineCampagna();
         System.out.println("DATA FINE: ");
         String  dateFin = inputDataInizioFineCampagna();
-        System.out.println(" DESCRIZIONE VANTAGGI MEMBERSHIP ESCLUSIVA :");
-        String vantaggi = input.nextLine();
+        int id = partitaIvaAzienda.hashCode() + nome.hashCode();
+        System.out.println("COSTO MEMBERSHIP ESCLUSIVA: ");
+        int costo = input.nextInt();
 
         try {
             DbConnector.insertQuery("INSERT INTO membership(`dataInizio`,`nome`,`dataFine`,`costo`,`azienda`,`id`,`descrizione`) " +

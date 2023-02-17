@@ -23,6 +23,7 @@ public class App {
         int scelta;
 
         do {
+            System.out.println("INSERISCI TIPO UTENTE");
             System.out.println("1)CLIENTE ");
             System.out.println("2)AZIENDA");
             System.out.println("0)ESCI");
