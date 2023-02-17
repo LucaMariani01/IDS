@@ -96,16 +96,18 @@ public class DbManagerCampagne {
         String  dateIn = inputDataInizioFineCampagna();
         System.out.println("DATA FINE: ");
         String  dateFin = inputDataInizioFineCampagna();
+        System.out.println(" DESCRIZIONE VANTAGGI MEMBERSHIP ESCLUSIVA :");
+        String vantaggi = input.nextLine();
 
         try {
-            DbConnector.insertQuery("INSERT INTO membership(`dataInizio`,`nome`,`dataFine`,`costo`,`azienda`,`id`) " +
-                    "VALUES ('"+dateIn+"','"+nome+"','"+dateFin+"','"+costo+"','"+partitaIvaAzienda+"','"+id+"');");
+            DbConnector.insertQuery("INSERT INTO membership(`dataInizio`,`nome`,`dataFine`,`costo`,`azienda`,`id`,`descrizione`) " +
+                    "VALUES ('"+dateIn+"','"+nome+"','"+dateFin+"','"+costo+"','"+partitaIvaAzienda+"','"+id+"','"+vantaggi+"');");
         } catch (SQLException e) {
             System.out.println("Errore nella creazione della campagna sconto, nome già inserito.");
             return Optional.empty();
         }
         DbConnector.closeConnection();
-        return Optional.of(new Membership(id,dateFin, costo,  nome,dateIn));
+        return Optional.of(new Membership(id,dateFin, costo,  nome,dateIn,vantaggi));
     }
 
     private static String inputDataInizioFineCampagna() {
